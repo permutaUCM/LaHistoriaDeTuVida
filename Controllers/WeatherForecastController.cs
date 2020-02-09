@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace LHDTV.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/weather")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -23,7 +23,7 @@ namespace LHDTV.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
