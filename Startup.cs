@@ -12,7 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
+using LHDTV.Repo;
+using Microsoft.AspNetCore.Localization;
 
+using LHDTV.Service;
 using AutoMapper;
 using Serilog;
 
@@ -30,10 +33,6 @@ namespace LHDTV
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
             services.AddLocalization(opts => opts.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(opts =>
@@ -46,6 +45,18 @@ namespace LHDTV
                 opts.SupportedCultures = supportedCultures;
 
             });
+            services.AddControllers();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+            //DI
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddTransient<IPhotoService, PhotoService>();
+            services.AddTransient<IPhotoRepo, PhotoRepo>();
+
+
+
 
             services.AddSwaggerGen(c =>
             {
@@ -75,6 +86,20 @@ namespace LHDTV
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("es-Es"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("es-Es"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseEndpoints(endpoints =>
             {
