@@ -52,6 +52,7 @@ namespace LHDTV
 
             //DI
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoRepo, PhotoRepo>();
 
