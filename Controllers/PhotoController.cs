@@ -6,6 +6,8 @@ using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using System.Linq;
+using LHDTV.Models.Forms;
+
 namespace LHDTV.Controllers{
     [ApiController]
     [Route("api/photo")]
@@ -34,13 +36,28 @@ namespace LHDTV.Controllers{
             }
             return Ok(photo);
         }
+
+
         [HttpPost("addPhoto")]
         public ActionResult addPhoto([FromBody]AddPhotoForm form){ //Preguntar?¿?¿
-            photoService.Create();
-            return Ok();
+            var ret = photoService.Create(form);
+            return Ok(ret);
         }
         
-        [HttpPut("{id:length(24)}")]
+
+        [HttpGet("all")]
+        public ActionResult getAll(){
+            return Ok(photoService.GetAll());
+        }
+
+        [HttpGet("delete/{photoId}")]
+        public ActionResult delete(string photoId){
+            return Ok(photoService.Delete(photoId));
+        }
+
+
+
+        /*[HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, [FromBody]UpdatePhotoForm form)
         {
             var photo = photoService.Get(id);
@@ -68,6 +85,6 @@ namespace LHDTV.Controllers{
             photoService.Remove(form);
 
             return NoContent();
-        }
+        }*/
     }
 }

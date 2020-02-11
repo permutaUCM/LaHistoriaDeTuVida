@@ -9,5 +9,7 @@ namespace LHDTV.Models.DbEntity
         public string Url { get; set; }
 
         public DateTime UploadDate { get; set; }
+
+        public bool Deleted{ get; set; }
     }
 }
