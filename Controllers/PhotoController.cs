@@ -35,8 +35,39 @@ namespace LHDTV.Controllers{
             return Ok(photo);
         }
         [HttpPost("addPhoto")]
-        public ActionResult addPhoto([FromBody]AddPhotoForm form){
-            return Ok()
+        public ActionResult addPhoto([FromBody]AddPhotoForm form){ //Preguntar?¿?¿
+            photoService.Create();
+            return Ok();
+        }
+        
+        [HttpPut("{id:length(24)}")]
+        public IActionResult Update(string id, [FromBody]UpdatePhotoForm form)
+        {
+            var photo = photoService.Get(id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+
+            photoService.Update(id, form);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:length(24)}")]
+        public IActionResult Delete(string id, [FromBody]DeletePhotoForm form)
+        {
+            var photo = photoService.Get(id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+
+            photoService.Remove(form);
+
+            return NoContent();
         }
     }
 }

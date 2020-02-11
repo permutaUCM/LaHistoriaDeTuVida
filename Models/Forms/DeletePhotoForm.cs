@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LHDTV.Models.Forms
 {
-    public class AddPhoto
+    public class DeletePhoto
     {
         public string id { get; set; }
     }
