@@ -11,5 +11,9 @@ namespace LHDTV.Models.DbEntity
         public DateTime UploadDate { get; set; }
 
         public bool Deleted{ get; set; }
+
+        public string Title { get; set;}
+
+
     }
 }

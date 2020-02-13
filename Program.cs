@@ -18,7 +18,7 @@ namespace LHDTV
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
-                .MinimumLevel.Debug()
+                
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] Request:{RequestId} {Message:lj}{NewLine}{Exception}")
                 .WriteTo.File("./Logs/log.log", rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] Request:{RequestId} {Message:lj}{NewLine}{Exception}")

@@ -31,15 +31,24 @@ namespace LHDTV.Repo
         {
             throw new NotImplementedException();
         }
+
+        //Actualiza un elemento
         public PhotoDb Update(PhotoDb entity)
         {
-            throw new NotImplementedException();
+        
+           fakeRepo.First(p => p.Id == entity.Id).Title= entity.Title;        
+
+            return entity;
+
         }
-        public PhotoDb Delete(string id)
+        //Borrado fisico
+        public PhotoDb Delete(PhotoDb p)
         {
-            fakeRepo.First(p => p.Id == id).Deleted = true;
             
-            return fakeRepo.First(p => p.Id == id);
+           if(fakeRepo.Remove(p)) return p;
+           else return null;
+
+            
         }
 
         public List<PhotoDb> GetAll()

@@ -6,7 +6,8 @@ using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using System.Linq;
-using LHDTV.Models.Forms;
+using Microsoft.Extensions.Logging;
+
 
 namespace LHDTV.Controllers{
     [ApiController]
@@ -16,19 +17,22 @@ namespace LHDTV.Controllers{
         private readonly IPhotoService photoService;
         private readonly IStringLocalizer<PhotoController> localizer;
 
-        public PhotoController(IPhotoService _photoService, IStringLocalizer<PhotoController> _localizer)
+        private readonly ILogger<PhotoController> logger;
+
+        public PhotoController(IPhotoService _photoService, IStringLocalizer<PhotoController> _localizer ,  ILogger<PhotoController> _logger)
         {
             photoService = _photoService;
             localizer = _localizer;
+            logger = _logger;
         }
     
         [HttpPost]
         public ActionResult getPhoto([FromBody]PhotoForm form){
 
+            logger.LogInformation("getphoto {@form}",form) ;
+
             var id = form.id;
-            if(id == null || id.Length < 3){
-                return BadRequest("El id no puede tener menos de 3 caracteres.");
-            }
+          
             var photo = photoService.GetPhoto(id);
 
             if(photo == null){
@@ -44,6 +48,14 @@ namespace LHDTV.Controllers{
             return Ok(ret);
         }
         
+        [HttpPost("updatePhoto")]
+        public ActionResult UpdatePhoto([FromBody]UpdatePhotoForm form){
+            
+            
+                return Ok(photoService.Update(form));
+
+        }
+
 
         [HttpGet("all")]
         public ActionResult getAll(){
