@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Globalization;
 using LHDTV.Repo;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 
 using LHDTV.Service;
 using AutoMapper;
@@ -46,6 +47,8 @@ namespace LHDTV
 
             });
             services.AddControllers();
+
+            services.AddDbContext<LHDTV.Models.DbEntity.MvcMovieContext>(options => UseSqlite())
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
