@@ -43,6 +43,7 @@ namespace LHDTV.Service
                 Url = path,
                 UploadDate = DateTime.UtcNow,
                 Deleted = false,
+                Tittle = photo.Tittle
             };
 
             var photoRet = photoRepo.Create(photoPOJO);
@@ -50,11 +51,25 @@ namespace LHDTV.Service
 
             return photoTemp;
         }
-        public PhotoView Update(PhotoDb photo){
-            photoRepo.Update(photo);
-            return null;
+        public PhotoView Update(UpdatePhotoForm photo){
+           
+           
+            var c = photoRepo.Read(photo.id);
+            if(c == null){
+                    return null;
+            }
+
+            c.Tittle = photo.Tittle;
+            
+
+            var photoRet = photoRepo.Update(c);
+            var photoTemp = mapper.Map<PhotoView>(photoRet);
+
+            return photoTemp;
+
         }
 
+        //Borrado lógico
         public PhotoView Delete(int photoId){
             var photo = photoRepo.Read(photoId);
 
@@ -62,7 +77,9 @@ namespace LHDTV.Service
                 return null;
             }
 
-            var photoRet = photoRepo.Delete(photoId);
+            photo.Deleted=true;
+
+            var photoRet = photoRepo.Update(photo);
             var photoMap = mapper.Map<PhotoView>(photoRet);
 
             return photoMap;

@@ -12,5 +12,7 @@ namespace LHDTV.Service{
         List<PhotoView> GetAll();
     
         PhotoView Delete (int photoId);
+
+        PhotoView Update (UpdatePhotoForm form);
     }
 }
