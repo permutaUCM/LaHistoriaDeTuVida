@@ -9,6 +9,9 @@ using System.Linq;
 using System.Collections.Generic;
 
 using AutoMapper;
+
+
+using Microsoft.AspNetCore.Http;
 namespace LHDTV.Service
 {
 
@@ -22,8 +25,8 @@ namespace LHDTV.Service
             mapper = _mapper;
         }
         
-        public PhotoView GetPhoto(string id){  //Repasar?¿?¿
-            var photo = photoRepo.getPhoto(id);
+        public PhotoView GetPhoto(int id){  //Repasar?¿?¿
+            var photo = photoRepo.Read(id);
             var photoret = mapper.Map<PhotoView>(photo); 
             return photoret;
         }
@@ -52,8 +55,8 @@ namespace LHDTV.Service
             return null;
         }
 
-        public PhotoView Delete(string photoId){
-            var photo = photoRepo.getPhoto(photoId);
+        public PhotoView Delete(int photoId){
+            var photo = photoRepo.Read(photoId);
 
             if(photo == null){
                 return null;
@@ -76,7 +79,7 @@ namespace LHDTV.Service
             return listPhotosView;
         }
 
-        private bool uploadFile(string file, out string route){
+        private bool uploadFile(IFormFile file, out string route){
 
             route = "estoesunaurl"; 
             return true;

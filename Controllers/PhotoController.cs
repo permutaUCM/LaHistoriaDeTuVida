@@ -6,7 +6,6 @@ using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using System.Linq;
-using LHDTV.Models.Forms;
 
 namespace LHDTV.Controllers{
     [ApiController]
@@ -23,12 +22,10 @@ namespace LHDTV.Controllers{
         }
     
         [HttpPost]
-        public ActionResult getPhoto([FromBody]PhotoForm form){
+        public ActionResult getPhoto([FromForm]PhotoForm form){
 
             var id = form.id;
-            if(id == null || id.Length < 3){
-                return BadRequest("El id no puede tener menos de 3 caracteres.");
-            }
+
             var photo = photoService.GetPhoto(id);
 
             if(photo == null){
@@ -39,7 +36,7 @@ namespace LHDTV.Controllers{
 
 
         [HttpPost("addPhoto")]
-        public ActionResult addPhoto([FromBody]AddPhotoForm form){ //Preguntar?¿?¿
+        public ActionResult addPhoto([FromForm]AddPhotoForm form){ //Preguntar?¿?¿
             var ret = photoService.Create(form);
             return Ok(ret);
         }
@@ -51,7 +48,7 @@ namespace LHDTV.Controllers{
         }
 
         [HttpGet("delete/{photoId}")]
-        public ActionResult delete(string photoId){
+        public ActionResult delete(int photoId){
             return Ok(photoService.Delete(photoId));
         }
 

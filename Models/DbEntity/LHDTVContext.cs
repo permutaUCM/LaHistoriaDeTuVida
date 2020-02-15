@@ -2,15 +2,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LHDTV.Models.DbEntity
 {
-    public class MvcMovieContext : DbContext
+    public class LHDTVContext : DbContext
     {
-        public MvcMovieContext (DbContextOptions<MvcMovieContext> options)
-            : base(options)
+        public LHDTVContext ()
+            : base()
         {
         }
 
         public DbSet<PhotoDb> Photo { get; set; }
         public DbSet<TagDb> TagDb { get; set; }
-        public DbSet<UserDb> User { get; set; }
+        public DbSet<UserDb> Usuario { get; set; }
+
+         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=localhost;Database=LHDTV;Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        { 
+        }
     }
 }

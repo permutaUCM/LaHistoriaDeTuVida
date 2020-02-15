@@ -48,16 +48,16 @@ namespace LHDTV
             });
             services.AddControllers();
 
-            services.AddDbContext<LHDTV.Models.DbEntity.MvcMovieContext>(options => UseSqlite())
+            services.AddDbContext<LHDTV.Models.DbEntity.LHDTVContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
             //DI
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
             services.AddTransient<IPhotoService, PhotoService>();
-            services.AddTransient<IPhotoRepo, PhotoRepo>();
+            services.AddTransient<IPhotoRepo, PhotoRepoDb>();
+            services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
 
 
 

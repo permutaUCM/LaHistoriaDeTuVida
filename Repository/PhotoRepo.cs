@@ -13,7 +13,7 @@ namespace LHDTV.Repo
             fakeRepo = _fake.photos;
         }
 
-        public PhotoDb getPhoto(string id)
+        public PhotoDb getPhoto(int id)
         {
             var photo = fakeRepo.Where(p => p.Id == id && !p.Deleted ).SingleOrDefault();
 
@@ -22,12 +22,12 @@ namespace LHDTV.Repo
 
         public PhotoDb Create(PhotoDb entity)
         {
-            entity.Id = fakeRepo.Count + 1 + "";
+            entity.Id = fakeRepo.Count + 1;
             fakeRepo.Add(entity);
 
             return entity;
         }
-        public PhotoDb Read(string id)
+        public PhotoDb Read(int id)
         {
             throw new NotImplementedException();
         }
@@ -35,7 +35,7 @@ namespace LHDTV.Repo
         {
             throw new NotImplementedException();
         }
-        public PhotoDb Delete(string id)
+        public PhotoDb Delete(int id)
         {
             fakeRepo.First(p => p.Id == id).Deleted = true;
             
