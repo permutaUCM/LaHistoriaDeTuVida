@@ -14,7 +14,7 @@ namespace LHDTV.Models.DbEntity
         public UserDb User { get; set; }
         public ICollection<TagDb> Tag { get; set; }
         [MaxLength(25)]
-        public string Tittle { get; set; }
+        public string Title { get; set; }
         [MaxLength(50)]
         public string caption { get; set; }
         public DateTime UploadDate { get; set; }

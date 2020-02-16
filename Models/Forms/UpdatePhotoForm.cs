@@ -7,7 +7,7 @@ namespace LHDTV.Models.Forms
     {
         public int id { get; set; }
 
-        public string Tittle {get;set;}
+        public string Title {get;set;}
 
     }
 

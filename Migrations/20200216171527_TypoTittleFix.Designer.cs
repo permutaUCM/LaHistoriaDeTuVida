@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200215154851_Captions")]
-    partial class Captions
+    [Migration("20200216171527_TypoTittleFix")]
+    partial class TypoTittleFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,7 +43,7 @@ namespace LHDTV.Migrations
                     b.Property<decimal>("Size")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Tittle")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
@@ -77,7 +77,7 @@ namespace LHDTV.Migrations
                     b.Property<int?>("PhotoDbId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tittle")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")

@@ -48,6 +48,14 @@ namespace LHDTV
             });
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+                });
+            });
+
             services.AddDbContext<LHDTV.Models.DbEntity.LHDTVContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -86,7 +94,6 @@ namespace LHDTV
             app.UseSerilogRequestLogging();
 
 
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -104,11 +111,14 @@ namespace LHDTV
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
+            app.UseCors("EnableCORS");
+
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

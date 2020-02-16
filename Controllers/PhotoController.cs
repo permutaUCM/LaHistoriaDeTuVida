@@ -88,7 +88,19 @@ namespace LHDTV.Controllers
         }
 
         [HttpPost("addPhoto")]
-        public ActionResult addPhoto([FromForm]AddPhotoForm form){ //Preguntar?¿?¿
+        public ActionResult addPhoto([FromForm]AddPhotoForm form){ 
+
+            form.Tags = new List<TagForm>(){
+                new TagForm() {
+                    Title = "T123", 
+                    Type = "RESTAURANT",
+                    Properties = new List<KeyValuePair<string, string>>(){
+                        KeyValuePair.Create("p1", "pv1"),
+                        KeyValuePair.Create("p2", "pv2")
+                    }
+                }
+            };
+
             var ret = photoService.Create(form);
             return Ok(ret);
         }

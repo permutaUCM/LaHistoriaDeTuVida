@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LHDTV.Migrations
 {
-    public partial class Props : Migration
+    public partial class TypoTittleFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,8 @@ namespace LHDTV.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: true),
-                    Tittle = table.Column<string>(maxLength: 25, nullable: true),
+                    Title = table.Column<string>(maxLength: 25, nullable: true),
+                    caption = table.Column<string>(maxLength: 50, nullable: true),
                     UploadDate = table.Column<DateTime>(nullable: false),
                     RealDate = table.Column<DateTime>(nullable: false),
                     Country = table.Column<string>(nullable: true),
@@ -53,7 +54,7 @@ namespace LHDTV.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tittle = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     PhotoDbId = table.Column<int>(nullable: true)
                 },
@@ -69,7 +70,7 @@ namespace LHDTV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TagpropDb",
+                name: "TagPropDb",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -80,9 +81,9 @@ namespace LHDTV.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TagpropDb", x => x.Id);
+                    table.PrimaryKey("PK_TagPropDb", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TagpropDb_TagDb_TagDbId",
+                        name: "FK_TagPropDb_TagDb_TagDbId",
                         column: x => x.TagDbId,
                         principalTable: "TagDb",
                         principalColumn: "Id",
@@ -100,15 +101,15 @@ namespace LHDTV.Migrations
                 column: "PhotoDbId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TagpropDb_TagDbId",
-                table: "TagpropDb",
+                name: "IX_TagPropDb_TagDbId",
+                table: "TagPropDb",
                 column: "TagDbId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TagpropDb");
+                name: "TagPropDb");
 
             migrationBuilder.DropTable(
                 name: "TagDb");

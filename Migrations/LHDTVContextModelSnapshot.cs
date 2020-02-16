@@ -41,7 +41,7 @@ namespace LHDTV.Migrations
                     b.Property<decimal>("Size")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Tittle")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
@@ -75,7 +75,7 @@ namespace LHDTV.Migrations
                     b.Property<int?>("PhotoDbId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tittle")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")

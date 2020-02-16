@@ -36,7 +36,7 @@ namespace LHDTV.Repo
         public PhotoDb Update(PhotoDb entity)
         {
 
-            fakeRepo.First(p => p.Id == entity.Id).Tittle = entity.Tittle;
+            fakeRepo.First(p => p.Id == entity.Id).Title = entity.Title;
 
             return entity;
 
