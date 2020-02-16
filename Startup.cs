@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Globalization;
 using LHDTV.Repo;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 
 using LHDTV.Service;
 using AutoMapper;
@@ -47,13 +48,24 @@ namespace LHDTV
             });
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+                });
+            });
+
+            services.AddDbContext<LHDTV.Models.DbEntity.LHDTVContext>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
             //DI
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IPhotoService, PhotoService>();
-            services.AddTransient<IPhotoRepo, PhotoRepo>();
+            services.AddTransient<IPhotoRepo, PhotoRepoDb>();
+            services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
 
 
 
@@ -82,7 +94,6 @@ namespace LHDTV
             app.UseSerilogRequestLogging();
 
 
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -100,11 +111,14 @@ namespace LHDTV
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
+            app.UseCors("EnableCORS");
+
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

@@ -3,9 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LHDTV.Models.Forms
 {
-    public class PhotoForm
+    public class UpdatePhotoForm
     {
-        [Required(ErrorMessage="La id es obligatoria")]
         public int id { get; set; }
+
+        public string Title {get;set;}
+
     }
+
 }

@@ -7,7 +7,9 @@ namespace LHDTV.Repo
         T Create(T entity);
         T Read(K id);
         T Update(T entity);
-        T Delete(K id);
+
+        //Borrado fisico 
+        T Delete(K entity);
 
         List<T> GetAll();
     }
