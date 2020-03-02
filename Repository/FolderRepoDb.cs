@@ -35,12 +35,12 @@ namespace LHDTV.Repo
        {
            using (var ctx = new LHDTVContext())
            {
-               var folder = ctx.Folder.Include(p => p.Tag).ThenInclude(t => t.Properties).FirstOrDefault(p => p.Id == id);
+               var folder = ctx.Folder.Include(f => f.Photos).FirstOrDefault(f => f.Id == id);
                 return folder;
            }
 
        }
-
+        // update (datos generales)
        public FolderDb Update(FolderDb entity)
        {
 
@@ -53,6 +53,8 @@ namespace LHDTV.Repo
            }
 
        }
+
+       // recibe una lista de fotos la mete en la carpeta
 
        public FolderDb Delete(int id)
        {
@@ -67,15 +69,21 @@ namespace LHDTV.Repo
 
        }
 
+       //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
+
+
         // repasar
        public List<FolderDb> GetAll()
        {
            using (var ctx = new LHDTVContext())
            {
-               return ctx.Folder.Include(p => p.Tag).Where(folder => !folder.Deleted).ToList();
+               var res = ctx.Folder.Include(f => f.DefaultPhoto).ToList();
+               return res;
            }
 
        }
+
+       //Mirar el actualizar photo por defecto
 
    }
 

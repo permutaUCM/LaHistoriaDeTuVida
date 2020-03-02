@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj": {}
+    "C:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj": {
+    "C:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj",
+        "projectUniqueName": "C:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj",
         "projectName": "LHDTV",
-        "projectPath": "c:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj",
+        "projectPath": "C:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\LHDTV.csproj",
         "packagesPath": "C:\\Users\\Francisco Varela\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\obj\\",
+        "outputPath": "C:\\Users\\Francisco Varela\\Documents\\borja\\LHDTV\\LaHistoriaDeTuVida\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Francisco Varela\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -52,7 +52,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "(, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",

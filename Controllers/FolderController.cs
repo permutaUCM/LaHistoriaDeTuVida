@@ -18,7 +18,8 @@ namespace LHDTV.Controllers
     [ApiController]
     [Route("api/folder")]
 
-    public FolderController : ControllerBase{
+    public class FolderController : ControllerBase
+    {
 
         private readonly IFolderService folderService;
 
@@ -30,10 +31,14 @@ namespace LHDTV.Controllers
 
         private const string BASEPATHCONF = "folderRoutes:uploadRoute";
 
-        [HttpPost]
-        public ActionResult getFolder ()
+        
+        public FolderController(IFolderService _folderService, IStringLocalizer<FolderController> _localizer,
+                          ILogger<FolderController> _logger, IConfiguration _configuration)
         {
-
+            folderService = _folderService;
+            localizer = _localizer;
+            logger = _logger;
+            basePath = _configuration.GetValue<string>(BASEPATHCONF);
 
         }
 
