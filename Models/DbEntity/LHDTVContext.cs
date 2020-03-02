@@ -13,6 +13,8 @@ namespace LHDTV.Models.DbEntity
         public DbSet<TagDb> TagDb { get; set; }
         public DbSet<UserDb> Usuario { get; set; }
 
+        public DbSet<FolderDb> Folder {get;set;}
+
          protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=localhost;Database=LHDTV;Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);

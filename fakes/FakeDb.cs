@@ -9,5 +9,7 @@ namespace LHDTV.Fakes
     {
         public List<PhotoDb> photos { get; set; } = new List<PhotoDb>();
 
+        public List<FolderDb> folders { get; set; } = new List<FolderDb>();
+
     }
 }

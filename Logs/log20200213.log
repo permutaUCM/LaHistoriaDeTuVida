@@ -1,0 +1,235 @@
+[19:49:50 INF] Request: Now listening on: https://localhost:5001
+[19:49:50 INF] Request: Now listening on: http://localhost:5000
+[19:49:50 INF] Request: Application started. Press Ctrl+C to shut down.
+[19:49:50 INF] Request: Hosting environment: Development
+[19:49:50 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[19:50:43 INF] Request:0HLTGMM43M8V4:0000000F HTTP POST /api/photo/addPhoto responded 200 in 470.7285 ms
+[19:51:04 INF] Request:0HLTGMM43M8V4:00000011 HTTP GET /api/weather/GetAll responded 200 in 73.6422 ms
+[19:51:39 INF] Request:0HLTGMM43M8V4:00000013 HTTP GET /api/photo/all responded 200 in 27.5386 ms
+[19:51:58 INF] Request:0HLTGMM43M8V4:00000015 HTTP GET /api/photo/all responded 200 in 4.1721 ms
+[19:53:33 INF] Request: Application is shutting down...
+[19:53:39 INF] Request: Now listening on: https://localhost:5001
+[19:53:39 INF] Request: Now listening on: http://localhost:5000
+[19:53:39 INF] Request: Application started. Press Ctrl+C to shut down.
+[19:53:39 INF] Request: Hosting environment: Development
+[19:53:39 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[19:54:24 INF] Request:0HLTGMO612JQD:00000009 HTTP POST /api/photo/addPhoto responded 200 in 365.7467 ms
+[19:55:43 INF] Request: Application is shutting down...
+[19:55:49 INF] Request: Now listening on: https://localhost:5001
+[19:55:49 INF] Request: Now listening on: http://localhost:5000
+[19:55:49 INF] Request: Application started. Press Ctrl+C to shut down.
+[19:55:49 INF] Request: Hosting environment: Development
+[19:55:49 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[19:56:03 INF] Request:0HLTGMPCSBKVB:00000009 HTTP POST /api/photo/addPhoto responded 200 in 336.7011 ms
+[19:56:17 INF] Request:0HLTGMPCSBKVB:0000000B HTTP GET /api/photo/all responded 200 in 14.5336 ms
+[19:56:40 INF] Request:0HLTGMPCSBKVB:0000000D HTTP POST /api/photo/updatePhoto responded 204 in 38.5877 ms
+[19:56:48 INF] Request:0HLTGMPCSBKVB:0000000F HTTP POST /api/photo/updatePhoto responded 204 in 4.6135 ms
+[19:56:51 INF] Request:0HLTGMPCSBKVB:00000011 HTTP GET /api/photo/all responded 200 in 3.3656 ms
+[19:57:03 INF] Request:0HLTGMPCSBKVB:00000013 HTTP POST /api/photo/updatePhoto responded 204 in 3.3722 ms
+[19:58:18 INF] Request: Application is shutting down...
+[19:58:45 INF] Request: Now listening on: https://localhost:5001
+[19:58:45 INF] Request: Now listening on: http://localhost:5000
+[19:58:45 INF] Request: Application started. Press Ctrl+C to shut down.
+[19:58:45 INF] Request: Hosting environment: Development
+[19:58:45 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[19:59:21 INF] Request:0HLTGMR7DIAKK:00000009 HTTP POST /api/photo/addPhoto responded 200 in 541.4606 ms
+[19:59:28 INF] Request:0HLTGMR7DIAKK:0000000B HTTP GET /api/weather/GetAll responded 200 in 32.5005 ms
+[19:59:50 INF] Request:0HLTGMR7DIAKK:0000000D HTTP GET /api/photo/all responded 200 in 25.2611 ms
+[19:59:52 INF] Request:0HLTGMR7DIAKK:0000000F HTTP GET /api/photo/all responded 200 in 4.1894 ms
+[20:03:29 INF] Request: Now listening on: https://localhost:5001
+[20:03:29 INF] Request: Now listening on: http://localhost:5000
+[20:03:29 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:03:29 INF] Request: Hosting environment: Development
+[20:03:29 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[20:03:41 INF] Request:0HLTGMTKRJ8CF:00000009 HTTP POST /api/photo/addPhoto responded 200 in 427.6246 ms
+[20:04:40 INF] Request:0HLTGMTKRJ8CF:0000000B HTTP POST /api/photo/updatePhoto responded 200 in 44196.6725 ms
+[20:05:01 INF] Request:0HLTGMTKRJ8CF:0000000D HTTP GET /api/photo/all responded 200 in 27.3248 ms
+[20:22:08 INF] Request: Now listening on: https://localhost:5001
+[20:22:08 INF] Request: Now listening on: http://localhost:5000
+[20:22:08 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:22:08 INF] Request: Hosting environment: Development
+[20:22:08 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[20:22:21 INF] Request:0HLTGN83CBKN6:00000009 HTTP POST /api/photo/addPhoto responded 200 in 300.7068 ms
+[20:22:58 INF] Request:0HLTGN83CBKN6:0000000B HTTP POST /api/photo responded 400 in 14.6724 ms
+[20:22:59 INF] Request:0HLTGN83CBKN6:0000000D HTTP POST /api/photo responded 400 in 4.9028 ms
+[20:23:02 INF] Request:0HLTGN83CBKN6:0000000F HTTP POST /api/photo responded 400 in 7.8793 ms
+[20:25:25 INF] Request: Application is shutting down...
+[20:25:32 INF] Request: Now listening on: https://localhost:5001
+[20:25:32 INF] Request: Now listening on: http://localhost:5000
+[20:25:32 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:25:32 INF] Request: Hosting environment: Development
+[20:25:32 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[20:25:49 INF] Request:0HLTGNA0IAQ72:00000009 HTTP POST /api/photo/addPhoto responded 200 in 357.0769 ms
+[20:25:51 INF] Request:0HLTGNA0IAQ72:0000000B HTTP POST /api/photo/addPhoto responded 200 in 7.3468 ms
+[20:26:00 INF] Request:0HLTGNA0IAQ72:0000000D HTTP POST /api/photo responded 400 in 47.0034 ms
+[20:27:01 INF] Request: Application is shutting down...
+[20:27:09 INF] Request: Now listening on: https://localhost:5001
+[20:27:09 INF] Request: Now listening on: http://localhost:5000
+[20:27:09 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:27:09 INF] Request: Hosting environment: Development
+[20:27:09 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[20:27:21 INF] Request:0HLTGNAT1O6A4:00000009 HTTP POST /api/photo/addPhoto responded 200 in 319.4541 ms
+[20:27:29 INF] Request:0HLTGNAT1O6A4:0000000B HTTP POST /api/photo responded 200 in 17.8135 ms
+[20:28:32 INF] Request: Application is shutting down...
+[20:28:38 INF] Request: Now listening on: https://localhost:5001
+[20:28:38 INF] Request: Now listening on: http://localhost:5000
+[20:28:38 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:28:38 INF] Request: Hosting environment: Development
+[20:28:38 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[20:28:51 INF] Request:0HLTGNBNIT7UU:00000009 HTTP POST /api/photo/addPhoto responded 200 in 285.7372 ms
+[20:28:58 INF] Request:0HLTGNBNIT7UU:0000000B getphoto {"id":"1","$type":"PhotoForm"}
+[20:28:58 INF] Request:0HLTGNBNIT7UU:0000000B HTTP POST /api/photo responded 200 in 49.3754 ms
+[20:49:31 INF] Request: Application is shutting down...
+[21:54:44 INF] Request: Now listening on: https://localhost:5001
+[21:54:44 INF] Request: Now listening on: http://localhost:5000
+[21:54:44 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:54:44 INF] Request: Hosting environment: Development
+[21:54:44 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[21:54:58 ERR] Request:0HLTGORU1QGT5:00000005 An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Conflicting method/path combination "POST api/photo" for actions - LHDTV.Controllers.PhotoController.getPhoto (LHDTV),LHDTV.Controllers.PhotoController.OnPostUploadAsync (LHDTV). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[21:55:09 ERR] Request:0HLTGORU1QGT5:0000000D An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Conflicting method/path combination "POST api/photo" for actions - LHDTV.Controllers.PhotoController.getPhoto (LHDTV),LHDTV.Controllers.PhotoController.OnPostUploadAsync (LHDTV). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[21:56:47 INF] Request: Application is shutting down...
+[21:56:56 INF] Request: Now listening on: https://localhost:5001
+[21:56:56 INF] Request: Now listening on: http://localhost:5000
+[21:56:56 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:56:56 INF] Request: Hosting environment: Development
+[21:56:56 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[21:57:39 INF] Request: Application is shutting down...
+[21:58:03 INF] Request: Now listening on: https://localhost:5001
+[21:58:03 INF] Request: Now listening on: http://localhost:5000
+[21:58:03 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:58:03 INF] Request: Hosting environment: Development
+[21:58:03 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[21:59:02 INF] Request:0HLTGOU0E271J:00000009 HTTP POST /api/photo/FileUpload responded 200 in 11807.1643 ms
+[21:59:59 INF] Request: Now listening on: https://localhost:5001
+[21:59:59 INF] Request: Now listening on: http://localhost:5000
+[21:59:59 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:59:59 INF] Request: Hosting environment: Development
+[21:59:59 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:00:56 INF] Request:0HLTGOUPE1EBF:00000009 HTTP POST /api/photo/FileUpload responded 200 in 38137.4593 ms
+[22:12:46 INF] Request: Now listening on: https://localhost:5001
+[22:12:46 INF] Request: Now listening on: http://localhost:5000
+[22:12:46 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:12:46 INF] Request: Hosting environment: Development
+[22:12:46 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:13:16 ERR] Request:0HLTGP5TLO7FR:00000009 HTTP POST /api/photo/FileUpload responded 500 in 609.3124 ms
+System.IO.IOException: The filename, directory name, or volume label syntax is incorrect. : 'C:\Users\Francisco Varela\Documents\borja\BuzonLHDTV13\02\2020 21:13:15830529698file'
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.IO.File.Create(String path)
+   at LHDTV.Controllers.PhotoController.OnPostUploadAsync(IFormFile file) in C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida\Controllers\PhotoController.cs:line 71
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+[22:13:16 ERR] Request:0HLTGP5TLO7FR:00000009 An unhandled exception has occurred while executing the request.
+System.IO.IOException: The filename, directory name, or volume label syntax is incorrect. : 'C:\Users\Francisco Varela\Documents\borja\BuzonLHDTV13\02\2020 21:13:15830529698file'
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.IO.File.Create(String path)
+   at LHDTV.Controllers.PhotoController.OnPostUploadAsync(IFormFile file) in C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida\Controllers\PhotoController.cs:line 71
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[22:15:23 INF] Request: Application is shutting down...
+[22:15:30 INF] Request: Now listening on: https://localhost:5001
+[22:15:30 INF] Request: Now listening on: http://localhost:5000
+[22:15:30 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:15:30 INF] Request: Hosting environment: Development
+[22:15:30 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:15:44 INF] Request:0HLTGP7ESKETH:00000009 HTTP POST /api/photo/FileUpload responded 200 in 826.1907 ms
+[22:19:26 INF] Request: Application is shutting down...
+[22:19:32 INF] Request: Now listening on: https://localhost:5001
+[22:19:32 INF] Request: Now listening on: http://localhost:5000
+[22:19:32 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:19:32 INF] Request: Hosting environment: Development
+[22:19:32 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:19:45 INF] Request:0HLTGP9MJRPI8:00000009 HTTP POST /api/photo/FileUpload responded 400 in 516.5123 ms
+[22:20:07 INF] Request: Application is shutting down...
+[22:20:19 INF] Request: Now listening on: https://localhost:5001
+[22:20:19 INF] Request: Now listening on: http://localhost:5000
+[22:20:19 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:20:19 INF] Request: Hosting environment: Development
+[22:20:19 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:22:36 INF] Request:0HLTGPA4TS85D:00000009 HTTP POST /api/photo/FileUpload responded 400 in 124007.2034 ms
+[22:23:23 INF] Request:0HLTGPA4TS85D:00000013 HTTP POST /api/photo/FileUpload responded 200 in 27768.84 ms
+[22:25:50 INF] Request: Now listening on: https://localhost:5001
+[22:25:50 INF] Request: Now listening on: http://localhost:5000
+[22:25:50 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:25:50 INF] Request: Hosting environment: Development
+[22:25:50 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:26:15 INF] Request:0HLTGPD6T6D7M:00000009 HTTP POST /api/photo/FileUpload responded 200 in 14474.3977 ms
+[22:27:52 INF] Request: Now listening on: https://localhost:5001
+[22:27:52 INF] Request: Now listening on: http://localhost:5000
+[22:27:52 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:27:52 INF] Request: Hosting environment: Development
+[22:27:52 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:28:07 INF] Request:0HLTGPEAJ9G8B:00000009 HTTP POST /api/photo/FileUpload responded 200 in 4080.6857 ms
+[22:30:33 INF] Request: Now listening on: https://localhost:5001
+[22:30:33 INF] Request: Now listening on: http://localhost:5000
+[22:30:33 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:30:33 INF] Request: Hosting environment: Development
+[22:30:33 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:31:35 INF] Request: Now listening on: https://localhost:5001
+[22:31:36 INF] Request: Now listening on: http://localhost:5000
+[22:31:36 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:31:36 INF] Request: Hosting environment: Development
+[22:31:36 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:33:14 INF] Request: Now listening on: https://localhost:5001
+[22:33:14 INF] Request: Now listening on: http://localhost:5000
+[22:33:14 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:33:14 INF] Request: Hosting environment: Development
+[22:33:14 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:33:53 INF] Request: Now listening on: https://localhost:5001
+[22:33:53 INF] Request: Now listening on: http://localhost:5000
+[22:33:53 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:33:53 INF] Request: Hosting environment: Development
+[22:33:53 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:33:59 INF] Request:0HLTGPHMAJRLC:00000001 HTTP POST /api/photo/FileUpload responded 200 in 5048.2921 ms
+[22:36:08 INF] Request: Now listening on: https://localhost:5001
+[22:36:08 INF] Request: Now listening on: http://localhost:5000
+[22:36:08 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:36:08 INF] Request: Hosting environment: Development
+[22:36:08 INF] Request: Content root path: C:\Users\Francisco Varela\Documents\borja\LHDTV\LaHistoriaDeTuVida
+[22:36:27 INF] Request:0HLTGPIUC21M7:00000001 HTTP POST /api/photo/FileUpload responded 200 in 19292.314 ms
