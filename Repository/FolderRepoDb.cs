@@ -31,6 +31,7 @@ namespace LHDTV.Repo
 
        }
 
+
        public FolderDb Read (int id)
        {
            using (var ctx = new LHDTVContext())
@@ -54,7 +55,20 @@ namespace LHDTV.Repo
 
        }
 
-       // recibe una lista de fotos la mete en la carpeta
+       // recibe una lista de fotos la mete en la carpeta, funcion pendiente
+            //Falta añadir una photo a una folder
+
+        public FolderDb AddphotoToFolder (FolderDb EntFolder ,PhotoDb EntPhoto)
+        {
+
+               using(var ctx= new LHDTVContext())
+            {
+                ctx.Folder.Add(EntFolder,EntPhoto);
+                ctx.SaveChanges();
+                return entity;
+            }
+
+        }
 
        public FolderDb Delete(int id)
        {

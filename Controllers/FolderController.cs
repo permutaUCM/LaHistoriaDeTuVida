@@ -42,6 +42,48 @@ namespace LHDTV.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult getFolder([FromBody]FolderForm form)
+        {
+
+            logger.LogInformation("getFolder {@form}" , form);
+
+            var id = form.id;
+
+            var folder = folderService.GetFolder(id);
+
+            if(folder == null)
+            {
+                return BadRequest(localizer["folderNotFound"].Value);
+
+            }
+
+            return Ok(folder);
+
+        }
+
+        [HttpPost("updateFolder")]
+        public ActionResult UpdateFolder ([FromBody]UpdateFolderForm form)
+        {
+
+            return Ok(folderService.Update(form));
+
+        }
+
+        /*
+            AddFolder ......
+        */
+
+        [HttpGet("all")]
+        public ActionResult getAll()
+        {
+                return Ok(folderService.GetAll());
+        }
+
+        [HttpGet("delete/{folderId}")]
+        public ActionResult delete (int folderId){
+            return Ok(folderService.Delete(folderId));
+        }
         
     }
 

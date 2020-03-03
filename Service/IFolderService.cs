@@ -18,7 +18,7 @@ namespace LHDTV.Service{
 
         FolderView Update(UpdateFolderForm form);
 
-        List<FolderView> GetAll();
+        // List<FolderView> GetAll();
         
     }
 

@@ -44,28 +44,80 @@ namespace LHDTV.Service
             return folderRet;
         }
 
-        public FolderView Create (AddFolderForm form){
+        // crea un carpeta vacia
+        public FolderView Create (AddFolderForm folder){
+
+                FolderDb folderPOJO = new FolderDb()
+                {
+
+                        DefaultPhoto = null,
+                        Title = folder.Title,
+                        Photos = null,
+                        Deleted = false
 
 
+                };
+
+                var folderRet = folderRepo.Create(folderPOJO);
+                var folderTemp = mapper.Map<FolderView>(folderRet);
+
+                return folderTemp;
+
+        }
+
+        //añade una coleccion de fotos a una carpeta
+
+        public FolderView AddPhotoToFolder(PhotoDb photo , int folderId){
+
+            var folder = folderRepo.Read(folderId);
+            if(folder == null)
+            {
+                return null;
+            }
+            else{
+
+                
+                // No se como devolver la foto para comprobar si existe
+                //if(folder.Photos.Select(p => photo.Id))
+
+
+            }
 
         }
 
         public FolderView Delete(int folderId){
 
-            
+            var folder = folderRepo.Read(folderId);
+            if(folder == null)
+            {
+                return null;
+            }
+
+            folder.Deleted = true;
+
+            var folderRet = folderRepo.Update(folder);
+            var folderMap = mapper.Map<FolderView>(folderRet);
+
+            return folderMap;
 
         }
 
         public FolderView Update(UpdateFolderForm folder){
 
+                var  f = folderRepo.Read(folder.id);
+                if(f == null)return null;
+
+                f.Title = folder.Title;
+
+                var folderRet = folderRepo.Update(f);
+                var folderTemp = mapper.Map<FolderView>(folderRet);
+
+                return folderTemp;
 
         }
 
-        public List<FolderView> GetAll(){
 
 
-
-        }
     }
 
 

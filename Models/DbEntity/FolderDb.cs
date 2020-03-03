@@ -20,7 +20,6 @@ namespace LHDTV.Models.DbEntity
 
         //Convertir en un mapa clave valor , todictionary
 
-
         public ICollection<TagDb> Tags {get;set;}
 
         // Borrado logico o fisico??
