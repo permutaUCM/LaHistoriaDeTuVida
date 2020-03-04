@@ -70,15 +70,16 @@ namespace LHDTV.Controllers
 
         }
 
-        /*
-            AddFolder ......
-        */
+      
 
-        [HttpGet("all")]
-        public ActionResult getAll()
+        public ActionResult addFolder ([FromForm]AddFolderForm form)
         {
-                return Ok(folderService.GetAll());
+            
+            var ret = folderService.Create(form);
+            return Ok(ret);
+
         }
+     
 
         [HttpGet("delete/{folderId}")]
         public ActionResult delete (int folderId){

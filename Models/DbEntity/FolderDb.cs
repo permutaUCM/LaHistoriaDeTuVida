@@ -16,11 +16,13 @@ namespace LHDTV.Models.DbEntity
 
         public string Title { get; set; }
 
-        public ICollection<PhotoDb> Photos {get; set;}
+        //public ICollection<PhotoDb> Photos {get; set;}
 
         //Convertir en un mapa clave valor , todictionary
 
-        public ICollection<TagDb> Tags {get;set;}
+        public Dictionary<PhotoDb,TagDb> PhotosTags {get ; set;}
+
+        //public ICollection<TagDb> Tags {get;set;}
 
         // Borrado logico o fisico??
         public bool Deleted { get; set; }

@@ -52,7 +52,7 @@ namespace LHDTV.Service
 
                         DefaultPhoto = null,
                         Title = folder.Title,
-                        Photos = null,
+                        PhotosTags = null,
                         Deleted = false
 
 
@@ -67,19 +67,23 @@ namespace LHDTV.Service
 
         //añade una coleccion de fotos a una carpeta
 
-        public FolderView AddPhotoToFolder(PhotoDb photo , int folderId){
+        public FolderView AddPhotoToFolder(PhotoDb photo , FolderDb folder){
 
-            var folder = folderRepo.Read(folderId);
-            if(folder == null)
+            var f = folderRepo.Read(folder.Id);
+            if(f == null)
             {
                 return null;
             }
             else{
 
-                
-                // No se como devolver la foto para comprobar si existe
-                //if(folder.Photos.Select(p => photo.Id))
+                if(!folder.PhotosTags.ContainsKey(photo))
+                {
+                    folder.PhotosTags.Add(photo,null);
 
+                    var folderRet = folderRepo.AddPhotoToFolder(folder,photo);
+
+                }
+            
 
             }
 
