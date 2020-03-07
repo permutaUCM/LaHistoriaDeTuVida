@@ -55,21 +55,7 @@ namespace LHDTV.Repo
 
        }
 
-       // recibe una lista de fotos la mete en la carpeta, funcion pendiente
-            //Falta añadir una photo a una folder
-
-        public FolderDb AddphotoToFolder (FolderDb EntFolder ,PhotoDb EntPhoto)
-        {
-
-               using(var ctx= new LHDTVContext())
-            {
-             //   ctx.Folder.Update(EntFolder,EntPhoto);
-                ctx.SaveChanges();
-                return EntFolder;
-            }
-
-        }
-
+       
        public FolderDb Delete(int id)
        {
            using (var ctx = new LHDTVContext())
@@ -83,22 +69,6 @@ namespace LHDTV.Repo
 
 
        }
-
-       //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
-
-        public FolderDb deletePhotoFolder (int folderId , int photoId)
-        {
-
-                using (var ctx = new LHDTVContext())
-                {
-
-                        var photo = ctx.Remove(folderId,photoId);
-                        ctx.SaveChanges();
-                        return null;
-                }
-
-        }
-
         // repasar
        public List<FolderDb> GetAll()
        {
@@ -109,6 +79,39 @@ namespace LHDTV.Repo
            }
 
        }
+       // recibe una lista de fotos la mete en la carpeta, funcion pendiente
+
+        public FolderDb AddPhotoToFolder (FolderDb EntFolder ,List<PhotoDb> listPhotos )
+        {
+
+               using(var ctx= new LHDTVContext())
+            {
+                ctx.Folder.Update(EntFolder,listPhotos);
+                ctx.SaveChanges();
+                return EntFolder;
+            }
+
+        }
+
+
+       //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
+
+        public FolderDb deletePhotoToFolder (int folderId , PhotoDb p)
+        {
+
+            /*              using (var ctx = new LHDTVContext())
+                {
+
+                        var photo = ctx.Remove(folderId,p);
+                        ctx.SaveChanges();
+                        return null;
+                }*/
+
+            
+
+        }
+
+
 
        //Mirar el actualizar photo por defecto
 

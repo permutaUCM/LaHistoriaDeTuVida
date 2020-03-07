@@ -65,30 +65,7 @@ namespace LHDTV.Service
 
         }
 
-        //añade una coleccion de fotos a una carpeta
-
-        public FolderView AddPhotoToFolder(PhotoDb photo , FolderDb folder){
-
-            var f = folderRepo.Read(folder.Id);
-            if(f == null)
-            {
-                return null;
-            }
-            else{
-
-                if(!folder.PhotosTags.ContainsKey(photo))
-                {
-                    folder.PhotosTags.Add(photo,null);
-
-                    var folderRet = folderRepo.AddPhotoToFolder(folder,photo);
-
-                }
-            
-
-            }
-
-        }
-
+        
         public FolderView Delete(int folderId){
 
             var folder = folderRepo.Read(folderId);
@@ -119,6 +96,84 @@ namespace LHDTV.Service
                 return folderTemp;
 
         }
+
+
+        //añade una coleccion de fotos a una carpeta
+        // primera version se añade de una en una
+        
+        public FolderView addPhotoToFolder(int folderId,PhotoDb photo ){
+
+            var f = folderRepo.Read(folderId);
+            if(f == null)
+            {
+                return null;
+            }
+            else{
+
+                if(folderRepo.Read(f.Id).PhotosTags.ContainsKey(photo))return null;
+             
+                // esto valdria para una foto ¿bucle para una lista de fotos?
+                folderRepo.Update(f).PhotosTags.Add(photo,null);
+                var folderRet = folderRepo.Update(f);
+                var folderTemp = mapper.Map<FolderView>(folderRet);
+
+                return folderTemp;
+            }
+        }
+
+        public FolderView deletePhotoToFolder(int folderId , PhotoDb p){
+
+            var f = folderRepo.Read(folderId);
+
+            if(f == null)return null;
+            else{
+                                
+              /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
+                    folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+
+                    if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
+
+                   folderRepo.Read(folderId).PhotosTags.Remove(p);
+            
+                   var folderRet = folderRepo.Update(f);
+                   var folderTemp = mapper.Map<FolderView>(folderRet);
+
+
+                return folderTemp;
+
+            }
+
+        }
+
+        // actualizar photo por defecto
+        
+        public FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p){
+
+                
+            var f = folderRepo.Read(folderId);
+
+            if(f == null)return null;
+            else{
+                                
+              /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
+                    folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+
+               //     if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
+
+                   f.DefaultPhoto = p;
+
+                   var folderRet = folderRepo.Update(f);
+                   var folderTemp = mapper.Map<FolderView>(folderRet);
+
+
+                return folderTemp;
+
+            }
+
+
+        }
+
+
 
 
 
