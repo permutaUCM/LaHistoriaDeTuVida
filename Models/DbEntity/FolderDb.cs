@@ -16,11 +16,11 @@ namespace LHDTV.Models.DbEntity
 
         public string Title { get; set; }
 
-        //public ICollection<PhotoDb> Photos {get; set;}
+        public ICollection<PhotoDb> Photos {get; set;}
 
         //Convertir en un mapa clave valor , todictionary
 
-        public Dictionary<PhotoDb,TagDb> PhotosTags {get ; set;}
+        public ICollection<string> PhotosTags {get ; set;}
 
         //public ICollection<TagDb> Tags {get;set;}
 

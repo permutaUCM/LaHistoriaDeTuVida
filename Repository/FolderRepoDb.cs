@@ -81,12 +81,12 @@ namespace LHDTV.Repo
        }
        // recibe una lista de fotos la mete en la carpeta, funcion pendiente
 
-        public FolderDb AddPhotoToFolder (FolderDb EntFolder ,List<PhotoDb> listPhotos )
+        public FolderDb AddPhotoToFolder (FolderDb EntFolder ,PhotoDb photo )
         {
 
                using(var ctx= new LHDTVContext())
             {
-                ctx.Folder.Update(EntFolder,listPhotos);
+                   ctx.Folder.Update(EntFolder,photo);
                 ctx.SaveChanges();
                 return EntFolder;
             }
@@ -107,7 +107,7 @@ namespace LHDTV.Repo
                         return null;
                 }*/
 
-            
+            return null;
 
         }
 

@@ -26,7 +26,7 @@ namespace LHDTV.Service
         private readonly string basePath;
 
         private const string BASEPATHCONF = "folderRoutes:uploadRoute";
-        
+
         public FolderService(IFolderRepo _folderRepo, IMapper _mapper, IConfiguration _configuration)
         {
             folderRepo = _folderRepo;
@@ -40,36 +40,38 @@ namespace LHDTV.Service
 
             var folder = folderRepo.Read(id);
             var folderRet = mapper.Map<FolderView>(folder);
-                
+
             return folderRet;
         }
 
         // crea un carpeta vacia
-        public FolderView Create (AddFolderForm folder){
+        public FolderView Create(AddFolderForm folder)
+        {
 
-                FolderDb folderPOJO = new FolderDb()
-                {
+            FolderDb folderPOJO = new FolderDb()
+            {
 
-                        DefaultPhoto = null,
-                        Title = folder.Title,
-                        PhotosTags = null,
-                        Deleted = false
+                DefaultPhoto = null,
+                Title = folder.Title,
+                PhotosTags = null,
+                Deleted = false
 
 
-                };
+            };
 
-                var folderRet = folderRepo.Create(folderPOJO);
-                var folderTemp = mapper.Map<FolderView>(folderRet);
+            var folderRet = folderRepo.Create(folderPOJO);
+            var folderTemp = mapper.Map<FolderView>(folderRet);
 
-                return folderTemp;
+            return folderTemp;
 
         }
 
-        
-        public FolderView Delete(int folderId){
+
+        public FolderView Delete(int folderId)
+        {
 
             var folder = folderRepo.Read(folderId);
-            if(folder == null)
+            if (folder == null)
             {
                 return null;
             }
@@ -83,93 +85,110 @@ namespace LHDTV.Service
 
         }
 
-        public FolderView Update(UpdateFolderForm folder){
+        public FolderView Update(UpdateFolderForm folder)
+        {
 
-                var  f = folderRepo.Read(folder.id);
-                if(f == null)return null;
+            var f = folderRepo.Read(folder.id);
+            if (f == null) return null;
 
-                f.Title = folder.Title;
+            f.Title = folder.Title;
 
-                var folderRet = folderRepo.Update(f);
-                var folderTemp = mapper.Map<FolderView>(folderRet);
+            var folderRet = folderRepo.Update(f);
+            var folderTemp = mapper.Map<FolderView>(folderRet);
 
-                return folderTemp;
+            return folderTemp;
 
         }
 
 
         //añade una coleccion de fotos a una carpeta
         // primera version se añade de una en una
-        
-        public FolderView addPhotoToFolder(int folderId,PhotoDb photo ){
+
+        public FolderView addPhotoToFolder(int folderId, PhotoDb photo)
+        {
 
             var f = folderRepo.Read(folderId);
-            if(f == null)
+            if (f == null)
             {
                 return null;
             }
-            else{
 
-                if(folderRepo.Read(f.Id).PhotosTags.ContainsKey(photo))return null;
-             
-                // esto valdria para una foto ¿bucle para una lista de fotos?
-                folderRepo.Update(f).PhotosTags.Add(photo,null);
-                var folderRet = folderRepo.Update(f);
-                var folderTemp = mapper.Map<FolderView>(folderRet);
 
-                return folderTemp;
-            }
+            if (folderRepo.Read(f.Id).Photos.Where(p => p.Id == photo.Id).SingleOrDefault() != null) return null;
+
+            // esto valdria para una foto ¿bucle para una lista de fotos?
+            f.Photos.Add(photo);
+
+            // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
+            var nocontainstags = photo.Tag.Where(t => f.PhotosTags.Where(pt => pt == t.Title).SingleOrDefault() != null).Select(t => t.Title).ToList();
+
+            f.PhotosTags.Concat(nocontainstags);
+
+            var folderRet = folderRepo.Update(f);
+            var folderTemp = mapper.Map<FolderView>(folderRet);
+
+            return folderTemp;
+
         }
 
-        public FolderView deletePhotoToFolder(int folderId , PhotoDb p){
+        public FolderView deletePhotoToFolder(int folderId, PhotoDb photo)
+        {
 
             var f = folderRepo.Read(folderId);
 
-            if(f == null)return null;
-            else{
-                                
-              /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
-                    folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+            if (f == null) return null;
 
-                    if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
 
-                   folderRepo.Read(folderId).PhotosTags.Remove(p);
+            /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
+                  folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+
+            if (f.Photos.Where(p => p.Id == photo.Id).SingleOrDefault() == null) return null;
+
+            f.Photos.Remove(photo);
+            // Obtener el listado de tags a eliminar
+
+            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+
+            foreach(var t in tagsaeliminar)
+                    f.PhotosTags.Remove(t);
+
+            var folderRet = folderRepo.Update(f);
             
-                   var folderRet = folderRepo.Update(f);
-                   var folderTemp = mapper.Map<FolderView>(folderRet);
+            var folderTemp = mapper.Map<FolderView>(folderRet);
 
 
-                return folderTemp;
+            return folderTemp;
 
-            }
+
 
         }
 
         // actualizar photo por defecto
-        
-        public FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p){
 
-                
+        public FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p)
+        {
+
+
             var f = folderRepo.Read(folderId);
 
-            if(f == null)return null;
-            else{
-                                
-              /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
-                    folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+            if (f == null) return null;
+            
 
-               //     if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
+                /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
+                      folderRepo.Read(folderId).PhotosTags.Remove(p);*/
 
-                   f.DefaultPhoto = p;
+                //     if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
 
-                   var folderRet = folderRepo.Update(f);
-                   var folderTemp = mapper.Map<FolderView>(folderRet);
+                f.DefaultPhoto = p;
+
+        // comprobar que la photo existe en la carpeta, comprobar si la foto esta eliminada,foto no es nula
+        // lanzar excepciones en vez de nulos.
+
+                var folderRet = folderRepo.Update(f);
+                var folderTemp = mapper.Map<FolderView>(folderRet);
 
 
                 return folderTemp;
-
-            }
-
 
         }
 
