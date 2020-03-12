@@ -1,0 +1,111 @@
+[20:01:09 INF] Request: Now listening on: https://localhost:5001
+[20:01:09 INF] Request: Now listening on: http://localhost:5000
+[20:01:09 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:01:09 INF] Request: Hosting environment: Development
+[20:01:09 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDeTuVida
+[20:04:52 INF] Request:0HLU6N0NLQJJ4:00000001 HTTP GET / responded 404 in 68.4304 ms
+[20:04:55 INF] Request:0HLU6N0NLQJJ4:00000003 HTTP GET / responded 404 in 0.6455 ms
+[20:04:55 INF] Request:0HLU6N0NLQJJ4:00000005 HTTP GET / responded 404 in 3.505 ms
+[20:05:02 ERR] Request:0HLU6N0NLQJJ4:00000011 An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:11:29 INF] Request: Application is shutting down...
+[20:19:24 INF] Request: Now listening on: https://localhost:5001
+[20:19:24 INF] Request: Now listening on: http://localhost:5000
+[20:19:24 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:19:24 INF] Request: Hosting environment: Development
+[20:19:24 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDeTuVida
+[20:19:39 INF] Request:0HLU6N95N8NL9:00000001 HTTP GET / responded 404 in 47.1617 ms
+[20:19:46 ERR] Request:0HLU6N95N8NL9:0000000D An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:22:26 INF] Request: Application is shutting down...
+[20:22:34 INF] Request: Now listening on: https://localhost:5001
+[20:22:34 INF] Request: Now listening on: http://localhost:5000
+[20:22:34 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:22:34 INF] Request: Hosting environment: Development
+[20:22:34 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDeTuVida
+[20:22:50 INF] Request:0HLU6NAU8B9R2:0000000B HTTP GET /myApi/swagger/v1/swagger.json responded 404 in 48.9297 ms
+[20:23:01 INF] Request: Application is shutting down...
+[20:26:05 INF] Request: Now listening on: https://localhost:5001
+[20:26:05 INF] Request: Now listening on: http://localhost:5000
+[20:26:05 INF] Request: Application started. Press Ctrl+C to shut down.
+[20:26:05 INF] Request: Hosting environment: Development
+[20:26:05 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDeTuVida
+[20:27:07 ERR] Request:0HLU6NCUIBL45:00000009 An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:27:26 ERR] Request:0HLU6NCUIBL45:0000000B An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:27:26 INF] Request:0HLU6NCUIBL45:0000000D HTTP GET /favicon.ico responded 404 in 45.3148 ms
+[20:27:49 ERR] Request:0HLU6NCUIBL45:00000019 An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:28:15 ERR] Request:0HLU6NCUIBL45:0000001F An unhandled exception has occurred while executing the request.
+System.NotSupportedException: Ambiguous HTTP method for action - LHDTV.Controllers.FolderController.addFolder (LHDTV). Actions require an explicit HttpMethod binding for Swagger/OpenAPI 3.0
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[20:41:10 INF] Request: Application is shutting down...
+[22:30:14 INF] Request: Now listening on: https://localhost:5001
+[22:30:14 INF] Request: Now listening on: http://localhost:5000
+[22:30:14 INF] Request: Application started. Press Ctrl+C to shut down.
+[22:30:14 INF] Request: Hosting environment: Development
+[22:30:14 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDeTuVida
+[22:47:05 ERR] Request:0HLU6PI7SM8VS:00000001 HTTP POST /api/folder/addFolder responded 500 in 90.4481 ms
+System.InvalidOperationException: Unable to resolve service for type 'LHDTV.Service.IFolderService' while attempting to activate 'LHDTV.Controllers.FolderController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerActivatorProvider.<>c__DisplayClass4_0.<CreateActivator>b__0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+[22:47:05 ERR] Request:0HLU6PI7SM8VS:00000001 An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'LHDTV.Service.IFolderService' while attempting to activate 'LHDTV.Controllers.FolderController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerActivatorProvider.<>c__DisplayClass4_0.<CreateActivator>b__0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+[22:47:28 INF] Request: Application is shutting down...

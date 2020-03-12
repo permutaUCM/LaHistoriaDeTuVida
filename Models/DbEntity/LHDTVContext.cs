@@ -23,5 +23,14 @@ namespace LHDTV.Models.DbEntity
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
         }
+
+        public void Update(FolderDb EntFolder ,PhotoDb photo){
+
+
+            
+
+        }
+
+
     }
 }

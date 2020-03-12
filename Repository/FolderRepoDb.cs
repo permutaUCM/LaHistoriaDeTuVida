@@ -84,9 +84,11 @@ namespace LHDTV.Repo
         public FolderDb AddPhotoToFolder (FolderDb EntFolder ,PhotoDb photo )
         {
 
+                
                using(var ctx= new LHDTVContext())
             {
-                ctx.Folder.Update(EntFolder,photo);
+                
+    //            ctx.Folder.Update(EntFolder,photo);
                 ctx.SaveChanges();
                 return EntFolder;
             }
@@ -102,7 +104,7 @@ namespace LHDTV.Repo
                 using (var ctx = new LHDTVContext())
                 {
 
-                        var photo = ctx.Remove(folderId,p);
+      //                  var photo = ctx.Remove(folderId,p);
                         ctx.SaveChanges();
                         return null;
                 }
@@ -118,8 +120,9 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var photo = ctx.Update(folderId,p);
-                ctxx.SaveChanges();
+                
+     //           var photo = ctx.Update(folderId,p);
+                ctx.SaveChanges();
                 return null;
 
 

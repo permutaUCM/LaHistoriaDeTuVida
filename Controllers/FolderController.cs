@@ -71,7 +71,7 @@ namespace LHDTV.Controllers
         }
 
       
-
+        [HttpPost("addFolder")]
         public ActionResult addFolder ([FromForm]AddFolderForm form)
         {
             
