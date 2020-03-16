@@ -89,6 +89,9 @@ namespace LHDTV.Repo
             {
                 
     //            ctx.Folder.Update(EntFolder,photo);
+                EntFolder.Photos.Add(photo);
+
+                ctx.Folder.update(enfolder);
                 ctx.SaveChanges();
                 return EntFolder;
             }

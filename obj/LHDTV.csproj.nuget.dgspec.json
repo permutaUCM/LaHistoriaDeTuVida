@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDeTuVida\\LHDTV.csproj": {}
+    "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\LHDTV.csproj": {}
   },
   "projects": {
-    "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDeTuVida\\LHDTV.csproj": {
+    "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\LHDTV.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDeTuVida\\LHDTV.csproj",
+        "projectUniqueName": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\LHDTV.csproj",
         "projectName": "LHDTV",
-        "projectPath": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDeTuVida\\LHDTV.csproj",
+        "projectPath": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\LHDTV.csproj",
         "packagesPath": "C:\\Users\\borja.varela\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDeTuVida\\obj\\",
+        "outputPath": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\borja.varela\\AppData\\Roaming\\NuGet\\NuGet.Config"

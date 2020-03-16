@@ -24,12 +24,6 @@ namespace LHDTV.Models.DbEntity
         { 
         }
 
-        public void Update(FolderDb EntFolder ,PhotoDb photo){
-
-
-            
-
-        }
 
 
     }

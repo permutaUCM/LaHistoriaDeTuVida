@@ -20,7 +20,7 @@ namespace LHDTV.Models.DbEntity
 
         //Convertir en un mapa clave valor , todictionary
 
-        public ICollection<string> PhotosTags {get ; set;}
+        public ICollection<FileTags> PhotosTags {get ; set;}
 
         //public ICollection<TagDb> Tags {get;set;}
 
