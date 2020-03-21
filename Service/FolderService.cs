@@ -119,10 +119,15 @@ namespace LHDTV.Service
             f.Photos.Add(photo);
 
             // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
-            //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
-            var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
+            var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+            //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
             foreach(var t in nocontainstags)
-                    f.PhotosTags.Add(t);            
+                    f.PhotosTags.Add( new FileTags (){
+
+                            Title=t,
+
+
+                    });            
             
 
             var folderRet = folderRepo.Update(f);
@@ -148,11 +153,15 @@ namespace LHDTV.Service
 
             f.Photos.Remove(photo);
             // Obtener el listado de tags a eliminar
-
-            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
+            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+            //var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
 
             foreach(var t in tagsaeliminar)
-                    f.PhotosTags.Remove(t);
+                    f.PhotosTags.Remove(new FileTags(){
+
+                        Title=t,
+
+                    });
 
             var folderRet = folderRepo.Update(f);
             

@@ -17,9 +17,8 @@ namespace LHDTV.Models.DbEntity
         public string Title { get; set; }
 
         public ICollection<PhotoDb> Photos {get; set;}
-
         
-        public ICollection<TagDb> PhotosTags {get ; set;}
+        public ICollection<FileTags> PhotosTags {get ; set;}
 
         //public ICollection<TagDb> Tags {get;set;}
 
