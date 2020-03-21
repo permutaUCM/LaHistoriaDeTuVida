@@ -100,7 +100,6 @@ namespace LHDTV.Service
 
         }
 
-
         //añade una coleccion de fotos a una carpeta
         // primera version se añade de una en una
 
@@ -120,9 +119,11 @@ namespace LHDTV.Service
             f.Photos.Add(photo);
 
             // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
-            var nocontainstags = photo.Tag.Where(t => f.PhotosTags.Where(pt => pt == t.Title).SingleOrDefault() != null).Select(t => t.Title).ToList();
-
-            f.PhotosTags.Concat(nocontainstags);
+            //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+            var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
+            foreach(var t in nocontainstags)
+                    f.PhotosTags.Add(t);            
+            
 
             var folderRet = folderRepo.Update(f);
             var folderTemp = mapper.Map<FolderView>(folderRet);
@@ -130,6 +131,7 @@ namespace LHDTV.Service
             return folderTemp;
 
         }
+
 
         public FolderView deletePhotoToFolder(int folderId, PhotoDb photo)
         {
@@ -147,7 +149,7 @@ namespace LHDTV.Service
             f.Photos.Remove(photo);
             // Obtener el listado de tags a eliminar
 
-            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
 
             foreach(var t in tagsaeliminar)
                     f.PhotosTags.Remove(t);
@@ -184,7 +186,7 @@ namespace LHDTV.Service
         // comprobar que la photo existe en la carpeta, comprobar si la foto esta eliminada,foto no es nula
         // lanzar excepciones en vez de nulos.
 
-                var folderRet = folderRepo.Update(f);
+                var folderRet = folderRepo.updateDefaultPhotoToFolder(folderId,p);
                 var folderTemp = mapper.Map<FolderView>(folderRet);
 
 

@@ -18,9 +18,8 @@ namespace LHDTV.Models.DbEntity
 
         public ICollection<PhotoDb> Photos {get; set;}
 
-        //Convertir en un mapa clave valor , todictionary
-
-        public ICollection<FileTags> PhotosTags {get ; set;}
+        
+        public ICollection<TagDb> PhotosTags {get ; set;}
 
         //public ICollection<TagDb> Tags {get;set;}
 

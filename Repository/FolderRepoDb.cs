@@ -87,11 +87,8 @@ namespace LHDTV.Repo
                 
                using(var ctx= new LHDTVContext())
             {
-                
-    //            ctx.Folder.Update(EntFolder,photo);
                 EntFolder.Photos.Add(photo);
-
-                ctx.Folder.update(enfolder);
+                ctx.Folder.Update(EntFolder);
                 ctx.SaveChanges();
                 return EntFolder;
             }
@@ -101,15 +98,16 @@ namespace LHDTV.Repo
 
        //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
 
-        public FolderDb deletePhotoToFolder (int folderId , PhotoDb photo)
+        public FolderDb deletePhotoToFolder (int Id , PhotoDb p)
         {
 
                 using (var ctx = new LHDTVContext())
                 {
-
-      //                  var photo = ctx.Remove(folderId,p);
-                        ctx.SaveChanges();
-                        return null;
+                    
+                    var photo = ctx.Folder.Include(f => f.Photos).FirstOrDefault(f => f.Id == Id);
+                    ctx.Folder.Remove(photo);
+                    ctx.SaveChanges();
+                    return null;
                 }
 
         }
@@ -118,13 +116,15 @@ namespace LHDTV.Repo
 
        //Mirar el actualizar photo por defecto
 
-        public FolderDb updateDefaultPhotoToFolder (int folderId, PhotoDb photo) {
+        public FolderDb updateDefaultPhotoToFolder (int Id, PhotoDb p) {
 
             using (var ctx = new LHDTVContext())
             {
 
+                var photo = ctx.Folder.Include(f => f.DefaultPhoto).FirstOrDefault(f => f.Id == Id);
                 
-     //           var photo = ctx.Update(folderId,p);
+                photo.DefaultPhoto = p;
+                ctx.Folder.Update(photo);
                 ctx.SaveChanges();
                 return null;
 
