@@ -487,3 +487,5 @@ C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.csproj.CopyComplete
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.dll
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.pdb
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.csproj.CoreCompileInputs.cache
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.genruntimeconfig.cache
