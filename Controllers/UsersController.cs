@@ -1,27 +1,55 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using LHDTV.Service;
-using LHDTV.Entities;
+using LHDTV.Models.DbEntity;
+using System;
+using System.Collections.Generic;
+using LHDTV.Models.ViewEntity;
+using Microsoft.Extensions.Localization;
+using LHDTV.Models.Forms;
+using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+
 
 namespace LHDTV.Controllers
 {
-  [Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
+        private IUserService userService;
 
-        public UsersController(IUserService userService)
+        private readonly IStringLocalizer<UsersController> localizer;
+
+        private readonly ILogger<UsersController> logger;
+
+        private readonly string basePath;
+
+        private const string BASEPATHCONF = "userRoutes:uploadRoute";
+
+
+        public UsersController(IUserService _userService, IStringLocalizer<UsersController> _localizer,
+                          ILogger<UsersController> _logger, IConfiguration _configuration)
         {
-            _userService = userService;
+            userService = _userService;
+            localizer = _localizer;
+            logger = _logger;
+            basePath = _configuration.GetValue<string>(BASEPATHCONF);
         }
+
+
+
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]UserDb userParam)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
+            var user = userService.Authenticate(userParam.Username, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -29,11 +57,5 @@ namespace LHDTV.Controllers
             return Ok(user);
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users =  _userService.GetAll();
-            return Ok(users);
-        }
     }
 }

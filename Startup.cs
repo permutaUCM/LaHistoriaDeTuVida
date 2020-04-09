@@ -67,15 +67,19 @@ namespace LHDTV
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-            //DI
+            //modulo photos
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoRepo, PhotoRepoDb>();
             services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
 
+            //modulo folders
             services.AddTransient<IFolderService , FolderService>();
             services.AddTransient<IFolderRepo, FolderRepoDb>();
-
+            
+            //modulo users
+            services.AddTransient<IUserService , UserService>();
+            services.AddTransient<IUserRepo, UserRepoDb>();
 
 
             services.AddSwaggerGen(c =>

@@ -1,15 +1,16 @@
-using LHDTV.Entities;
-using System.Collections.Generic;
+using LHDTV.Models.ViewEntity;
+using LHDTV.Models.Forms;
 
-
-
-namespace LHDTV.Service{
+namespace LHDTV.Service
+{
     
     
    public interface IUserService
     {
-        User Authenticate(string username, string password);
-        IEnumerable<User> GetAll();
+
+        UserView Create (AddUserForm user);
+
+        UserView Authenticate(string username, string password);
     }
     
     

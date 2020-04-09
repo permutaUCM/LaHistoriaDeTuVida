@@ -11,7 +11,7 @@ namespace LHDTV.Models.DbEntity
 
         public DbSet<PhotoDb> Photo { get; set; }
         public DbSet<TagDb> TagDb { get; set; }
-        public DbSet<UserDb> Usuario { get; set; }
+        public DbSet<UserDb> User { get; set; }
 
         public DbSet<FolderDb> Folder {get;set;}
 
