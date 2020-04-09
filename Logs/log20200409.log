@@ -617,3 +617,17 @@ Error Number:2,State:0,Class:20
 [17:38:11 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida
 [17:38:28 INF] Request:0HLUSJG24HOHP:00000017 HTTP POST /Users/authenticate responded 200 in 498.0533 ms
 [17:52:05 INF] Request: Application is shutting down...
+[21:12:37 INF] Request: Now listening on: https://localhost:5001
+[21:12:38 INF] Request: Now listening on: http://localhost:5000
+[21:12:38 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:12:38 INF] Request: Hosting environment: Development
+[21:12:38 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida
+[21:13:14 INF] Request:0HLUSN7T1T9G8:00000017 HTTP POST /Users/authenticate responded 400 in 110.384 ms
+[21:13:30 INF] Request: Application is shutting down...
+[21:26:44 INF] Request: Now listening on: https://localhost:5001
+[21:26:44 INF] Request: Now listening on: http://localhost:5000
+[21:26:44 INF] Request: Application started. Press Ctrl+C to shut down.
+[21:26:44 INF] Request: Hosting environment: Development
+[21:26:44 INF] Request: Content root path: C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida
+[21:27:30 INF] Request:0HLUSNFOOVCD7:00000017 HTTP POST /api/user/addUser responded 401 in 144.6142 ms
+[21:28:54 INF] Request: Application is shutting down...

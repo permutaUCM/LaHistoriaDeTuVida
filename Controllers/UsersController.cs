@@ -19,7 +19,7 @@ namespace LHDTV.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+      [Route("api/user")]
     public class UsersController : ControllerBase
     {
         private IUserService userService;
@@ -42,7 +42,13 @@ namespace LHDTV.Controllers
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
         }
 
+        [HttpPost("addUser")]
+        public ActionResult addUser ([FromForm]AddUserForm form){
 
+            var ret = userService.Create(form);
+            return Ok(ret);
+
+        }
 
 
         [AllowAnonymous]
