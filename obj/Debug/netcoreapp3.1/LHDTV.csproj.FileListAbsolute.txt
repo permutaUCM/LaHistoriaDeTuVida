@@ -493,3 +493,6 @@ C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
