@@ -489,3 +489,7 @@ C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.pdb
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.csproj.CoreCompileInputs.cache
 C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\obj\Debug\netcoreapp3.1\LHDTV.genruntimeconfig.cache
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\borja.varela\Documents\UNI-TFG\LaHistoriaDetuVida_2\LaHistoriaDeTuVida\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

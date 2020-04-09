@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
 
 namespace LHDTV
 {
@@ -23,6 +23,10 @@ namespace LHDTV
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] Request:{RequestId} {Message:lj}{NewLine}{Exception}")
                 .WriteTo.File("./Logs/log.log", rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] Request:{RequestId} {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
+
+            // linea nueva registro de usuarios
+           // BuildWebHost(args).Run();
+
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -33,5 +37,12 @@ namespace LHDTV
             {
                 webBuilder.UseStartup<Startup>();
             });
+
+        /* public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:4000")
+                .Build();
+        }*/
     }
 }
