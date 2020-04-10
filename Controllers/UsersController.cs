@@ -52,7 +52,7 @@ namespace LHDTV.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]UserDb userParam)
         {
-            var user = userService.Authenticate(userParam.Username, userParam.Password);
+            var user = userService.Authenticate(userParam.Nickname, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

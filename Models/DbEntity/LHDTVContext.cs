@@ -22,6 +22,8 @@ namespace LHDTV.Models.DbEntity
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
+
+            
         }
 
 

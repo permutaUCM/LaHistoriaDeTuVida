@@ -48,7 +48,19 @@ namespace LHDTV.Repo
        {
            using (var ctx = new LHDTVContext())
            {
-               var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Nickname == nick);
+               var n = ctx.User.Where(u => u.Nickname == nick).SingleOrDefault();
+               //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
+
+               return n;
+           }
+
+       }
+
+       public UserDb Authenticate (string nick,string password)       
+       {
+           using (var ctx = new LHDTVContext())
+           {
+               var n = ctx.User.Where(u => u.Nickname == nick && u.Password == password).SingleOrDefault();
                //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
                return n;
