@@ -79,7 +79,7 @@ namespace LHDTV
             
             //modulo users
             services.AddTransient<IUserService , UserService>();
-            services.AddTransient<IUserRepo, UserRepoDb>();
+            services.AddTransient<IUserRepoDb, UserRepoDb>();
 
 
             services.AddSwaggerGen(c =>

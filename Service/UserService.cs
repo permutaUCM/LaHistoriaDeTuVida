@@ -12,13 +12,15 @@ using LHDTV.Models.ViewEntity;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
+using Microsoft.Extensions.Configuration;
+using SimpleCrypto;
 
 namespace LHDTV.Service
 {
     public class UserService : IUserService
     {
 
-        private readonly IUserRepo userRepo;
+        private readonly IUserRepoDb userRepoDb;
 
         private readonly IMapper mapper;
 
@@ -34,41 +36,65 @@ namespace LHDTV.Service
                         Dni="88888888L"} 
         };
 
-        private readonly AppSettings _appSettings;
+        private readonly AppSettings appSettings;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> _appSettings,IUserRepoDb _userRepoDb,
+                             IMapper _mapper, IConfiguration _configuration)
         {
-            _appSettings = appSettings.Value;
+            appSettings = _appSettings.Value;
+            userRepoDb = _userRepoDb;
+            mapper = _mapper;
+            basePath = _configuration.GetValue<string>(BASEPATHCONF);
+
         }
 
         public UserView Create (AddUserForm user){
 
             // si existe un usuario con el nick, hay error.
-            //var nick =  userRepo.Read(user.id);
+            //var user_aux =  userRepoDb.ReadNick(user.Nickname);
+         /*   var user_aux =  userRepoDb.ReadNick(user.Nickname);
 
-         //   if(nick != null){
+           if(user_aux.Nickname == user.Nickname){
                 
-          //      return null;
+               return null;
 
-         //   }
+            }
+            */
+
 
             // cifrar la contraseña
 
+            ICryptoService cryptoService = new PBKDF2();
+
+            string passwordEncriptada = cryptoService.Compute(user.Password);
+
+            string salt = cryptoService.GenerateSalt();
+
          //   user.Password = Cifrar.(password);
 
-         //   var user_aux = userRepo.create(new Userdb (){
+            UserDb userPOJO = new UserDb()
+            {
+                
+                FirstName=user.FirstName,
+                LastName1=user.LastName1,
+                LastName2=user.LastName2,
+                Password=passwordEncriptada,
+                Nickname=user.Nickname,
+                Email   =user.Email,
+                Dni     =user.Dni,
+                Token = salt,
+                Deleted =false                   
+     
 
 
-        //        nombre,contra....
+            };
 
-
-
-         //   });
-
+           var userRet = userRepoDb.Create(userPOJO);
+           var usertemp = mapper.Map<UserView>(userRet);
             
-         //   var userMap = mapper.Map<UserView>(user_aux);
+         
 
-            return null;
+            return usertemp;
 
 
         }
@@ -90,8 +116,8 @@ namespace LHDTV.Service
 
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var app_secret = _appSettings.Secret;
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var app_secret = appSettings.Secret;
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] 
@@ -101,7 +127,7 @@ namespace LHDTV.Service
                 // 7 variable de configuracion --
                 Expires = DateTime.UtcNow.AddDays(7),
                 // cambiar por el 512
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);

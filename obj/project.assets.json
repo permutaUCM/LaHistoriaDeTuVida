@@ -1441,6 +1441,18 @@
           "lib/netstandard2.0/Serilog.Sinks.File.dll": {}
         }
       },
+      "SimpleCrypto.NetCore/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.6/SimpleCrypto.NetCore.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/SimpleCrypto.NetCore.dll": {}
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.2": {
         "type": "package",
         "dependencies": {
@@ -5219,6 +5231,18 @@
         "lib/netstandard2.0/Serilog.Sinks.File.xml",
         "serilog.sinks.file.4.1.0.nupkg.sha512",
         "serilog.sinks.file.nuspec"
+      ]
+    },
+    "SimpleCrypto.NetCore/1.0.0": {
+      "sha512": "o97DPLz0n+9EVpJkgUqT3QwsWqJBjrf9eNabZ0BMCUhiLP3+QqHqYmp1v7Rq1EW5FvK/6uCAVc1exLim4uo8Xg==",
+      "type": "package",
+      "path": "simplecrypto.netcore/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.6/SimpleCrypto.NetCore.dll",
+        "simplecrypto.netcore.1.0.0.nupkg.sha512",
+        "simplecrypto.netcore.nuspec"
       ]
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.0.2": {
@@ -9546,6 +9570,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.1",
       "Serilog.AspNetCore >= 3.2.0",
       "Serilog.sinks.File >= 4.1.0",
+      "SimpleCrypto.NetCore >= 1.0.0",
       "Swashbuckle.AspNetCore >= 5.0.0",
       "System.IdentityModel.Tokens.Jwt >= 6.5.0"
     ]
@@ -9634,6 +9659,10 @@
           "Serilog.sinks.File": {
             "target": "Package",
             "version": "[4.1.0, )"
+          },
+          "SimpleCrypto.NetCore": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

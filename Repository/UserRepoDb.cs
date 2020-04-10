@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LHDTV.Repo
 {
 
-   public class UserRepoDb : IUserRepo
+   public class UserRepoDb : IUserRepoDb
    {
        private List<UserDb> fakerepo;
 
@@ -39,6 +39,19 @@ namespace LHDTV.Repo
                var user = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
                return user;
+           }
+
+       }
+
+       // Check nickname
+       public UserDb ReadNick (string nick)       
+       {
+           using (var ctx = new LHDTVContext())
+           {
+               var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Nickname == nick);
+               //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
+
+               return n;
            }
 
        }

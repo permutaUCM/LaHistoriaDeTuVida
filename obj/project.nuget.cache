@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "iLIBtp4bPFYdqT/CQs+303C0GUCU9JOvsqEs7wZmq79WThvcY+V3LoSMUWkUzzMGUPN67l96NEk742x+q/op4g==",
+  "dgSpecHash": "d3q/smYH4gO9BEPJIbOzRI2be2ReQ0GbZP6sAHlZ7VLNfLrql4IUUi1WyL3TvqOG1kHlXNK/18XfAm2ETpL+8A==",
   "success": true,
   "projectFilePath": "C:\\Users\\borja.varela\\Documents\\UNI-TFG\\LaHistoriaDetuVida_2\\LaHistoriaDeTuVida\\LHDTV.csproj",
   "expectedPackageFiles": [
@@ -104,6 +104,7 @@
     "C:\\Users\\borja.varela\\.nuget\\packages\\serilog.sinks.console\\3.1.1\\serilog.sinks.console.3.1.1.nupkg.sha512",
     "C:\\Users\\borja.varela\\.nuget\\packages\\serilog.sinks.debug\\1.0.1\\serilog.sinks.debug.1.0.1.nupkg.sha512",
     "C:\\Users\\borja.varela\\.nuget\\packages\\serilog.sinks.file\\4.1.0\\serilog.sinks.file.4.1.0.nupkg.sha512",
+    "C:\\Users\\borja.varela\\.nuget\\packages\\simplecrypto.netcore\\1.0.0\\simplecrypto.netcore.1.0.0.nupkg.sha512",
     "C:\\Users\\borja.varela\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.2\\sqlitepclraw.bundle_e_sqlite3.2.0.2.nupkg.sha512",
     "C:\\Users\\borja.varela\\.nuget\\packages\\sqlitepclraw.core\\2.0.2\\sqlitepclraw.core.2.0.2.nupkg.sha512",
     "C:\\Users\\borja.varela\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.2\\sqlitepclraw.lib.e_sqlite3.2.0.2.nupkg.sha512",

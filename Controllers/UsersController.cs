@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using LHDTV.Service;
 using LHDTV.Models.DbEntity;
-using System;
-using System.Collections.Generic;
-using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using System.Linq;
@@ -17,9 +14,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace LHDTV.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
-      [Route("api/user")]
+    [Route("api/user")]
     public class UsersController : ControllerBase
     {
         private IUserService userService;

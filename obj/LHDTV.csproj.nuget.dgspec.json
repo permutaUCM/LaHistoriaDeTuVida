@@ -86,6 +86,10 @@
               "target": "Package",
               "version": "[4.1.0, )"
             },
+            "SimpleCrypto.NetCore": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.0.0, )"

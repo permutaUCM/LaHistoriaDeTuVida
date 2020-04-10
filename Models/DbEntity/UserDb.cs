@@ -14,5 +14,6 @@ namespace LHDTV.Models.DbEntity
         public string Dni { get; set; }
         public string Token { get; set; }
         public bool Deleted { get; set; }
+
     }
 }
