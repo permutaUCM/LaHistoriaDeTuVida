@@ -72,6 +72,7 @@ namespace LHDTV
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoRepo, PhotoRepoDb>();
             services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
+            
 
             //modulo folders
             services.AddTransient<IFolderService , FolderService>();
