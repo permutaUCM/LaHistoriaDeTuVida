@@ -21,7 +21,13 @@ namespace LHDTV.Service{
 
 
         // List<FolderView> GetAll();
+                //addPhotoToFolder
+        FolderView addPhotoToFolder(int folderId, PhotoDb photo);
 
+        FolderView deletePhotoToFolder(int folderId, PhotoDb photo);
+
+        FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p);
+ 
         
     }
 

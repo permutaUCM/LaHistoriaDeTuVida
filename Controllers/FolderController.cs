@@ -6,6 +6,7 @@ using LHDTV.Service;
 using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
+using LHDTV.Models.DbEntity;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
@@ -92,6 +93,29 @@ namespace LHDTV.Controllers
             return Ok(folderService.Delete(folderId));
         }
 
+        //addPhotoToFolder
+        [HttpPost("addPhotoToFolder")]
+        public ActionResult addPhotoToFolder(int folderId, PhotoDb photo){
+
+                return Ok(folderService.addPhotoToFolder(folderId,photo));
+
+        }
+
+        //deletePhotoToFolder
+        [HttpPost("deletePhotoToFolder")]
+        public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo){
+
+            return Ok(folderService.deletePhotoToFolder(folderId,photo));
+        }
+
+        //updateDefaultPhotoToFolder
+        [HttpPost("updateDefaultPhotoToFolder")]
+        public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo){
+
+            return Ok(folderService.updateDefaultPhotoToFolder(folderId,photo));
+        }
+     
+        
     }
 
 

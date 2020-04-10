@@ -4,36 +4,22 @@ using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    partial class LHDTVContextModelSnapshot : ModelSnapshot
+    [Migration("20200406165642_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LHDTV.Models.DbEntity.Extra", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("extras")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Extra");
-                });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.FileTags", b =>
                 {
@@ -134,46 +120,12 @@ namespace LHDTV.Migrations
                     b.ToTable("Photo");
                 });
 
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoTagsTypes", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Extra1Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Extra2Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Extra3Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex("Extra1Name");
-
-                    b.HasIndex("Extra2Name");
-
-                    b.HasIndex("Extra3Name");
-
-                    b.ToTable("TagTypeMaster");
-                });
-
             modelBuilder.Entity("LHDTV.Models.DbEntity.TagDb", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Extra1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Extra2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Extra3")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PhotoDbId")
                         .HasColumnType("int");
@@ -189,6 +141,29 @@ namespace LHDTV.Migrations
                     b.HasIndex("PhotoDbId");
 
                     b.ToTable("TagDb");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.TagPropDb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TagDbId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("propKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("propVal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagDbId");
+
+                    b.ToTable("TagPropDb");
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
@@ -235,26 +210,18 @@ namespace LHDTV.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoTagsTypes", b =>
-                {
-                    b.HasOne("LHDTV.Models.DbEntity.Extra", "Extra1")
-                        .WithMany()
-                        .HasForeignKey("Extra1Name");
-
-                    b.HasOne("LHDTV.Models.DbEntity.Extra", "Extra2")
-                        .WithMany()
-                        .HasForeignKey("Extra2Name");
-
-                    b.HasOne("LHDTV.Models.DbEntity.Extra", "Extra3")
-                        .WithMany()
-                        .HasForeignKey("Extra3Name");
-                });
-
             modelBuilder.Entity("LHDTV.Models.DbEntity.TagDb", b =>
                 {
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", null)
                         .WithMany("Tag")
                         .HasForeignKey("PhotoDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.TagPropDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.TagDb", null)
+                        .WithMany("Properties")
+                        .HasForeignKey("TagDbId");
                 });
 #pragma warning restore 612, 618
         }
