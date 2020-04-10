@@ -15,9 +15,57 @@ namespace LHDTV.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.FileTags", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("FolderDbId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FolderDbId");
+
+                    b.ToTable("FileTags");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.FolderDb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DefaultPhotoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefaultPhotoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Folder");
+                });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
                 {
@@ -34,6 +82,9 @@ namespace LHDTV.Migrations
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("FolderDbId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RealDate")
                         .HasColumnType("datetime2");
@@ -59,6 +110,8 @@ namespace LHDTV.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FolderDbId");
 
                     b.HasIndex("UserId");
 
@@ -118,16 +171,65 @@ namespace LHDTV.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Dni")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nickname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.FileTags", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.FolderDb", null)
+                        .WithMany("PhotosTags")
+                        .HasForeignKey("FolderDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.FolderDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "DefaultPhoto")
+                        .WithMany()
+                        .HasForeignKey("DefaultPhotoId");
+
+                    b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
                 {
+                    b.HasOne("LHDTV.Models.DbEntity.FolderDb", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("FolderDbId");
+
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

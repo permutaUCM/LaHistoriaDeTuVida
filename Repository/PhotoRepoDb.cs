@@ -29,7 +29,7 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var photo = ctx.Photo.Include(p => p.Tag).ThenInclude(t => t.Properties).FirstOrDefault(p => p.Id == id);
+                var photo = ctx.Photo.Include(p => p).ThenInclude(t => t).FirstOrDefault(p => p.Id == id);
                 return photo;
             }
         }
