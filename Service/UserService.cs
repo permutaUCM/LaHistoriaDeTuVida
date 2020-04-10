@@ -70,7 +70,7 @@ namespace LHDTV.Service
 
             string salt = cryptoService.GenerateSalt();
 
-         //   user.Password = Cifrar.(password);
+         // user.Password = Cifrar.(password);
 
             UserDb userPOJO = new UserDb()
             {
