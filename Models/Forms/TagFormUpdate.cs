@@ -1,11 +1,11 @@
-using System;
-
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-namespace LHDTV.Models.ViewEntity
+namespace LHDTV.Models.Forms
 {
-    public class TagView
+    public class TagFormUpdate
     {
-        public string Id { get; set; }
+        public int TagId { get; set; }
+        public int PhotoId { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
         public string Extra1 { get; set; }

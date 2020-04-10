@@ -5,6 +5,7 @@ namespace LHDTV.Models.ViewEntity
 {
     public class PhotoView
     {
+        public int Id { get; set; }
         public ICollection<TagView> Tag { get; set; }
         public string Title { get; set; }
         public string Caption { get; set; }

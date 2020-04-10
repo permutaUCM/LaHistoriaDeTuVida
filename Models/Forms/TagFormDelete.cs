@@ -1,15 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-
-
+using System.Collections.Generic;
 namespace LHDTV.Models.Forms
 {
-    public class UpdatePhotoForm
+    public class TagFormDelete
     {
         public int PhotoId { get; set; }
-
-        public string Title { get; set; }
-        public string Caption { get; set; }
-
+        public int TagId { get; set; }
     }
-
 }

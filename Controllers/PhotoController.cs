@@ -88,16 +88,13 @@ namespace LHDTV.Controllers
         }
 
         [HttpPost("addPhoto")]
-        public ActionResult addPhoto([FromForm]AddPhotoForm form){ 
+        public ActionResult addPhoto([FromForm]AddPhotoForm form)
+        {
 
             form.Tags = new List<TagForm>(){
                 new TagForm() {
-                    Title = "T123", 
+                    Title = "T123",
                     Type = "RESTAURANT",
-                    Properties = new List<KeyValuePair<string, string>>(){
-                        KeyValuePair.Create("p1", "pv1"),
-                        KeyValuePair.Create("p2", "pv2")
-                    }
                 }
             };
 
@@ -113,9 +110,76 @@ namespace LHDTV.Controllers
         }
 
         [HttpGet("delete/{photoId}")]
-        public ActionResult delete(int photoId){
+        public ActionResult delete(int photoId)
+        {
             return Ok(photoService.Delete(photoId));
         }
+
+        [HttpPost("addTag")]
+        public ActionResult addTag([FromBody] TagForm tagForm)
+        {
+            try
+            {
+                var response = new {
+                    Metadata = new {},
+                    Data = photoService.AddTag(tagForm)
+                };
+                return Ok(response);
+            }
+            catch (Exceptions.NotFoundException)
+            {
+                return BadRequest("No se ha encontrado la foto que se desea actualizar.");
+                
+            }catch (System.Exception e){
+                logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
+                return BadRequest("Ha ocurrido un error no esperado."); 
+            }
+        }
+
+        [HttpPost("updateTag")]
+        public ActionResult updateTag([FromBody] TagFormUpdate tagForm)
+        {
+            try
+            {
+                var response = new {
+                    Metadata = new {},
+                    Data = photoService.UpdateTag(tagForm)
+                };
+                return Ok(response);
+            }
+            catch (Exceptions.NotFoundException )
+            {
+                return BadRequest("No se ha encontrado la foto que se desea actualizar.");
+                
+            }catch (System.Exception e){
+                logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
+                return BadRequest("Ha ocurrido un error no esperado."); 
+            }
+        }
+
+        [HttpPost("removeTag")]
+        public ActionResult removeTag([FromBody] TagFormDelete tagForm)
+        {
+            try
+            {
+                var response = new {
+                    Metadata = new {},
+                    Data = photoService.RemoveTag(tagForm)
+                };
+                return Ok(response);
+            }
+            catch (Exceptions.NotFoundException e)
+            {
+                return BadRequest(e.Message);
+                
+            }catch (System.Exception e){
+                logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
+                return BadRequest("Ha ocurrido un error no esperado."); 
+            }
+        }
+
+
+
 
 
 

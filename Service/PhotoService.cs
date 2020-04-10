@@ -56,18 +56,11 @@ namespace LHDTV.Service
                 Deleted = false,
                 Title = photo.Title,
                 Size = file.Length,
-                caption = photo.Caption,
+                Caption = photo.Caption,
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
                     Type = tg.Type,
-                    Title = tg.Title,
-                    Properties = tg.Properties.Select(tgprop =>
-                        new TagPropDb()
-                        {
-                            propKey = tgprop.Key,
-                            propVal = tgprop.Value
-
-                        }).ToList()
+                    Title = tg.Title
                 }).ToList()
             };
 
@@ -80,14 +73,14 @@ namespace LHDTV.Service
         {
 
 
-            var c = photoRepo.Read(photo.id);
+            var c = photoRepo.Read(photo.PhotoId);
             if (c == null)
             {
                 return null;
             }
 
             c.Title = photo.Title;
-
+            c.Caption = photo.Caption;
 
             var photoRet = photoRepo.Update(c);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
@@ -112,9 +105,13 @@ namespace LHDTV.Service
             var photoMap = mapper.Map<PhotoView>(photoRet);
 
             return photoMap;
-
-
         }
+
+        public ICollection<PhotoTagsTypesView> GetTagTypes()
+        {
+            return this.photoRepo.getTagTypes().Select(t => mapper.Map<PhotoTagsTypesView>(t)).ToList();
+        }
+
 
         public List<PhotoView> GetAll()
         {
@@ -125,6 +122,81 @@ namespace LHDTV.Service
             }
             var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
             return listPhotosView;
+        }
+        public PhotoView AddTag(TagForm form)
+        {
+            var photo = photoRepo.Read(form.PhotoId);
+
+            if (photo == null)
+            {
+                throw new Exceptions.NotFoundException("No se ha encontrado la fotografía solicitada");
+            }
+
+            photo.Tag.Add(new TagDb()
+            {
+                Title = form.Title,
+                Type = form.Type,
+                Extra1 = form.Extra1,
+                Extra2 = form.Extra2,
+                Extra3 = form.Extra3,
+            });
+
+            var ret = photoRepo.Update(photo);
+
+            return mapper.Map<PhotoView>(ret);
+
+        }
+
+        public PhotoView UpdateTag(TagFormUpdate form)
+        {
+            var photo = photoRepo.Read(form.PhotoId);
+
+            if (photo == null)
+            {
+                throw new Exceptions.NotFoundException("No se ha encontrado la fotografía solicitada");
+            }
+
+
+            var tag = photo.Tag.Where(t => t.Id == form.TagId).SingleOrDefault();
+
+            if (tag == null)
+            {
+                throw new Exceptions.NotFoundException("El tag que desea eliminar no está asociado a la fotografía encontrada");
+            }
+
+            tag.Title = form.Title;
+            tag.Extra1 = form.Extra1;
+            tag.Extra2 = form.Extra2;
+            tag.Extra3 = form.Extra3;
+            tag.Type = form.Type;
+
+            photoRepo.UpdateTag(tag);
+
+            return mapper.Map<PhotoView>(photo);
+
+        }
+
+        public PhotoView RemoveTag(TagFormDelete form)
+        {
+            var photo = photoRepo.Read(form.PhotoId);
+
+            if (photo == null)
+            {
+                throw new Exceptions.NotFoundException("No se ha encontrado la fotografía solicitada");
+            }
+
+            var tag = photo.Tag.Where(t => t.Id == form.TagId).SingleOrDefault();
+
+            if (tag == null)
+            {
+                throw new Exceptions.NotFoundException("El tag que desea eliminar no está asociado a la fotografía encontrada");
+            }
+
+            photoRepo.RemoveTag(tag);
+            var ok = photo.Tag.Remove(tag);
+
+            return mapper.Map<PhotoView>(photo);
+
         }
 
         private bool uploadFile(IFormFile file, out string route)

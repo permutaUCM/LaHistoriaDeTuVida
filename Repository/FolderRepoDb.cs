@@ -36,7 +36,7 @@ namespace LHDTV.Repo
        {
            using (var ctx = new LHDTVContext())
            {
-               var folder = ctx.Folder.Include(f => f.PhotosTags).FirstOrDefault(f => f.Id == id);
+               var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
                 return folder;
            }
 

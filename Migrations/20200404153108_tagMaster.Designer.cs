@@ -4,14 +4,16 @@ using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    partial class LHDTVContextModelSnapshot : ModelSnapshot
+    [Migration("20200404153108_tagMaster")]
+    partial class tagMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,15 +168,6 @@ namespace LHDTV.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Extra1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Extra2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Extra3")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("PhotoDbId")
                         .HasColumnType("int");
 
@@ -189,6 +182,29 @@ namespace LHDTV.Migrations
                     b.HasIndex("PhotoDbId");
 
                     b.ToTable("TagDb");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.TagPropDb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TagDbId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("propKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("propVal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagDbId");
+
+                    b.ToTable("TagPropDb");
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
@@ -255,6 +271,13 @@ namespace LHDTV.Migrations
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", null)
                         .WithMany("Tag")
                         .HasForeignKey("PhotoDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.TagPropDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.TagDb", null)
+                        .WithMany("Properties")
+                        .HasForeignKey("TagDbId");
                 });
 #pragma warning restore 612, 618
         }

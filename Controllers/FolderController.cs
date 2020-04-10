@@ -22,7 +22,7 @@ namespace LHDTV.Controllers
     {
 
         private readonly IFolderService folderService;
-
+        private readonly IPhotoService photoService;
         private readonly IStringLocalizer<FolderController> localizer;
 
         private readonly ILogger<FolderController> logger;
@@ -31,61 +31,67 @@ namespace LHDTV.Controllers
 
         private const string BASEPATHCONF = "folderRoutes:uploadRoute";
 
-        
+
         public FolderController(IFolderService _folderService, IStringLocalizer<FolderController> _localizer,
-                          ILogger<FolderController> _logger, IConfiguration _configuration)
+                          ILogger<FolderController> _logger, IConfiguration _configuration,
+                          IPhotoService _photoService)
         {
             folderService = _folderService;
             localizer = _localizer;
             logger = _logger;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
-
+            photoService = _photoService;
         }
 
-        [HttpPost]
-        public ActionResult getFolder([FromBody]FolderForm form)
+        [HttpGet("{id}")]
+        public ActionResult getFolder(int id)
         {
 
-            logger.LogInformation("getFolder {@form}" , form);
-
-            var id = form.id;
+            logger.LogInformation("getFolder: id: ", id);
 
             var folder = folderService.GetFolder(id);
 
-            if(folder == null)
+            var types = photoService.GetTagTypes();
+            if (folder == null)
             {
                 return BadRequest(localizer["folderNotFound"].Value);
-
             }
-
-            return Ok(folder);
+            return Ok(new
+            {
+                Metadata = new
+                {
+                    types = types
+                },
+                Data = folder
+            });
 
         }
 
         [HttpPost("updateFolder")]
-        public ActionResult UpdateFolder ([FromBody]UpdateFolderForm form)
+        public ActionResult UpdateFolder([FromBody]UpdateFolderForm form)
         {
 
             return Ok(folderService.Update(form));
 
         }
 
-      
+
         [HttpPost("addFolder")]
-        public ActionResult addFolder ([FromForm]AddFolderForm form)
+        public ActionResult addFolder([FromForm]AddFolderForm form)
         {
-            
+
             var ret = folderService.Create(form);
             return Ok(ret);
 
         }
-     
+
 
         [HttpGet("delete/{folderId}")]
-        public ActionResult delete (int folderId){
+        public ActionResult delete(int folderId)
+        {
             return Ok(folderService.Delete(folderId));
         }
-        
+
     }
 
 

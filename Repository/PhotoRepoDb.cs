@@ -29,7 +29,7 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var photo = ctx.Photo.Include(p => p).ThenInclude(t => t).FirstOrDefault(p => p.Id == id);
+                var photo = ctx.Photo.Include(p => p).ThenInclude(t => t).Include(p => p.Tag).FirstOrDefault(p => p.Id == id);
                 return photo;
             }
         }
@@ -41,6 +41,15 @@ namespace LHDTV.Repo
                 ctx.SaveChanges();
 
                 return entity;
+            }
+        }
+
+        public void RemoveTag(TagDb tag)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                ctx.TagDb.Remove(tag);
+                ctx.SaveChanges();
             }
         }
 
@@ -63,7 +72,22 @@ namespace LHDTV.Repo
                 return ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).ToList();
             }
         }
+        public ICollection<PhotoTagsTypes> getTagTypes()
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                return ctx.TagTypeMaster.Include(t => t.Extra1).Include(t => t.Extra2).Include(t => t.Extra3).ToList();
+            }
+        }
+        public void UpdateTag(TagDb tag)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                ctx.TagDb.Update(tag);
+                ctx.SaveChanges();
+            }
+        }
 
-        
+
     }
 }

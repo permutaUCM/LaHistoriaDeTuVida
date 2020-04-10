@@ -16,7 +16,7 @@ namespace LHDTV.Models.DbEntity
         [MaxLength(25)]
         public string Title { get; set; }
         [MaxLength(50)]
-        public string caption { get; set; }
+        public string Caption { get; set; }
         public DateTime UploadDate { get; set; }
         public DateTime RealDate { get; set; }
         public string Country { get; set; }
