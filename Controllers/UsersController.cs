@@ -30,6 +30,7 @@ namespace LHDTV.Controllers
         private const string BASEPATHCONF = "userRoutes:uploadRoute";
 
 
+
         public UsersController(IUserService _userService, IStringLocalizer<UsersController> _localizer,
                           ILogger<UsersController> _logger, IConfiguration _configuration)
         {
@@ -59,6 +60,46 @@ namespace LHDTV.Controllers
 
             return Ok(user);
         }
+
+        /**
+            Update the user entity to be ready for the credential recovery.
+        */
+        [AllowAnonymous]
+        [HttpPost("requestPasswordRecovery")]
+        public IActionResult RequestPasswordRecovery([FromBody] RequestPasswordRecoveryForm passwordRecoveryForm){
+
+            var ok = userService.RequestPasswordRecovery( passwordRecoveryForm);
+
+            if(ok){
+                return Ok(new {
+                    Metadata = new {},
+                    Data = new {
+                        mesage = localizer["RequestPasswordRecoveryOk"].Value
+                    }
+                });
+            }
+
+            return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("passwordRecovery")]
+        public IActionResult passwordRecovery([FromBody] PasswordRecoveryForm passwordRecoveryForm){
+            
+            var ok = userService.PasswordRecovery( passwordRecoveryForm);
+            if(ok){
+                return Ok(new {
+                    Metadata = new {},
+                    Data = new {
+                        message = localizer["PasswordRecoveryOk"].Value
+                    }
+                });
+            }else{
+                return BadRequest();
+            }
+        }
+
+
 
     }
 }

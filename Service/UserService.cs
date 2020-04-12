@@ -17,6 +17,13 @@ using SimpleCrypto;
 using System.Security.Cryptography;
 using System.IO;
 
+
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Threading;
+using System.ComponentModel;
+
 namespace LHDTV.Service
 {
     public class UserService : IUserService
@@ -182,6 +189,52 @@ namespace LHDTV.Service
 
             return userMap;
         }
+
+        public bool RequestPasswordRecovery( RequestPasswordRecoveryForm passwordRecoveryForm){
+
+            var user = userRepoDb.ReadNick(passwordRecoveryForm.Nick);
+            if( user == null || user.Email != passwordRecoveryForm.Email){
+                return false;
+            }
+
+            var expDate = DateTime.UtcNow.AddHours(appSettings.TokenLifeSpan);
+            var newToken = CreateToken();
+
+            user.RecovertyToken = newToken;
+            user.ExpirationTokenDate = expDate;
+
+            userRepoDb.Update(user);
+            
+            //TODO: Send email
+
+            return true;
+        }
+
+        public bool PasswordRecovery(PasswordRecoveryForm passwordRecovery){
+            
+            var user = userRepoDb.ReadNick(passwordRecovery.Nick);
+            if(user == null || user.Email != passwordRecovery.Email || user.RecovertyToken != passwordRecovery.Token || 
+            user.ExpirationTokenDate < DateTime.UtcNow){
+                return false;
+            }
+
+            var passwEncrypt = encrypt(passwordRecovery.NewPassword, appSettings.PassworSecret);
+
+            user.Password = passwEncrypt;
+            user.RecovertyToken = null;
+
+            userRepoDb.Update(user);
+
+            return true;
+        }
+
+        private string CreateToken(){
+
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+        }
+
+
 
     }
 }

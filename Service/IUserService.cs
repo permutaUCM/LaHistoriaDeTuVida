@@ -3,16 +3,20 @@ using LHDTV.Models.Forms;
 
 namespace LHDTV.Service
 {
-    
-    
-   public interface IUserService
+
+
+    public interface IUserService
     {
 
-        UserView Create (AddUserForm user);
+        UserView Create(AddUserForm user);
 
         UserView Authenticate(string username, string password);
+
+        bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm);
+
+        bool PasswordRecovery(PasswordRecoveryForm passwordRecovery);
     }
-    
-    
+
+
 
 }
