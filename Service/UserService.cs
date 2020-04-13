@@ -17,6 +17,15 @@ using SimpleCrypto;
 using System.Security.Cryptography;
 using System.IO;
 
+
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Threading;
+using System.ComponentModel;
+
+using MimeKit;
+
 namespace LHDTV.Service
 {
     public class UserService : IUserService
@@ -31,12 +40,12 @@ namespace LHDTV.Service
         private const string BASEPATHCONF = "userRoutes:uploadRoute";
 
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-      /*  private List<UserDb> _users = new List<UserDb>
-        {
-            new UserDb { Id = 1, Name = "Jose", LastName1 = "Sanchez",LastName2 = "Sanchez",
-                     Password = "12345",Nickname="Xose", Email="jose@gmail.com",
-                        Dni="88888888L"}
-        };*/
+        /*  private List<UserDb> _users = new List<UserDb>
+          {
+              new UserDb { Id = 1, Name = "Jose", LastName1 = "Sanchez",LastName2 = "Sanchez",
+                       Password = "12345",Nickname="Xose", Email="jose@gmail.com",
+                          Dni="88888888L"}
+          };*/
 
         private readonly AppSettings appSettings;
 
@@ -67,7 +76,7 @@ namespace LHDTV.Service
 
             // cifrar la contraseña
 
-            var passwordEncriptada = encrypt(user.Password,appSettings.PassworSecret);
+            var passwordEncriptada = encrypt(user.Password, appSettings.PassworSecret);
 
 
             // user.Password = Cifrar.(password);
@@ -145,10 +154,10 @@ namespace LHDTV.Service
         {
 
             //cifrar la contraseña 
-            password = encrypt(password,appSettings.PassworSecret);
-            
-            var user = userRepoDb.Authenticate(username,password);
-           
+            password = encrypt(password, appSettings.PassworSecret);
+
+            var user = userRepoDb.Authenticate(username, password);
+
 
             // return null if user not found
             if (user == null)
@@ -169,8 +178,8 @@ namespace LHDTV.Service
                 // cambiar por el 512
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
-            
-           
+
+
 
             // remove password before returning
             user.Password = null;
@@ -182,6 +191,96 @@ namespace LHDTV.Service
 
             return userMap;
         }
+
+        public bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm)
+        {
+
+            var user = userRepoDb.ReadNick(passwordRecoveryForm.Nick);
+            if (user == null || user.Email != passwordRecoveryForm.Email)
+            {
+                return false;
+            }
+
+            var expDate = DateTime.UtcNow.AddHours(appSettings.TokenLifeSpan);
+            var newToken = CreateToken();
+
+            user.RecovertyToken = newToken;
+            user.ExpirationTokenDate = expDate;
+
+            userRepoDb.Update(user);
+
+            //TODO: Send email
+
+            sendMessage(createMessage());
+
+            return true;
+        }
+
+        public bool PasswordRecovery(PasswordRecoveryForm passwordRecovery)
+        {
+
+            var user = userRepoDb.ReadNick(passwordRecovery.Nick);
+            if (user == null || user.Email != passwordRecovery.Email || user.RecovertyToken != passwordRecovery.Token ||
+            user.ExpirationTokenDate < DateTime.UtcNow)
+            {
+                return false;
+            }
+
+            var passwEncrypt = encrypt(passwordRecovery.NewPassword, appSettings.PassworSecret);
+
+            user.Password = passwEncrypt;
+            user.RecovertyToken = null;
+
+            userRepoDb.Update(user);
+
+            return true;
+        }
+
+        private string CreateToken()
+        {
+
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+        }
+
+        private MimeKit.MimeMessage createMessage()
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Auryn", "Auryn.noreply@gmail.com"));
+            message.To.Add(new MailboxAddress("Pedro", "pedagova@gmail.com"));
+            message.Subject = "Recuperación de contraseña - Auryn";
+
+            message.Body = new TextPart("plain")
+            {
+                Text = @"Hey Pedro,
+
+                What are you up to this weekend? Monica is throwing one of her parties on
+                Saturday and I was hoping you could make it.
+
+                Will you be my +1?
+
+                -- Joey
+                "
+            };
+
+            return message;
+        }
+
+        private bool sendMessage(MimeMessage msg){
+
+            using (var client = new MailKit.Net.Smtp.SmtpClient()) {
+				client.Connect ("smtp.friends.com", 587, false);
+
+				// Note: only needed if the SMTP server requires authentication
+				client.Authenticate ("Auryn.noreply@gmail.com", "1a@11111");
+
+				client.Send (msg);
+				client.Disconnect (true);
+			}
+            return true;
+        }
+
+
 
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="data">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                </xsd:sequence>
+                <xsd:attribute name="name" type="xsd:string" />
+                <xsd:attribute name="type" type="xsd:string" />
+                <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+
+    <data name = "RequestPasswordRecoveryOk">
+        <value>Se ha enviado han enviado las instrucciones a su correo.</value>
+    </data>
+    <data name = "PasswordRecoveryOk">
+        <value>Su contraseña se ha actualizado correctamente. Ya puede registrarse usando los nuevos credenciales.</value>
+    </data>
+</root>

@@ -1,3 +1,5 @@
+using System;
+
 namespace LHDTV.Models.DbEntity
 {
     public class UserDb
@@ -13,6 +15,11 @@ namespace LHDTV.Models.DbEntity
         public string Dni { get; set; }
         //public string Token { get; set; }
         public bool Deleted { get; set; }
+
+        //This token is used to recover the user password when he forgets it
+        public string RecovertyToken { get; set; }
+        //This field mark the expiration date for the RecoveryToken
+        public DateTime ExpirationTokenDate { get; set; }
 
     }
 }

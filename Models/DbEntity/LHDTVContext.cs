@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
 namespace LHDTV.Models.DbEntity
 {
     public class LHDTVContext : DbContext

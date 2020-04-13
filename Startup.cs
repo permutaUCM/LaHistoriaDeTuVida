@@ -26,6 +26,8 @@ using LHDTV.Helpers;
 using AutoMapper;
 using Serilog;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace LHDTV
 {
     public class Startup
@@ -72,14 +74,14 @@ namespace LHDTV
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoRepo, PhotoRepoDb>();
             services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
-            
+
 
             //modulo folders
-            services.AddTransient<IFolderService , FolderService>();
+            services.AddTransient<IFolderService, FolderService>();
             services.AddTransient<IFolderRepo, FolderRepoDb>();
-            
+
             //modulo users
-            services.AddTransient<IUserService , UserService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
 
@@ -114,7 +116,7 @@ namespace LHDTV
                 };
             });
 
-             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
