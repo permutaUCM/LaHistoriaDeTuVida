@@ -51,7 +51,7 @@ namespace LHDTV.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]UserDb userParam)
+        public IActionResult Authenticate([FromForm]UserDb userParam)
         {
             var user = userService.Authenticate(userParam.Nickname, userParam.Password);
 
