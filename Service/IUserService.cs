@@ -15,6 +15,8 @@ namespace LHDTV.Service
         bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm);
 
         bool PasswordRecovery(PasswordRecoveryForm passwordRecovery);
+
+        UserView UpdateInfo(UpdateUserForm user);
     }
 
 

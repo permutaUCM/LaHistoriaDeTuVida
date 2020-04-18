@@ -52,7 +52,7 @@ namespace LHDTV.Service
             {
 
                 DefaultPhoto = null,
-                Title = folder.Title,
+                Title = folder.Title.Trim(),
                 PhotosTags = null,
                 Deleted = false
 

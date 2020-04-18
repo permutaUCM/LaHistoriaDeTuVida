@@ -51,12 +51,12 @@ namespace LHDTV.Service
 
             PhotoDb photoPOJO = new PhotoDb()
             {
-                Url = path,
+                Url = path.Trim(),
                 UploadDate = DateTime.UtcNow,
                 Deleted = false,
-                Title = photo.Title,
+                Title = photo.Title.Trim(),
                 Size = file.Length,
-                Caption = photo.Caption,
+                Caption = photo.Caption.Trim(),
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
                     Type = tg.Type,
@@ -79,8 +79,8 @@ namespace LHDTV.Service
                 return null;
             }
 
-            c.Title = photo.Title;
-            c.Caption = photo.Caption;
+            c.Title = photo.Title.Trim();
+            c.Caption = photo.Caption.Trim();
 
             var photoRet = photoRepo.Update(c);
             var photoTemp = mapper.Map<PhotoView>(photoRet);

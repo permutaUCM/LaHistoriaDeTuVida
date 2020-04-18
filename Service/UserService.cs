@@ -84,13 +84,13 @@ namespace LHDTV.Service
             UserDb userPOJO = new UserDb()
             {
 
-                Name = user.FirstName,
-                LastName1 = user.LastName1,
-                LastName2 = user.LastName2,
+                Name = user.FirstName.Trim(),
+                LastName1 = user.LastName1.Trim(),
+                LastName2 = user.LastName2.Trim(),
                 Password = passwordEncriptada,
-                Nickname = user.Nickname,
-                Email = user.Email,
-                Dni = user.Dni,
+                Nickname = user.Nickname.Trim(),
+                Email = user.Email.Trim(),
+                Dni = user.Dni.Trim(),
                 // Token = salt,
                 Deleted = false
 
@@ -111,44 +111,82 @@ namespace LHDTV.Service
 
         private string encrypt(string s1, string EncryptionKey)
         {
-            byte[] clearBytes = Encoding.Unicode.GetBytes(s1);
-            using (Aes encryptor = Aes.Create())
+
+            try{
+                      byte[] clearBytes = Encoding.Unicode.GetBytes(s1);
+                        using (Aes encryptor = Aes.Create())
+                        {
+                            Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                            encryptor.Key = pdb.GetBytes(32);
+                            encryptor.IV = pdb.GetBytes(16);
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                                {
+                                    cs.Write(clearBytes, 0, clearBytes.Length);
+                                    cs.Close();
+                                }
+                                s1 = Convert.ToBase64String(ms.ToArray());
+                            }
+                        }
+                        //return s1;
+
+            }catch (Exception ex)
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    s1 = Convert.ToBase64String(ms.ToArray());
-                }
+                ex.ToString();           
             }
             return s1;
         }
 
 
-        /*  public UserView Update (){
+          public UserView UpdateInfo (UpdateUserForm user){
 
+               
+                var user_old = userRepoDb.ReadDni(user.Dni);
 
+                if(user_old == null){
 
+                    return null;
+                }
 
+                var NewPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
 
-          }*/
+                if(NewPasswordEncrypt == user_old.Password && user.Dni == user_old.Dni){
+
+                    user_old.LastName1 = user.LastName1.Trim() ?? user_old.LastName1;
+                    user_old.LastName2 = user.LastName2.Trim() ?? user_old.LastName2;
+                    user_old.Name =  user.FirstName.Trim() ?? user_old.Name;
+                    user_old.Email = user.Email.Trim() ?? user_old.Email;
+                    user_old.Password = user.NewPassword ?? user_old.Password;            
+                        
+                }
+
+            var user_ret=userRepoDb.Update(user_old);
+            var userTemp = mapper.Map<UserView>(user_ret);
+
+            return userTemp;
+
+          }
 
 
         //eliminar
 
-        /* public UserView Delete (){
+         public UserView Delete (string dni){
 
+                var user = userRepoDb.ReadDni(dni);
 
+                if(user == null){
 
+                    return null;
+                }
 
+                user.Deleted = true;
 
-         }*/
+                var userRet = userRepoDb.Update(user);
+                var userMap = mapper.Map<UserView>(userRet);
+
+                return userMap;
+         }
 
         public UserView Authenticate(string username, string password)
         {

@@ -56,6 +56,19 @@ namespace LHDTV.Repo
 
        }
 
+              // Check nickname
+       public UserDb ReadDni (string dni)       
+       {
+           using (var ctx = new LHDTVContext())
+           {
+               var n = ctx.User.Where(u => u.Dni == dni).SingleOrDefault();
+               //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
+
+               return n;
+           }
+
+       }
+
        public UserDb Authenticate (string nick,string password)       
        {
            using (var ctx = new LHDTVContext())
