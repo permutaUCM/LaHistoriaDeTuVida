@@ -4,7 +4,8 @@ using LHDTV.Service;
 using LHDTV.Models.DbEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
-using System.Linq;
+using LHDTV.Exceptions;
+using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
@@ -59,8 +60,21 @@ namespace LHDTV.Controllers
         [HttpPost("updateUser")]
         public ActionResult updateUser ([FromForm]UpdateUserForm form){
 
-            var ret = userService.UpdateInfo(form);
-            return Ok(ret);
+            try{
+                               
+                               
+                var ret = userService.UpdateInfo(form);
+                
+                return Ok(ret);
+
+
+            }catch(NotFoundException){
+
+                 return BadRequest(new { message = "Password is incorrect" });
+
+            }
+
+            
 
         }
 

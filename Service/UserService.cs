@@ -12,17 +12,14 @@ using LHDTV.Models.ViewEntity;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
+using LHDTV.Exceptions;
 using Microsoft.Extensions.Configuration;
 using SimpleCrypto;
 using System.Security.Cryptography;
 using System.IO;
 
 
-using System.Net;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Threading;
-using System.ComponentModel;
+
 
 using MimeKit;
 
@@ -112,7 +109,7 @@ namespace LHDTV.Service
         private string encrypt(string s1, string EncryptionKey)
         {
 
-            try{
+           
                       byte[] clearBytes = Encoding.Unicode.GetBytes(s1);
                         using (Aes encryptor = Aes.Create())
                         {
@@ -129,13 +126,8 @@ namespace LHDTV.Service
                                 s1 = Convert.ToBase64String(ms.ToArray());
                             }
                         }
-                        //return s1;
+                        return s1;
 
-            }catch (Exception ex)
-            {
-                ex.ToString();           
-            }
-            return s1;
         }
 
 
@@ -151,7 +143,11 @@ namespace LHDTV.Service
 
                 var NewPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
 
-                if(user.OldPassword == user_bbdd.Password){
+                if(user.OldPassword != user_bbdd.Password){
+
+                        throw new NotFoundException ("Contraseña Invalida");
+
+                }
 
                     user_bbdd.LastName1 = user.LastName1.Trim() ?? user_bbdd.LastName1;
                     user_bbdd.LastName2 = user.LastName2.Trim() ?? user_bbdd.LastName2;
@@ -159,7 +155,7 @@ namespace LHDTV.Service
                     user_bbdd.Email = user.Email.Trim() ?? user_bbdd.Email;
                     user_bbdd.Password = user.NewPassword ?? user_bbdd.Password;            
                         
-                }
+                
 
             var user_ret=userRepoDb.Update(user_bbdd);
             var userTemp = mapper.Map<UserView>(user_ret);
