@@ -142,26 +142,26 @@ namespace LHDTV.Service
           public UserView UpdateInfo (UpdateUserForm user){
 
                
-                var user_old = userRepoDb.ReadDni(user.Dni);
+                var user_bbdd = userRepoDb.ReadDni(user.Dni);
 
-                if(user_old == null){
+                if(user_bbdd == null){
 
                     return null;
                 }
 
                 var NewPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
 
-                if(NewPasswordEncrypt == user_old.Password && user.Dni == user_old.Dni){
+                if(user.OldPassword == user_bbdd.Password){
 
-                    user_old.LastName1 = user.LastName1.Trim() ?? user_old.LastName1;
-                    user_old.LastName2 = user.LastName2.Trim() ?? user_old.LastName2;
-                    user_old.Name =  user.FirstName.Trim() ?? user_old.Name;
-                    user_old.Email = user.Email.Trim() ?? user_old.Email;
-                    user_old.Password = user.NewPassword ?? user_old.Password;            
+                    user_bbdd.LastName1 = user.LastName1.Trim() ?? user_bbdd.LastName1;
+                    user_bbdd.LastName2 = user.LastName2.Trim() ?? user_bbdd.LastName2;
+                    user_bbdd.Name =  user.FirstName.Trim() ?? user_bbdd.Name;
+                    user_bbdd.Email = user.Email.Trim() ?? user_bbdd.Email;
+                    user_bbdd.Password = user.NewPassword ?? user_bbdd.Password;            
                         
                 }
 
-            var user_ret=userRepoDb.Update(user_old);
+            var user_ret=userRepoDb.Update(user_bbdd);
             var userTemp = mapper.Map<UserView>(user_ret);
 
             return userTemp;

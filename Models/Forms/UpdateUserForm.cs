@@ -10,7 +10,7 @@ namespace LHDTV.Models.Forms
         public string Dni { get; set; }
         public string FirstName { get; set; }
 
-
+        public string Nickname { get; set; }
         public string LastName1 { get; set; }
 
      

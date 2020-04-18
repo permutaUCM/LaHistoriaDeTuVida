@@ -48,7 +48,7 @@ namespace LHDTV.Controllers
 
         }
 
-        [HttpPost("deleteUser")]
+        [HttpGet("deleteUser")]
         public ActionResult deleteUser (string dni){
 
             var ret = userService.Delete(dni);
