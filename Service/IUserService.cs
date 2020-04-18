@@ -10,13 +10,15 @@ namespace LHDTV.Service
 
         UserView Create(AddUserForm user);
 
+        UserView Delete(string dni);
+
+        UserView UpdateInfo(UpdateUserForm user);
+
         UserView Authenticate(string username, string password);
 
         bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm);
 
         bool PasswordRecovery(PasswordRecoveryForm passwordRecovery);
-
-        UserView UpdateInfo(UpdateUserForm user);
     }
 
 

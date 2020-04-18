@@ -48,6 +48,22 @@ namespace LHDTV.Controllers
 
         }
 
+        [HttpPost("deleteUser")]
+        public ActionResult deleteUser (string dni){
+
+            var ret = userService.Delete(dni);
+            return Ok(ret);
+
+        }
+
+        [HttpPost("updateUser")]
+        public ActionResult updateUser ([FromForm]UpdateUserForm form){
+
+            var ret = userService.UpdateInfo(form);
+            return Ok(ret);
+
+        }
+
 
         [AllowAnonymous]
         [HttpPost("authenticate")]

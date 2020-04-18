@@ -169,7 +169,7 @@ namespace LHDTV.Service
           }
 
 
-        //eliminar
+        
 
          public UserView Delete (string dni){
 
