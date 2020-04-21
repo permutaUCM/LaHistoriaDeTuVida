@@ -84,6 +84,8 @@ namespace LHDTV
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
+            services.AddTransient<IMailService, MailService>();
+
 
             services.AddSwaggerGen(c =>
             {

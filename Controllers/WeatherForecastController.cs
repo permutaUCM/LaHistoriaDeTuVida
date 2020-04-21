@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using LHDTV.Service;
 
 namespace LHDTV.Controllers
 {
@@ -17,10 +18,12 @@ namespace LHDTV.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IMailService Mail;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IMailService mail)
         {
             _logger = logger;
+            Mail = mail;
         }
 
         [HttpGet("GetAll")]
@@ -34,6 +37,15 @@ namespace LHDTV.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("sendEmail")]
+        public ActionResult email()
+        {
+
+            Mail.SendEmail("Pedro", "auryn.noreply@gmail.com", "David", "pedagova@gmail.com", "Hola caracola", string.Format(@"<p>Hola Pedro</p> 
+            <p>Tu cuenta ha sido creada correctamente, accede al siguiente enlace para comenzar tus nuevos álbums<a href='https://localhost:4200'>aquí</a></p>"));
+            return Ok();
         }
     }
 }
