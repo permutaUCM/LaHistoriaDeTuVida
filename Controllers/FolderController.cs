@@ -68,7 +68,7 @@ namespace LHDTV.Controllers
 
         }
 
-        [HttpPost("updateFolder")]
+        [HttpPost("update")]
         public ActionResult UpdateFolder([FromBody]UpdateFolderForm form)
         {
 
@@ -77,7 +77,7 @@ namespace LHDTV.Controllers
         }
 
 
-        [HttpPost("addFolder")]
+        [HttpPost("add")]
         public ActionResult addFolder([FromForm]AddFolderForm form)
         {
 
@@ -94,7 +94,7 @@ namespace LHDTV.Controllers
         }
 
         //addPhotoToFolder
-        [HttpPost("addPhotoToFolder")]
+        [HttpPost("addPhoto")]
         public ActionResult addPhotoToFolder(int folderId, PhotoDb photo){
 
                 return Ok(folderService.addPhotoToFolder(folderId,photo));
@@ -102,14 +102,14 @@ namespace LHDTV.Controllers
         }
 
         //deletePhotoToFolder
-        [HttpPost("deletePhotoToFolder")]
+        [HttpPost("deletePhoto")]
         public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo){
 
             return Ok(folderService.deletePhotoToFolder(folderId,photo));
         }
 
         //updateDefaultPhotoToFolder
-        [HttpPost("updateDefaultPhotoToFolder")]
+        [HttpPost("updateDefaultPhoto")]
         public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo){
 
             return Ok(folderService.updateDefaultPhotoToFolder(folderId,photo));
