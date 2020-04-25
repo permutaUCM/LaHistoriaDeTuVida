@@ -203,6 +203,12 @@ namespace LHDTV.Service
 
         }
 
+        public List<FolderView> GetAll(Pagination pagination, int userId){
+            var folders = folderRepo.GetAll(pagination, userId); 
+            return folders.Select(f => this.mapper.Map<FolderView>(f)).ToList();
+        }
+
+
 
 
 

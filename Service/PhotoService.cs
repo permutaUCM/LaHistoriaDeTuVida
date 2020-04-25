@@ -115,7 +115,7 @@ namespace LHDTV.Service
 
         public List<PhotoView> GetAll()
         {
-            var listPhotos = photoRepo.GetAll();
+            var listPhotos = photoRepo.GetAll(null, 0);
             if (listPhotos == null)
             {
                 return new List<PhotoView>();

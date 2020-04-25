@@ -95,27 +95,52 @@ namespace LHDTV.Controllers
 
         //addPhotoToFolder
         [HttpPost("addPhoto")]
-        public ActionResult addPhotoToFolder(int folderId, PhotoDb photo){
+        public ActionResult addPhotoToFolder(int folderId, PhotoDb photo)
+        {
 
-                return Ok(folderService.addPhotoToFolder(folderId,photo));
+            return Ok(folderService.addPhotoToFolder(folderId, photo));
 
         }
 
         //deletePhotoToFolder
         [HttpPost("deletePhoto")]
-        public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo){
+        public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo)
+        {
 
-            return Ok(folderService.deletePhotoToFolder(folderId,photo));
+            return Ok(folderService.deletePhotoToFolder(folderId, photo));
         }
 
         //updateDefaultPhotoToFolder
         [HttpPost("updateDefaultPhoto")]
-        public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo){
+        public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo)
+        {
 
-            return Ok(folderService.updateDefaultPhotoToFolder(folderId,photo));
+            return Ok(folderService.updateDefaultPhotoToFolder(folderId, photo));
         }
-     
-        
+
+        [HttpGet("all")]
+        public ActionResult getAllFolders([FromQuery]Pagination pag)
+        {
+
+            try
+            {
+                var folders = folderService.GetAll(pag, 1);
+
+                return Ok(new {
+                    Metadata = new {
+                        Pag = pag,
+                        PagCount = 150,
+                    },
+                    Data = folders
+                });
+
+            }catch(Exception e){
+                logger.LogError("Unespected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+            }
+        }
+
+
     }
 
 

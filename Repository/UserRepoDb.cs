@@ -96,7 +96,7 @@ namespace LHDTV.Repo
 
        }
 
-           public List<UserDb> GetAll()
+           public List<UserDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId)
         {
             using (var ctx = new LHDTVContext())
             {

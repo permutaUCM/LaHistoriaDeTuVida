@@ -19,9 +19,8 @@ namespace LHDTV.Service{
         FolderView Update(UpdateFolderForm form);
 
 
+        List<FolderView> GetAll(Pagination pagination, int userId);
 
-        // List<FolderView> GetAll();
-                //addPhotoToFolder
         FolderView addPhotoToFolder(int folderId, PhotoDb photo);
 
         FolderView deletePhotoToFolder(int folderId, PhotoDb photo);
