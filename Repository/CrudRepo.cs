@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using LHDTV.Models.Forms;
 namespace LHDTV.Repo
 {
     public interface ICrudRepo<T, K>
@@ -11,6 +11,6 @@ namespace LHDTV.Repo
         //Borrado fisico 
         T Delete(K entity);
 
-        List<T> GetAll();
+        List<T> GetAll(Pagination Pag, int user);
     }
 }
