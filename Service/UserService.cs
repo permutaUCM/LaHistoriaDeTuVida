@@ -131,21 +131,21 @@ namespace LHDTV.Service
         }
 
 
-          public UserView UpdateInfo (UpdateUserForm user){
+          public UserView UpdateInfo (UpdateUserForm user,int id){
 
                
-                var user_bbdd = userRepoDb.ReadDni(user.Dni);
-
+                var user_bbdd = userRepoDb.Read(id);
                 if(user_bbdd == null){
 
-                    return null;
+                      throw new NotFoundException ("Usuario no valido");
                 }
 
-                var NewPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
+                var newPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
+                var oldPasswordEncrypt = encrypt(user.OldPassword, appSettings.PassworSecret);
 
-                if(user.OldPassword != user_bbdd.Password){
-
-                        throw new NotFoundException ("Contraseña Invalida");
+                if(oldPasswordEncrypt != user_bbdd.Password){
+                    //crear nueva exception
+                    throw new NotFoundException ("Contraseña Invalida");
 
                 }
 

@@ -13,6 +13,8 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 
 
+
+
 namespace LHDTV.Controllers
 {
     //[Authorize]
@@ -30,19 +32,23 @@ namespace LHDTV.Controllers
 
         private const string BASEPATHCONF = "userRoutes:uploadRoute";
 
+        private ITokenRecoveryService tokenService;
+
 
 
         public UsersController(IUserService _userService, IStringLocalizer<UsersController> _localizer,
-                          ILogger<UsersController> _logger, IConfiguration _configuration)
+                          ILogger<UsersController> _logger, IConfiguration _configuration 
+                                    ,ITokenRecoveryService _tokenService)
         {
             userService = _userService;
             localizer = _localizer;
             logger = _logger;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
+            tokenService = _tokenService;
         }
 
         [HttpPost("addUser")]
-        public ActionResult addUser ([FromForm]AddUserForm form){
+        public ActionResult addUser ([FromBody]AddUserForm form){
 
             var ret = userService.Create(form);
             return Ok(ret);
@@ -57,20 +63,28 @@ namespace LHDTV.Controllers
 
         }
 
+        [Authorize]
         [HttpPost("updateUser")]
-        public ActionResult updateUser ([FromForm]UpdateUserForm form){
+        public ActionResult updateUser ([FromBody]UpdateUserForm form){
 
             try{
                                
-                               
-                var ret = userService.UpdateInfo(form);
+                var id = tokenService.RecoveryId(tokenService.RecoveryToken(HttpContext));
+                var ret = userService.UpdateInfo(form,id);
                 
                 return Ok(ret);
 
 
             }catch(NotFoundException){
 
-                 return BadRequest(new { message = "Password is incorrect" });
+                 return BadRequest(new { message = "Usuario no encontrado" });
+
+
+            }catch(WrongPasswordException pswex){
+                
+                return BadRequest(new { message = "Password is incorrect" });
+                // userService ;
+                 
 
             }
 
@@ -81,9 +95,9 @@ namespace LHDTV.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromForm]UserDb userParam)
+        public IActionResult Authenticate([FromBody]AuthenticateForm userParam)
         {
-            var user = userService.Authenticate(userParam.Nickname, userParam.Password);
+            var user = userService.Authenticate(userParam.NickName, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

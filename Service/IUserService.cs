@@ -12,7 +12,7 @@ namespace LHDTV.Service
 
         UserView Delete(string dni);
 
-        UserView UpdateInfo(UpdateUserForm user);
+        UserView UpdateInfo(UpdateUserForm user,int id);
 
         UserView Authenticate(string username, string password);
 
