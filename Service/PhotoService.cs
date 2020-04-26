@@ -113,16 +113,16 @@ namespace LHDTV.Service
         }
 
 
-        public List<PhotoView> GetAll()
-        {
-            var listPhotos = photoRepo.GetAll();
-            if (listPhotos == null)
-            {
-                return new List<PhotoView>();
-            }
-            var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
-            return listPhotosView;
-        }
+        // public List<PhotoView> GetAll()
+        // {
+        //     var listPhotos = photoRepo.GetAll();
+        //     if (listPhotos == null)
+        //     {
+        //         return new List<PhotoView>();
+        //     }
+        //     var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
+        //     return listPhotosView;
+        // }
 
         public List<PhotoView> GetAll(Pagination pagination,int userId){
             var photos = photoRepo.GetAll(pagination, userId); 

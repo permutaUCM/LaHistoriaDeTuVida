@@ -104,9 +104,32 @@ namespace LHDTV.Controllers
 
 
         [HttpGet("all")]
-        public ActionResult getAll()
+        public ActionResult getAll([FromQuery]Pagination pag,int userId)
         {
-            return Ok(photoService.GetAll());
+                        
+            try{
+
+                var photos = photoService.GetAll(pag,userId);
+               
+
+                return Ok(new {
+
+                    Metadata = new {
+                        Page = pag,
+                        PagCount=150,
+                    },
+                    Data = photos
+
+                });
+
+                
+            }
+            catch(Exception e){
+
+                logger.LogError("Unexpected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+
+            }
         }
 
         [HttpGet("delete/{photoId}")]
@@ -177,39 +200,6 @@ namespace LHDTV.Controllers
                 return BadRequest("Ha ocurrido un error no esperado."); 
             }
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public  ActionResult Get ([FromQuery]Pagination pag,int userId){
-            
-            try{
-
-                var photos = photoService.GetAll(pag,userId);
-               
-
-                return Ok(new {
-
-                    Metadata = new {
-                        Page = pag,
-                        PagCount=150,
-                    },
-                    Data = photos
-
-                });
-
-                
-            }
-            catch(Exception e){
-
-                logger.LogError("Unexpected error: " + e.StackTrace);
-                return BadRequest(localizer["ERROR_DEFAULT"]);
-
-            }
-                        
-        }
-
-
-
 
 
 

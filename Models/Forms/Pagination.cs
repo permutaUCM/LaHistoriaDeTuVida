@@ -6,9 +6,15 @@ namespace LHDTV.Models.Forms
     {
         public int Page { get; set; }
         public int TamPag{get;set;}
-        public int Order {get;set;}
+        public string OrderField {get;set;}
 
-        public int Filters {get;set;}
+        public string OrderDir {get;set;}
+
+        public List<string> FilterField {get;set;}
+
+        public List<string> FilterValue {get;set;}
+
+        
 
     }
 }

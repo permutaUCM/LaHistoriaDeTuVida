@@ -10,7 +10,7 @@ namespace LHDTV.Service
 
         PhotoView Create(AddPhotoForm form);
 
-        List<PhotoView> GetAll();
+        // List<PhotoView> GetAll();
 
         PhotoView Delete(int photoId);
 
@@ -25,6 +25,8 @@ namespace LHDTV.Service
         PhotoView RemoveTag(TagFormDelete form);
 
         PhotoView UpdateTag(TagFormUpdate form);
+
+        List<PhotoView> GetAll(Pagination pagination,int userId);
 
 
     }
