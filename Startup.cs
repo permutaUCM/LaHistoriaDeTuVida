@@ -85,7 +85,7 @@ namespace LHDTV
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
             services.AddTransient<IMailService, MailService>();
-
+            services.AddSingleton<ITokenRecoveryService,TokenRecoveryService>();
 
             services.AddSwaggerGen(c =>
             {

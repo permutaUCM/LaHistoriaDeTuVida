@@ -1,16 +1,15 @@
+
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using LHDTV.Service;
-using LHDTV.Models.ViewEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
-using System.Linq;
+using LHDTV.Models.DbEntity;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace LHDTV.Controllers
 {
@@ -19,6 +18,7 @@ namespace LHDTV.Controllers
     public class PhotoController : ControllerBase
     {
 
+        private readonly LHDTVContext context;
         private readonly IPhotoService photoService;
         private readonly IStringLocalizer<PhotoController> localizer;
 
@@ -104,9 +104,32 @@ namespace LHDTV.Controllers
 
 
         [HttpGet("all")]
-        public ActionResult getAll()
+        public ActionResult getAll([FromQuery]Pagination pag,int userId)
         {
-            return Ok(photoService.GetAll());
+                        
+            try{
+
+                var photos = photoService.GetAll(pag,userId);
+               
+
+                return Ok(new {
+
+                    Metadata = new {
+                        Page = pag,
+                        PagCount=150,
+                    },
+                    Data = photos
+
+                });
+
+                
+            }
+            catch(Exception e){
+
+                logger.LogError("Unexpected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+
+            }
         }
 
         [HttpGet("delete/{photoId}")]
@@ -177,10 +200,6 @@ namespace LHDTV.Controllers
                 return BadRequest("Ha ocurrido un error no esperado."); 
             }
         }
-
-
-
-
 
 
 

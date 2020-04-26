@@ -51,12 +51,12 @@ namespace LHDTV.Service
 
             PhotoDb photoPOJO = new PhotoDb()
             {
-                Url = path,
+                Url = path.Trim(),
                 UploadDate = DateTime.UtcNow,
                 Deleted = false,
-                Title = photo.Title,
+                Title = photo.Title.Trim(),
                 Size = file.Length,
-                Caption = photo.Caption,
+                Caption = photo.Caption.Trim(),
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
                     Type = tg.Type,
@@ -79,8 +79,8 @@ namespace LHDTV.Service
                 return null;
             }
 
-            c.Title = photo.Title;
-            c.Caption = photo.Caption;
+            c.Title = photo.Title.Trim();
+            c.Caption = photo.Caption.Trim();
 
             var photoRet = photoRepo.Update(c);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
@@ -113,16 +113,27 @@ namespace LHDTV.Service
         }
 
 
-        public List<PhotoView> GetAll()
-        {
-            var listPhotos = photoRepo.GetAll(null, 0);
-            if (listPhotos == null)
-            {
+        // public List<PhotoView> GetAll()
+        // {
+        //     var listPhotos = photoRepo.GetAll();
+        //     if (listPhotos == null)
+        //     {
+        //         return new List<PhotoView>();
+        //     }
+        //     var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
+        //     return listPhotosView;
+        // }
+
+        public List<PhotoView> GetAll(Pagination pagination,int userId){
+            var photos = photoRepo.GetAll(pagination, userId); 
+            if(photos == null){
                 return new List<PhotoView>();
             }
-            var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
-            return listPhotosView;
+            return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
+
+
+
         public PhotoView AddTag(TagForm form)
         {
             var photo = photoRepo.Read(form.PhotoId);

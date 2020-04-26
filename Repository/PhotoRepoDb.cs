@@ -69,9 +69,27 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                return ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).ToList();
+
+                var query = ctx.Photo.Include(p => p.User).Where(p => p.User.Id == userId);
+                // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
+                if (pagination.FilterField != null)
+                {
+                    // for (int i = 0; i < pagination.FilterField.Count; i++)
+                    // {
+                
+                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
+                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
+                    // }
+
+                }
+
+
+                return query.Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
             }
         }
+
+
         public ICollection<PhotoTagsTypes> getTagTypes()
         {
             using (var ctx = new LHDTVContext())
