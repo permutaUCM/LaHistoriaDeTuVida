@@ -72,6 +72,21 @@ namespace LHDTV.Repo
                 return ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).ToList();
             }
         }
+        
+        public List<PhotoDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                var res = ctx.Photo.Where(p => p.Id == userId)
+                .Include(p => p)
+                .Skip((pagination.Page - 1) * pagination.TamPag)
+                .Take(pagination.TamPag)
+                .ToList();
+
+                return res;
+            }
+        }
+
         public ICollection<PhotoTagsTypes> getTagTypes()
         {
             using (var ctx = new LHDTVContext())

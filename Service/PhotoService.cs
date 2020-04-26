@@ -123,6 +123,14 @@ namespace LHDTV.Service
             var listPhotosView = listPhotos.Select(p => mapper.Map<PhotoView>(p)).ToList();
             return listPhotosView;
         }
+
+        public List<PhotoView> GetAll(Pagination pagination,int userId){
+            var photos = photoRepo.GetAll(pagination, userId); 
+            return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
+        }
+
+
+
         public PhotoView AddTag(TagForm form)
         {
             var photo = photoRepo.Read(form.PhotoId);

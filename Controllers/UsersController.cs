@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using LHDTV.Service;
-using LHDTV.Models.DbEntity;
 using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using LHDTV.Exceptions;
-using System;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 
 
