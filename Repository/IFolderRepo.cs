@@ -13,6 +13,8 @@ namespace LHDTV.Repo
 
         FolderDb updateDefaultPhotoToFolder(int folderId, PhotoDb p);
 
+        bool ExistsPhoto(int f, int p);
+
 
     }
 }

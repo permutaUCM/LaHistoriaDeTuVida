@@ -95,9 +95,9 @@ namespace LHDTV.Controllers
 
         //addPhotoToFolder
         [HttpPost("addPhotoToFolder")]
-        public ActionResult addPhotoToFolder(int folderId, PhotoDb photo){
+        public ActionResult addPhotoToFolder(int folderId, int photoId){
 
-                return Ok(folderService.addPhotoToFolder(folderId,photo));
+                return Ok(folderService.addPhotoToFolder(folderId,photoId));
 
         }
 

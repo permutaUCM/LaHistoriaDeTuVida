@@ -9,8 +9,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 
-using ExifLib;
+
 
 namespace LHDTV.Service
 {
@@ -38,16 +39,25 @@ namespace LHDTV.Service
             return photoret;
         }
 
+
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ClientGuid { get; set; }
+
         //creamos una nueva foto y la devolvemos?¿ para tratarla?¿
         public PhotoView Create(AddPhotoForm photo)
         {
 
             var file = photo.File;
             string path;
+
             if (!uploadFile(photo.File, out path))
             {
                 return null;
             }
+
+ 
+
 
             PhotoDb photoPOJO = new PhotoDb()
             {
@@ -56,6 +66,7 @@ namespace LHDTV.Service
                 Deleted = false,
                 Title = photo.Title.Trim(),
                 Size = file.Length,
+
                 Caption = photo.Caption.Trim(),
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
@@ -64,7 +75,14 @@ namespace LHDTV.Service
                 }).ToList()
             };
 
+
+
+
             var photoRet = photoRepo.Create(photoPOJO);
+            var id = photoRet.Id;
+
+ 
+
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
             return photoTemp;
@@ -124,8 +142,9 @@ namespace LHDTV.Service
         //     return listPhotosView;
         // }
 
-        public List<PhotoView> GetAll(Pagination pagination,int userId){
-            var photos = photoRepo.GetAll(pagination, userId); 
+        public List<PhotoView> GetAll(Pagination pagination, int userId)
+        {
+            var photos = photoRepo.GetAll(pagination, userId);
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
 
@@ -158,6 +177,7 @@ namespace LHDTV.Service
         public PhotoView UpdateTag(TagFormUpdate form)
         {
             var photo = photoRepo.Read(form.PhotoId);
+            
 
             if (photo == null)
             {
@@ -219,10 +239,11 @@ namespace LHDTV.Service
                 return false;
             }
 
-            double dobletemp = new Random().Next(1, 1000000);
+            var guid = System.Guid.NewGuid();           
+
             var extension = file.FileName.Split(".");
 
-            var fileName = DateTime.UtcNow.Ticks + "_" + Math.Round(dobletemp) + "." + extension[extension.Length - 1];
+            var fileName = Path.Combine(guid + "." + extension);
 
             var filePath = Path.Combine(basePath, fileName);
 
