@@ -103,9 +103,9 @@ namespace LHDTV.Controllers
 
         //deletePhotoToFolder
         [HttpPost("deletePhotoToFolder")]
-        public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo){
+        public ActionResult deletePhotoToFolder(int folderId, int photoId){
 
-            return Ok(folderService.deletePhotoToFolder(folderId,photo));
+            return Ok(folderService.deletePhotoToFolder(folderId,photoId));
         }
 
         //updateDefaultPhotoToFolder
