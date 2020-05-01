@@ -14,7 +14,6 @@ using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
 using LHDTV.Exceptions;
 using Microsoft.Extensions.Configuration;
-using SimpleCrypto;
 using System.Security.Cryptography;
 using System.IO;
 
@@ -28,7 +27,7 @@ namespace LHDTV.Service
     public class UserService : IUserService
     {
 
-        private readonly IUserRepoDb userRepoDb;
+        private readonly IUserRepoDb userRepo;
 
         private readonly IMapper mapper;
 
@@ -46,16 +45,23 @@ namespace LHDTV.Service
 
         private readonly AppSettings appSettings;
 
-        public UserService(IOptions<AppSettings> _appSettings, IUserRepoDb _userRepoDb,
+        public UserService(IOptions<AppSettings> _appSettings, IUserRepoDb _userRepo,
                              IMapper _mapper, IConfiguration _configuration)
         {
             appSettings = _appSettings.Value;
-            userRepoDb = _userRepoDb;
+            userRepo = _userRepo;
             mapper = _mapper;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
 
         }
 
+        
+        public UserView GetUser(int id)
+        {  //Repasar?¿?¿
+            var user = userRepo.Read(id);
+            var userRet = mapper.Map<UserView>(user);
+            return userRet;
+        }
         public UserView Create(AddUserForm user)
         {
 
@@ -95,7 +101,7 @@ namespace LHDTV.Service
 
             };
 
-            var userRet = userRepoDb.Create(userPOJO);
+            var userRet = userRepo.Create(userPOJO);
             var usertemp = mapper.Map<UserView>(userRet);
 
 
@@ -134,7 +140,7 @@ namespace LHDTV.Service
           public UserView UpdateInfo (UpdateUserForm user,int id){
 
                
-                var user_bbdd = userRepoDb.Read(id);
+                var user_bbdd = userRepo.Read(id);
                 if(user_bbdd == null){
 
                       throw new NotFoundException ("Usuario no valido");
@@ -157,7 +163,7 @@ namespace LHDTV.Service
                         
                 
 
-            var user_ret=userRepoDb.Update(user_bbdd);
+            var user_ret=userRepo.Update(user_bbdd);
             var userTemp = mapper.Map<UserView>(user_ret);
 
             return userTemp;
@@ -169,7 +175,7 @@ namespace LHDTV.Service
 
          public UserView Delete (string dni){
 
-                var user = userRepoDb.ReadDni(dni);
+                var user = userRepo.ReadDni(dni);
 
                 if(user == null){
 
@@ -178,7 +184,7 @@ namespace LHDTV.Service
 
                 user.Deleted = true;
 
-                var userRet = userRepoDb.Update(user);
+                var userRet = userRepo.Update(user);
                 var userMap = mapper.Map<UserView>(userRet);
 
                 return userMap;
@@ -190,7 +196,7 @@ namespace LHDTV.Service
             //cifrar la contraseña 
             password = encrypt(password, appSettings.PassworSecret);
 
-            var user = userRepoDb.Authenticate(username, password);
+            var user = userRepo.Authenticate(username, password);
 
 
             // return null if user not found
@@ -229,7 +235,7 @@ namespace LHDTV.Service
         public bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm)
         {
 
-            var user = userRepoDb.ReadNick(passwordRecoveryForm.Nick);
+            var user = userRepo.ReadNick(passwordRecoveryForm.Nick);
             if (user == null || user.Email != passwordRecoveryForm.Email)
             {
                 return false;
@@ -241,7 +247,7 @@ namespace LHDTV.Service
             user.RecovertyToken = newToken;
             user.ExpirationTokenDate = expDate;
 
-            userRepoDb.Update(user);
+            userRepo.Update(user);
 
             //TODO: Send email
 
@@ -253,7 +259,7 @@ namespace LHDTV.Service
         public bool PasswordRecovery(PasswordRecoveryForm passwordRecovery)
         {
 
-            var user = userRepoDb.ReadNick(passwordRecovery.Nick);
+            var user = userRepo.ReadNick(passwordRecovery.Nick);
             if (user == null || user.Email != passwordRecovery.Email || user.RecovertyToken != passwordRecovery.Token ||
             user.ExpirationTokenDate < DateTime.UtcNow)
             {
@@ -265,7 +271,7 @@ namespace LHDTV.Service
             user.Password = passwEncrypt;
             user.RecovertyToken = null;
 
-            userRepoDb.Update(user);
+            userRepo.Update(user);
 
             return true;
         }
