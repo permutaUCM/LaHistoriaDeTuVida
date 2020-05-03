@@ -1,15 +1,15 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
 using LHDTV.Models.Forms;
-using System.Linq;
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System.IO;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
 
@@ -56,7 +56,7 @@ namespace LHDTV.Service
                 return null;
             }
 
- 
+
 
 
             PhotoDb photoPOJO = new PhotoDb()
@@ -81,7 +81,7 @@ namespace LHDTV.Service
             var photoRet = photoRepo.Create(photoPOJO);
             var id = photoRet.Id;
 
- 
+
 
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
@@ -177,7 +177,7 @@ namespace LHDTV.Service
         public PhotoView UpdateTag(TagFormUpdate form)
         {
             var photo = photoRepo.Read(form.PhotoId);
-            
+
 
             if (photo == null)
             {
@@ -239,7 +239,7 @@ namespace LHDTV.Service
                 return false;
             }
 
-            var guid = System.Guid.NewGuid();           
+            var guid = System.Guid.NewGuid();
 
             var extension = file.FileName.Split(".");
 

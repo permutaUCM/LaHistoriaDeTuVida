@@ -1,32 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Text;
+using LHDTV.Repo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System.Globalization;
-using LHDTV.Repo;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
-
-
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
 using LHDTV.Service;
 using LHDTV.Helpers;
 using AutoMapper;
 using Serilog;
 
-using Microsoft.AspNetCore.Identity;
 
 namespace LHDTV
 {
@@ -84,7 +74,7 @@ namespace LHDTV
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
-            services.AddSingleton<ITokenRecoveryService,TokenRecoveryService>();
+            services.AddSingleton<ITokenRecoveryService, TokenRecoveryService>();
 
 
 

@@ -1,7 +1,5 @@
 using LHDTV.Models.DbEntity;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace LHDTV.Repo
 {
 

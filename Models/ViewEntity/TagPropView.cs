@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+
 namespace LHDTV.Models.ViewEntity
 {
     public class TagPropView

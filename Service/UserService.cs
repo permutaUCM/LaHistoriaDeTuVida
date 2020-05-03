@@ -1,25 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using LHDTV.Helpers;
+using System.Security.Cryptography;
+using System.IO;
 using AutoMapper;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
 using LHDTV.Exceptions;
+using LHDTV.Helpers;
 using Microsoft.Extensions.Configuration;
-using System.Security.Cryptography;
-using System.IO;
-
-
-
-
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 
 namespace LHDTV.Service
@@ -55,7 +49,7 @@ namespace LHDTV.Service
 
         }
 
-        
+
         public UserView GetUser(int id)
         {  //Repasar?¿?¿
             var user = userRepo.Read(id);
@@ -115,80 +109,85 @@ namespace LHDTV.Service
         private string encrypt(string s1, string EncryptionKey)
         {
 
-           
-                      byte[] clearBytes = Encoding.Unicode.GetBytes(s1);
-                        using (Aes encryptor = Aes.Create())
-                        {
-                            Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                            encryptor.Key = pdb.GetBytes(32);
-                            encryptor.IV = pdb.GetBytes(16);
-                            using (MemoryStream ms = new MemoryStream())
-                            {
-                                using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                                {
-                                    cs.Write(clearBytes, 0, clearBytes.Length);
-                                    cs.Close();
-                                }
-                                s1 = Convert.ToBase64String(ms.ToArray());
-                            }
-                        }
-                        return s1;
+
+            byte[] clearBytes = Encoding.Unicode.GetBytes(s1);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
+                    }
+                    s1 = Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            return s1;
 
         }
 
 
-          public UserView UpdateInfo (UpdateUserForm user,int id){
+        public UserView UpdateInfo(UpdateUserForm user, int id)
+        {
 
-               
-                var user_bbdd = userRepo.Read(id);
-                if(user_bbdd == null){
 
-                      throw new NotFoundException ("Usuario no valido");
-                }
+            var user_bbdd = userRepo.Read(id);
+            if (user_bbdd == null)
+            {
 
-                var newPasswordEncrypt =  encrypt(user.NewPassword, appSettings.PassworSecret);
-                var oldPasswordEncrypt = encrypt(user.OldPassword, appSettings.PassworSecret);
+                throw new NotFoundException("Usuario no valido");
+            }
 
-                if(oldPasswordEncrypt != user_bbdd.Password){
-                    //crear nueva exception
-                    throw new NotFoundException ("Contraseña Invalida");
+            var newPasswordEncrypt = encrypt(user.NewPassword, appSettings.PassworSecret);
+            var oldPasswordEncrypt = encrypt(user.OldPassword, appSettings.PassworSecret);
 
-                }
+            if (oldPasswordEncrypt != user_bbdd.Password)
+            {
+                //crear nueva exception
+                throw new NotFoundException("Contraseña Invalida");
 
-                    user_bbdd.LastName1 = user.LastName1.Trim() ?? user_bbdd.LastName1;
-                    user_bbdd.LastName2 = user.LastName2.Trim() ?? user_bbdd.LastName2;
-                    user_bbdd.Name =  user.FirstName.Trim() ?? user_bbdd.Name;
-                    user_bbdd.Email = user.Email.Trim() ?? user_bbdd.Email;
-                    user_bbdd.Password = user.NewPassword ?? user_bbdd.Password;            
-                        
-                
+            }
 
-            var user_ret=userRepo.Update(user_bbdd);
+            user_bbdd.LastName1 = user.LastName1.Trim() ?? user_bbdd.LastName1;
+            user_bbdd.LastName2 = user.LastName2.Trim() ?? user_bbdd.LastName2;
+            user_bbdd.Name = user.FirstName.Trim() ?? user_bbdd.Name;
+            user_bbdd.Email = user.Email.Trim() ?? user_bbdd.Email;
+            user_bbdd.Password = user.NewPassword ?? user_bbdd.Password;
+
+
+
+            var user_ret = userRepo.Update(user_bbdd);
             var userTemp = mapper.Map<UserView>(user_ret);
 
             return userTemp;
 
-          }
+        }
 
 
-        
 
-         public UserView Delete (string dni){
 
-                var user = userRepo.ReadDni(dni);
+        public UserView Delete(string dni)
+        {
 
-                if(user == null){
+            var user = userRepo.ReadDni(dni);
 
-                    return null;
-                }
+            if (user == null)
+            {
 
-                user.Deleted = true;
+                return null;
+            }
 
-                var userRet = userRepo.Update(user);
-                var userMap = mapper.Map<UserView>(userRet);
+            user.Deleted = true;
 
-                return userMap;
-         }
+            var userRet = userRepo.Update(user);
+            var userMap = mapper.Map<UserView>(userRet);
+
+            return userMap;
+        }
 
         public UserView Authenticate(string username, string password)
         {
@@ -306,17 +305,19 @@ namespace LHDTV.Service
             return message;
         }
 
-        private bool sendMessage(MimeMessage msg){
+        private bool sendMessage(MimeMessage msg)
+        {
 
-            using (var client = new MailKit.Net.Smtp.SmtpClient()) {
-				client.Connect ("smtp.friends.com", 587, false);
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect("smtp.friends.com", 587, false);
 
-				// Note: only needed if the SMTP server requires authentication
-				client.Authenticate ("Auryn.noreply@gmail.com", "1a@11111");
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate("Auryn.noreply@gmail.com", "1a@11111");
 
-				client.Send (msg);
-				client.Disconnect (true);
-			}
+                client.Send(msg);
+                client.Disconnect(true);
+            }
             return true;
         }
 

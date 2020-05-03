@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+
 namespace LHDTV.Models.Forms
 {
     public class PasswordRecoveryForm

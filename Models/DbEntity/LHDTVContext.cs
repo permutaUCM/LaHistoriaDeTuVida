@@ -24,7 +24,7 @@ namespace LHDTV.Models.DbEntity
         {
             modelBuilder.Entity<PhotoTagsTypes>().HasKey(t => t.Name);
             modelBuilder.Entity<Extra>().HasKey(t => t.Name);
-            
+
         }
 
 

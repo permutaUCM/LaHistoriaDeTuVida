@@ -1,8 +1,5 @@
 
 
-
-
-using System;
 // using Amazon.Rekognition;
 // using Amazon.Rekognition.Model;
 

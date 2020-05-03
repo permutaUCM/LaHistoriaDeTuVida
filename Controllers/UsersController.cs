@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+
 using LHDTV.Service;
-using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using LHDTV.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
@@ -32,8 +33,8 @@ namespace LHDTV.Controllers
 
 
         public UsersController(IUserService _userService, IStringLocalizer<UsersController> _localizer,
-                          ILogger<UsersController> _logger, IConfiguration _configuration 
-                                    ,ITokenRecoveryService _tokenService)
+                          ILogger<UsersController> _logger, IConfiguration _configuration
+                                    , ITokenRecoveryService _tokenService)
         {
             userService = _userService;
             localizer = _localizer;
@@ -41,7 +42,7 @@ namespace LHDTV.Controllers
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
             tokenService = _tokenService;
         }
-             [HttpPost]
+        [HttpPost]
         public ActionResult getUser(int id)
         {
 
@@ -56,7 +57,8 @@ namespace LHDTV.Controllers
             return Ok(user);
         }
         [HttpPost("addUser")]
-        public ActionResult addUser ([FromBody]AddUserForm form){
+        public ActionResult addUser([FromBody]AddUserForm form)
+        {
 
             var ret = userService.Create(form);
             return Ok(ret);
@@ -64,7 +66,8 @@ namespace LHDTV.Controllers
         }
 
         [HttpGet("deleteUser")]
-        public ActionResult deleteUser (string dni){
+        public ActionResult deleteUser(string dni)
+        {
 
             var ret = userService.Delete(dni);
             return Ok(ret);
@@ -73,30 +76,36 @@ namespace LHDTV.Controllers
 
         [Authorize]
         [HttpPost("updateUser")]
-        public ActionResult updateUser ([FromBody]UpdateUserForm form){
+        public ActionResult updateUser([FromBody]UpdateUserForm form)
+        {
 
-            try{
-                               
+            try
+            {
+
                 var id = tokenService.RecoveryId(tokenService.RecoveryToken(HttpContext));
-                var ret = userService.UpdateInfo(form,id);
-                
+                var ret = userService.UpdateInfo(form, id);
+
                 return Ok(ret);
 
 
-            }catch(NotFoundException){
+            }
+            catch (NotFoundException)
+            {
 
-                 return BadRequest(new { message = "Usuario no encontrado" });
+                return BadRequest(new { message = "Usuario no encontrado" });
 
 
-            }catch(WrongPasswordException pswex){
-                
+            }
+            catch (WrongPasswordException)
+            {
+
                 return BadRequest(new { message = "Password is incorrect" });
                 // userService ;
-                 
+
 
             }
 
-            
+
 
         }
 
@@ -118,14 +127,18 @@ namespace LHDTV.Controllers
         */
         [AllowAnonymous]
         [HttpPost("requestPasswordRecovery")]
-        public IActionResult RequestPasswordRecovery([FromBody] RequestPasswordRecoveryForm passwordRecoveryForm){
+        public IActionResult RequestPasswordRecovery([FromBody] RequestPasswordRecoveryForm passwordRecoveryForm)
+        {
 
-            var ok = userService.RequestPasswordRecovery( passwordRecoveryForm);
+            var ok = userService.RequestPasswordRecovery(passwordRecoveryForm);
 
-            if(ok){
-                return Ok(new {
-                    Metadata = new {},
-                    Data = new {
+            if (ok)
+            {
+                return Ok(new
+                {
+                    Metadata = new { },
+                    Data = new
+                    {
                         mesage = localizer["RequestPasswordRecoveryOk"].Value
                     }
                 });
@@ -136,17 +149,23 @@ namespace LHDTV.Controllers
 
         [AllowAnonymous]
         [HttpPost("passwordRecovery")]
-        public IActionResult passwordRecovery([FromBody] PasswordRecoveryForm passwordRecoveryForm){
-            
-            var ok = userService.PasswordRecovery( passwordRecoveryForm);
-            if(ok){
-                return Ok(new {
-                    Metadata = new {},
-                    Data = new {
+        public IActionResult passwordRecovery([FromBody] PasswordRecoveryForm passwordRecoveryForm)
+        {
+
+            var ok = userService.PasswordRecovery(passwordRecoveryForm);
+            if (ok)
+            {
+                return Ok(new
+                {
+                    Metadata = new { },
+                    Data = new
+                    {
                         message = localizer["PasswordRecoveryOk"].Value
                     }
                 });
-            }else{
+            }
+            else
+            {
                 return BadRequest();
             }
         }

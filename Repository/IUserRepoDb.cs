@@ -8,10 +8,10 @@ namespace LHDTV.Repo
     {
 
         UserDb ReadNick(string nick);
-       
-       UserDb ReadDni(string nick);
 
-        UserDb Authenticate(string user,string password);
+        UserDb ReadDni(string nick);
+
+        UserDb Authenticate(string user, string password);
 
     }
 }

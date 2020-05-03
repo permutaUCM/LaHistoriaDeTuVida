@@ -1,4 +1,4 @@
-using System;
+
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
@@ -136,7 +136,7 @@ namespace LHDTV.Repo
 
         }
 
-        public bool ExistsPhoto(int folderId,int photoId)
+        public bool ExistsPhoto(int folderId, int photoId)
         {
 
             using (var ctx = new LHDTVContext())
