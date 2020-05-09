@@ -2,10 +2,9 @@
 using LHDTV.Models.DbEntity;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.Forms;
-
 using System.Collections.Generic;
-
-namespace LHDTV.Service{
+namespace LHDTV.Service
+{
 
     public interface IFolderService
     {
@@ -21,11 +20,11 @@ namespace LHDTV.Service{
 
         List<FolderView> GetAll(Pagination pagination, int userId);
 
-        FolderView addPhotoToFolder(int folderId, PhotoDb photo, int userId);
+        FolderView addPhotoToFolder(int folderId, int photo, int userId);
 
-        FolderView deletePhotoToFolder(int folderId, PhotoDb photo, int userId);
+        FolderView deletePhotoToFolder(int folderId, int photo, int userId);
 
-        FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p, int userId);
+        FolderView updateDefaultPhotoToFolder(int folderId, int p, int userId);
  
         LHDTV.Models.FolderMetadata GetMetadata();
     }

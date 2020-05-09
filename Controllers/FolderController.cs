@@ -1,17 +1,11 @@
 
 using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using LHDTV.Service;
-using LHDTV.Models.ViewEntity;
-using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 
@@ -98,16 +92,16 @@ namespace LHDTV.Controllers
 
         //addPhotoToFolder
         [HttpPost("addPhoto")]
-        public ActionResult addPhotoToFolder(int folderId, PhotoDb photo)
+        public ActionResult addPhotoToFolder(int folderId,  int photoId)
         {
 
-            return Ok(folderService.addPhotoToFolder(folderId, photo, 1));
+            return Ok(folderService.addPhotoToFolder(folderId, photoId, 1));
 
         }
 
         //deletePhotoToFolder
         [HttpPost("deletePhoto")]
-        public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo)
+        public ActionResult deletePhotoToFolder(int folderId, int photo)
         {
 
             return Ok(folderService.deletePhotoToFolder(folderId, photo, 1));
@@ -115,7 +109,7 @@ namespace LHDTV.Controllers
 
         //updateDefaultPhotoToFolder
         [HttpPost("updateDefaultPhoto")]
-        public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo)
+        public ActionResult updateDefaultPhotoToFolder(int folderId, int photo)
         {
 
             return Ok(folderService.updateDefaultPhotoToFolder(folderId, photo, 1));

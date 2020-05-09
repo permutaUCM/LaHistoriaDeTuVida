@@ -1,16 +1,17 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
+using System.ComponentModel.DataAnnotations.Schema;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
 using LHDTV.Models.Forms;
-using System.Linq;
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
-using ExifLib;
+
 
 namespace LHDTV.Service
 {
@@ -38,16 +39,25 @@ namespace LHDTV.Service
             return photoret;
         }
 
+
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ClientGuid { get; set; }
+
         //creamos una nueva foto y la devolvemos?¿ para tratarla?¿
         public PhotoView Create(AddPhotoForm photo, int userId)
         {
 
             var file = photo.File;
             string path;
+
             if (!uploadFile(photo.File, out path))
             {
                 return null;
             }
+
+
+
 
             PhotoDb photoPOJO = new PhotoDb()
             {
@@ -56,6 +66,7 @@ namespace LHDTV.Service
                 Deleted = false,
                 Title = photo.Title.Trim(),
                 Size = file.Length,
+
                 Caption = photo.Caption.Trim(),
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
@@ -64,7 +75,7 @@ namespace LHDTV.Service
                 }).ToList()
             };
 
-            var photoRet = photoRepo.Create(photoPOJO,   userId);
+            var photoRet = photoRepo.Create(photoPOJO, userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
             return photoTemp;
@@ -162,6 +173,7 @@ namespace LHDTV.Service
         {
             var photo = photoRepo.Read(form.PhotoId,   userId);
 
+
             if (photo == null)
             {
                 throw new Exceptions.NotFoundException("No se ha encontrado la fotografía solicitada");
@@ -222,10 +234,11 @@ namespace LHDTV.Service
                 return false;
             }
 
-            double dobletemp = new Random().Next(1, 1000000);
+            var guid = System.Guid.NewGuid();
+
             var extension = file.FileName.Split(".");
 
-            var fileName = DateTime.UtcNow.Ticks + "_" + Math.Round(dobletemp) + "." + extension[extension.Length - 1];
+            var fileName = Path.Combine(guid + "." + extension);
 
             var filePath = Path.Combine(basePath, fileName);
 

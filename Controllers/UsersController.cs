@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+
 using LHDTV.Service;
-using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using LHDTV.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
@@ -43,7 +44,20 @@ namespace LHDTV.Controllers
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
             tokenService = _tokenService;
         }
+        [HttpPost]
+        public ActionResult getUser(int id)
+        {
 
+            logger.LogInformation("getUser {@form}", id);
+
+            var user = userService.GetUser(id);
+
+            if (user == null)
+            {
+                return BadRequest(localizer["userNotFound"].Value);
+            }
+            return Ok(user);
+        }
         [HttpPost("addUser")]
         public ActionResult addUser([FromBody] AddUserForm form)
         {

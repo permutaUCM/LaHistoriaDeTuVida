@@ -1,4 +1,4 @@
-using System;
+
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
@@ -83,7 +83,7 @@ namespace LHDTV.Repo
                                         .ToList();
                     return res;
                 }
-                catch (Exception e)
+                catch (System.Exception)
                 {
                     return new List<FolderDb>();
                 }
@@ -159,6 +159,16 @@ namespace LHDTV.Repo
             }
         }
 
+        public bool ExistsPhoto(int folderId, int photoId)
+        {
+
+            using (var ctx = new LHDTVContext())
+            {
+
+                return ctx.Folder.Include(f => f.Photos).Where(f => f.Id == folderId).Where(f => f.Photos.Select(p => p.Id).ToList().Contains(photoId)).SingleOrDefault() == null;
+            }
+
+        }
 
 
     }

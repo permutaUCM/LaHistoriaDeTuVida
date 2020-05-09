@@ -1,15 +1,13 @@
 
 using System;
+using System.Linq;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.DbEntity;
 using LHDTV.Repo;
 using LHDTV.Models.Forms;
-using System.Linq;
-using System.Collections.Generic;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+using System.Collections.Generic;
 
 
 namespace LHDTV.Service
@@ -21,7 +19,6 @@ namespace LHDTV.Service
 
         private readonly IFolderRepo folderRepo;
         private readonly IPhotoRepo photoRepo;
-
         private readonly IMapper mapper;
 
         private readonly string basePath;
@@ -34,9 +31,9 @@ namespace LHDTV.Service
                             IPhotoRepo _photoRepo)
         {
             folderRepo = _folderRepo;
+            photoRepo = _photoRepo;
             mapper = _mapper;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
-            photoRepo = _photoRepo;
         }
 
         public FolderView GetFolder(int id, int userId)
@@ -110,43 +107,58 @@ namespace LHDTV.Service
         //añade una coleccion de fotos a una carpeta
         // primera version se añade de una en una
 
-        public FolderView addPhotoToFolder(int folderId, PhotoDb photo, int userId)
+        public FolderView addPhotoToFolder(int folderId, int photoId, int userId)
         {
 
-            var f = folderRepo.Read(folderId, userId);
-            if (f == null)
+            try
             {
+                var f = folderRepo.Read(folderId, userId);
+                if (f == null)
+                {
+                    return null;
+                }
+
+                var p = photoRepo.Read(photoId, userId);
+
+                //var aux = folderRepo.Read(f.Id).Photos;
+                if (!folderRepo.ExistsPhoto(folderId, photoId)) return null;
+
+
+                // esto valdria para una foto ¿bucle para una lista de fotos?
+                f.Photos.Add(p);
+
+
+                // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
+                var nocontainstags = p.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+                //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
+                foreach (var t in nocontainstags)
+                    f.PhotosTags.Add(new FileTags()
+                    {
+
+                        Title = t,
+
+
+                    });
+
+
+                var folderRet = folderRepo.Update(f, userId);
+                var folderTemp = mapper.Map<FolderView>(folderRet);
+
+                return folderTemp;
+
+            }
+            catch (Exception)
+            {
+
+                photoRepo.Delete(photoId, userId);
                 return null;
             }
 
 
-            if (f.Photos.Where(p => p.Id == photo.Id).SingleOrDefault() != null) return null;
-
-            // esto valdria para una foto ¿bucle para una lista de fotos?
-            f.Photos.Add(photo);
-
-            // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
-            var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
-            //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
-            foreach (var t in nocontainstags)
-                f.PhotosTags.Add(new FileTags()
-                {
-
-                    Title = t,
-
-
-                });
-
-
-            var folderRet = folderRepo.Update(f, userId);
-            var folderTemp = mapper.Map<FolderView>(folderRet);
-
-            return folderTemp;
-
         }
 
 
-        public FolderView deletePhotoToFolder(int folderId, PhotoDb photo, int userId)
+        public FolderView deletePhotoToFolder(int folderId, int photoId, int userId)
         {
 
             var f = folderRepo.Read(folderId, userId);
@@ -157,8 +169,9 @@ namespace LHDTV.Service
             /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
                   folderRepo.Read(folderId).PhotosTags.Remove(p);*/
 
-            if (f.Photos.Where(p => p.Id == photo.Id).SingleOrDefault() == null) return null;
+            if (f.Photos.Where(p => p.Id == photoId).SingleOrDefault() == null) return null;
 
+            var photo = f.Photos.Where(p => p.Id == photoId).SingleOrDefault();
             f.Photos.Remove(photo);
             // Obtener el listado de tags a eliminar
             var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
@@ -185,7 +198,7 @@ namespace LHDTV.Service
 
         // actualizar photo por defecto
 
-        public FolderView updateDefaultPhotoToFolder(int folderId, PhotoDb p, int userId)
+        public FolderView updateDefaultPhotoToFolder(int folderId, int photoId, int userId)
         {
 
 
@@ -193,7 +206,7 @@ namespace LHDTV.Service
 
             if (f == null) return null;
 
-
+            var p = f.Photos.FirstOrDefault(p => p.Id == photoId);
             /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
                   folderRepo.Read(folderId).PhotosTags.Remove(p);*/
 

@@ -8,6 +8,7 @@ namespace LHDTV.Service
     public interface IUserService
     {
 
+        UserView GetUser(int Id);
         UserView Create(AddUserForm user);
 
         UserView Delete(string dni);

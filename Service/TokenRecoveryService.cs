@@ -1,19 +1,13 @@
 
 
-
-using LHDTV.Helpers;
-using AutoMapper;
-using LHDTV.Repo;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
-using System.Text.RegularExpressions;
-using Microsoft.Extensions.Primitives;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System;
-using MimeKit;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Http;
+
 
 namespace LHDTV.Service
 {
@@ -27,7 +21,8 @@ namespace LHDTV.Service
 
         }
 
-        private string GetClaim (string token,string claim){
+        private string GetClaim(string token, string claim)
+        {
 
             var tokenHandler = new JwtSecurityTokenHandler().ReadJwtToken(token);
 
@@ -37,20 +32,24 @@ namespace LHDTV.Service
 
         public int RecoveryId(string token)
         {
-            
-            if(token == null){
+
+            if (token == null)
+            {
 
                 return -1;//notfounexception
             }
-               try{
+            try
+            {
 
-                     return int.Parse(GetClaim(token,ClaimTypes.Name)) ;
+                return int.Parse(GetClaim(token, ClaimTypes.Name));
 
-               }catch(FormatException){
+            }
+            catch (FormatException)
+            {
 
-                    return -1;
-               }
-           
+                return -1;
+            }
+
 
         }
 
@@ -59,14 +58,14 @@ namespace LHDTV.Service
             var regExp = new Regex("Bearer (?<token>.*)");
             StringValues tokens;
             var found = context.Request.Headers.TryGetValue("Authorization", out tokens);
-            var myToken = ""; 
+            var myToken = "";
 
             if (found)
             {
                 foreach (var t in tokens)
                 {
                     var match = regExp.Match(t);
-                     if (match.Success)
+                    if (match.Success)
                     {
                         myToken = match.Groups["token"].Value;
                         return myToken;
@@ -76,7 +75,7 @@ namespace LHDTV.Service
 
                 }
             }
-              return null;
+            return null;
         }
     }
 }

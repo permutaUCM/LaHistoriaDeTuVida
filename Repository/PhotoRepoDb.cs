@@ -1,8 +1,9 @@
-using System;
+
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
+
 namespace LHDTV.Repo
 {
     public class PhotoRepoDb : IPhotoRepo
@@ -76,7 +77,7 @@ namespace LHDTV.Repo
                 {
                     // for (int i = 0; i < pagination.FilterField.Count; i++)
                     // {
-                
+
                     //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
                     //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
                     // }

@@ -1,15 +1,15 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using LHDTV.Service;
-using Microsoft.Extensions.Localization;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
 
+using Microsoft.AspNetCore.Authorization;
 
 namespace LHDTV.Controllers
 {
@@ -106,27 +106,31 @@ namespace LHDTV.Controllers
 
 
         [HttpGet("all")]
-        public ActionResult getAll([FromQuery]Pagination pag,int userId)
+        public ActionResult getAll([FromQuery]Pagination pag, int userId)
         {
-                        
-            try{
 
-                var photos = photoService.GetAll(pag,userId);
-               
+            try
+            {
 
-                return Ok(new {
+                var photos = photoService.GetAll(pag, userId);
 
-                    Metadata = new {
+
+                return Ok(new
+                {
+
+                    Metadata = new
+                    {
                         Page = pag,
-                        PagCount=150,
+                        PagCount = 150,
                     },
                     Data = photos
 
                 });
 
-                
+
             }
-            catch(Exception e){
+            catch (Exception e)
+            {
 
                 logger.LogError("Unexpected error: " + e.StackTrace);
                 return BadRequest(localizer["ERROR_DEFAULT"]);
@@ -154,10 +158,12 @@ namespace LHDTV.Controllers
             catch (Exceptions.NotFoundException)
             {
                 return BadRequest("No se ha encontrado la foto que se desea actualizar.");
-                
-            }catch (System.Exception e){
+
+            }
+            catch (System.Exception e)
+            {
                 logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
-                return BadRequest("Ha ocurrido un error no esperado."); 
+                return BadRequest("Ha ocurrido un error no esperado.");
             }
         }
 
@@ -172,13 +178,15 @@ namespace LHDTV.Controllers
                 };
                 return Ok(response);
             }
-            catch (Exceptions.NotFoundException )
+            catch (Exceptions.NotFoundException)
             {
                 return BadRequest("No se ha encontrado la foto que se desea actualizar.");
-                
-            }catch (System.Exception e){
+
+            }
+            catch (System.Exception e)
+            {
                 logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
-                return BadRequest("Ha ocurrido un error no esperado."); 
+                return BadRequest("Ha ocurrido un error no esperado.");
             }
         }
 
@@ -196,10 +204,12 @@ namespace LHDTV.Controllers
             catch (Exceptions.NotFoundException e)
             {
                 return BadRequest(e.Message);
-                
-            }catch (System.Exception e){
+
+            }
+            catch (System.Exception e)
+            {
                 logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
-                return BadRequest("Ha ocurrido un error no esperado."); 
+                return BadRequest("Ha ocurrido un error no esperado.");
             }
         }
 

@@ -1,5 +1,5 @@
 
-using System;
+
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
@@ -15,7 +15,7 @@ namespace LHDTV.Repo
        public UserRepoDb()
        {
 
-       }
+        }
 
        public UserDb Create (UserDb entity, int userId)
        {
@@ -26,7 +26,7 @@ namespace LHDTV.Repo
                 return entity;
             }
 
-       }
+        }
 
 
        public UserDb Read (int id, int userId)
@@ -35,10 +35,10 @@ namespace LHDTV.Repo
            {
                var user = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
-               return user;
-           }
+                return user;
+            }
 
-       }
+        }
 
        // Check nickname
        public UserDb ReadNick (string nick, int userId)       
@@ -48,10 +48,10 @@ namespace LHDTV.Repo
                var n = ctx.User.Where(u => u.Nickname == nick).SingleOrDefault();
                //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
-               return n;
-           }
+                return n;
+            }
 
-       }
+        }
 
               // Check nickname
        public UserDb ReadDni (string dni, int userId)       
@@ -61,10 +61,10 @@ namespace LHDTV.Repo
                var n = ctx.User.Where(u => u.Dni == dni).SingleOrDefault();
                //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
-               return n;
-           }
+                return n;
+            }
 
-       }
+        }
 
        public UserDb Authenticate (string nick,string password, int userId)       
        {
@@ -73,23 +73,23 @@ namespace LHDTV.Repo
                var n = ctx.User.Where(u => u.Nickname == nick && u.Password == password).SingleOrDefault();
                //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
-               return n;
-           }
+                return n;
+            }
 
-       }
+        }
         // update (datos generales)
        public UserDb Update(UserDb entity, int userId)
        {
 
-           using(var ctx = new LHDTVContext())
-           {
-               ctx.User.Update(entity);
-               ctx.SaveChanges();
+            using (var ctx = new LHDTVContext())
+            {
+                ctx.User.Update(entity);
+                ctx.SaveChanges();
 
                 return entity;
-           }
+            }
 
-       }
+        }
 
        
        public UserDb Delete(int id, int userId)
@@ -101,10 +101,10 @@ namespace LHDTV.Repo
                 ctx.SaveChanges();
 
                 return null;
-           }
+            }
 
 
-       }
+        }
 
            public List<UserDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId)
         {
@@ -115,5 +115,5 @@ namespace LHDTV.Repo
         }
 
 
-   }
+    }
 }

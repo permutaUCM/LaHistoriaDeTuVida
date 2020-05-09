@@ -26,7 +26,7 @@ namespace LHDTV.Service
 
         PhotoView UpdateTag(TagFormUpdate form, int userId);
 
-        List<PhotoView> GetAll(Pagination pagination,int userId);
+        List<PhotoView> GetAll(Pagination pagination, int userId);
 
 
     }
