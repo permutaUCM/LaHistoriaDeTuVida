@@ -15,6 +15,8 @@ namespace LHDTV.Models.DbEntity
         public DbSet<FolderDb> Folder { get; set; }
         public DbSet<PhotoTagsTypes> TagTypeMaster { get; set; }
 
+        public DbSet<PhotoTransition> PhotoTransition { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=localhost;Database=LHDTV;Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
@@ -24,7 +26,7 @@ namespace LHDTV.Models.DbEntity
         {
             modelBuilder.Entity<PhotoTagsTypes>().HasKey(t => t.Name);
             modelBuilder.Entity<Extra>().HasKey(t => t.Name);
-            
+
         }
 
 

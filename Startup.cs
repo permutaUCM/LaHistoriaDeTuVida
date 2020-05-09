@@ -54,20 +54,19 @@ namespace LHDTV
                 opts.SupportedCultures = supportedCultures;
 
             });
-            services.AddControllers();
 
             services.AddCors(options =>
             {
-                options.AddPolicy("EnableCORS", builder =>
+                options.AddPolicy(name: "EnableCORS", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build();
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader();
                 });
             });
+            services.AddControllers();
 
             services.AddDbContext<LHDTV.Models.DbEntity.LHDTVContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
             //modulo photos
             services.AddSingleton<IConfiguration>(Configuration);
@@ -85,7 +84,7 @@ namespace LHDTV
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
             services.AddTransient<IMailService, MailService>();
-            services.AddSingleton<ITokenRecoveryService,TokenRecoveryService>();
+            services.AddSingleton<ITokenRecoveryService, TokenRecoveryService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -99,7 +98,7 @@ namespace LHDTV
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var key = Encoding.UTF8.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -114,20 +113,32 @@ namespace LHDTV
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    LifetimeValidator = CustomLifeTimeValidator,
+
+
                 };
             });
 
             services.AddScoped<IUserService, UserService>();
         }
-
+        private bool CustomLifeTimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken token, TokenValidationParameters @params)
+        {
+            if (expires != null)
+            {
+                var _expires = expires > DateTime.UtcNow;
+                return _expires;
+            }
+            return false;
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ITokenRecoveryService tokenService, IPhotoService photoService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("EnableCORS");
 
             app.UseHttpsRedirection();
 
@@ -138,9 +149,47 @@ namespace LHDTV
             });
             app.UseSerilogRequestLogging();
 
+            app.Use(async (context, next) =>
+            {
 
+                if (context.Request.Path.StartsWithSegments("/folder/photos"))
+                {
+
+                    var token = tokenService.RecoveryToken(context);
+                    var pathSegments = context.Request.Path.Value.Split("_");
+                    var photoIdString = pathSegments[pathSegments.Length - 1].Split(".")[0];
+
+                    if (token == null || photoIdString == null)
+                    {
+                        context.Response.StatusCode = 401;
+                        return;
+                    }
+
+                    var userId = tokenService.RecoveryId(token);
+                    var photoId = Convert.ToInt32(photoIdString);
+                    try
+                    {
+                        var photo = photoService.GetPhoto(photoId, userId);
+                        if (photo == null)
+                        {
+                            context.Response.StatusCode = 401;
+                            return;
+                        }
+
+                        await next();
+
+                    }
+                    catch (Exception)
+                    {
+                        context.Response.StatusCode = 401;
+                        return;
+                    }
+
+                }
+                await next();
+            });
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             var supportedCultures = new[]
@@ -156,7 +205,6 @@ namespace LHDTV
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
-            app.UseCors("EnableCORS");
 
 
             app.UseEndpoints(endpoints =>

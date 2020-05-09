@@ -13,6 +13,8 @@ namespace LHDTV.Models.DbEntity
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Dni { get; set; }
+
+        public string Role { get; set; }
         //public string Token { get; set; }
         public bool Deleted { get; set; }
 

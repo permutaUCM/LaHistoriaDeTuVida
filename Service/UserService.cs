@@ -95,7 +95,7 @@ namespace LHDTV.Service
 
             };
 
-            var userRet = userRepoDb.Create(userPOJO);
+            var userRet = userRepoDb.Create(userPOJO, 0);
             var usertemp = mapper.Map<UserView>(userRet);
 
 
@@ -134,7 +134,7 @@ namespace LHDTV.Service
           public UserView UpdateInfo (UpdateUserForm user,int id){
 
                
-                var user_bbdd = userRepoDb.Read(id);
+                var user_bbdd = userRepoDb.Read(id, 0);
                 if(user_bbdd == null){
 
                       throw new NotFoundException ("Usuario no valido");
@@ -157,7 +157,7 @@ namespace LHDTV.Service
                         
                 
 
-            var user_ret=userRepoDb.Update(user_bbdd);
+            var user_ret=userRepoDb.Update(user_bbdd, 0);
             var userTemp = mapper.Map<UserView>(user_ret);
 
             return userTemp;
@@ -169,7 +169,7 @@ namespace LHDTV.Service
 
          public UserView Delete (string dni){
 
-                var user = userRepoDb.ReadDni(dni);
+                var user = userRepoDb.ReadDni(dni, 0);
 
                 if(user == null){
 
@@ -178,7 +178,7 @@ namespace LHDTV.Service
 
                 user.Deleted = true;
 
-                var userRet = userRepoDb.Update(user);
+                var userRet = userRepoDb.Update(user, 0);
                 var userMap = mapper.Map<UserView>(userRet);
 
                 return userMap;
@@ -190,7 +190,7 @@ namespace LHDTV.Service
             //cifrar la contraseña 
             password = encrypt(password, appSettings.PassworSecret);
 
-            var user = userRepoDb.Authenticate(username, password);
+            var user = userRepoDb.Authenticate(username, password, 0);
 
 
             // return null if user not found
@@ -200,12 +200,13 @@ namespace LHDTV.Service
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var app_secret = appSettings.Secret;
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var key = Encoding.UTF8.GetBytes(appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 // 7 variable de configuracion --
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -229,7 +230,7 @@ namespace LHDTV.Service
         public bool RequestPasswordRecovery(RequestPasswordRecoveryForm passwordRecoveryForm)
         {
 
-            var user = userRepoDb.ReadNick(passwordRecoveryForm.Nick);
+            var user = userRepoDb.ReadNick(passwordRecoveryForm.Nick, 0);
             if (user == null || user.Email != passwordRecoveryForm.Email)
             {
                 return false;
@@ -241,7 +242,7 @@ namespace LHDTV.Service
             user.RecovertyToken = newToken;
             user.ExpirationTokenDate = expDate;
 
-            userRepoDb.Update(user);
+            userRepoDb.Update(user, 0);
 
             //TODO: Send email
 
@@ -253,7 +254,7 @@ namespace LHDTV.Service
         public bool PasswordRecovery(PasswordRecoveryForm passwordRecovery)
         {
 
-            var user = userRepoDb.ReadNick(passwordRecovery.Nick);
+            var user = userRepoDb.ReadNick(passwordRecovery.Nick, 0);
             if (user == null || user.Email != passwordRecovery.Email || user.RecovertyToken != passwordRecovery.Token ||
             user.ExpirationTokenDate < DateTime.UtcNow)
             {
@@ -265,7 +266,7 @@ namespace LHDTV.Service
             user.Password = passwEncrypt;
             user.RecovertyToken = null;
 
-            userRepoDb.Update(user);
+            userRepoDb.Update(user, 0);
 
             return true;
         }

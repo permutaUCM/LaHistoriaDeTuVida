@@ -6,7 +6,7 @@ namespace LHDTV.Models.ViewEntity
 
     public class UserView
     {
-          
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string LastName1 { get; set; }
@@ -15,7 +15,8 @@ namespace LHDTV.Models.ViewEntity
         public string Email { get; set; }
         public string Dni { get; set; }
         public string Token { get; set; }
-    
+        public string Role{get; set;}
+
 
     }
 

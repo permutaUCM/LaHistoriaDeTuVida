@@ -4,14 +4,16 @@ using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    partial class LHDTVContextModelSnapshot : ModelSnapshot
+    [Migration("20200502114034_photoTransUserNameç")]
+    partial class photoTransUserNameç
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,9 +261,6 @@ namespace LHDTV.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecovertyToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

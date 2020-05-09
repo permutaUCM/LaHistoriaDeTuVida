@@ -31,15 +31,15 @@ namespace LHDTV.Service
 
         }
 
-        public PhotoView GetPhoto(int id)
+        public PhotoView GetPhoto(int id, int userId)
         {  //Repasar?¿?¿
-            var photo = photoRepo.Read(id);
+            var photo = photoRepo.Read(id, userId);
             var photoret = mapper.Map<PhotoView>(photo);
             return photoret;
         }
 
         //creamos una nueva foto y la devolvemos?¿ para tratarla?¿
-        public PhotoView Create(AddPhotoForm photo)
+        public PhotoView Create(AddPhotoForm photo, int userId)
         {
 
             var file = photo.File;
@@ -64,16 +64,16 @@ namespace LHDTV.Service
                 }).ToList()
             };
 
-            var photoRet = photoRepo.Create(photoPOJO);
+            var photoRet = photoRepo.Create(photoPOJO,   userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
             return photoTemp;
         }
-        public PhotoView Update(UpdatePhotoForm photo)
+        public PhotoView Update(UpdatePhotoForm photo, int userId)
         {
 
 
-            var c = photoRepo.Read(photo.PhotoId);
+            var c = photoRepo.Read(photo.PhotoId,   userId);
             if (c == null)
             {
                 return null;
@@ -82,7 +82,7 @@ namespace LHDTV.Service
             c.Title = photo.Title.Trim();
             c.Caption = photo.Caption.Trim();
 
-            var photoRet = photoRepo.Update(c);
+            var photoRet = photoRepo.Update(c,   userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
             return photoTemp;
@@ -90,9 +90,9 @@ namespace LHDTV.Service
         }
 
         //Borrado lógico
-        public PhotoView Delete(int photoId)
+        public PhotoView Delete(int photoId, int userId)
         {
-            var photo = photoRepo.Read(photoId);
+            var photo = photoRepo.Read(photoId,   userId);
 
             if (photo == null)
             {
@@ -101,7 +101,7 @@ namespace LHDTV.Service
 
             photo.Deleted = true;
 
-            var photoRet = photoRepo.Update(photo);
+            var photoRet = photoRepo.Update(photo,   userId);
             var photoMap = mapper.Map<PhotoView>(photoRet);
 
             return photoMap;
@@ -134,9 +134,9 @@ namespace LHDTV.Service
 
 
 
-        public PhotoView AddTag(TagForm form)
+        public PhotoView AddTag(TagForm form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId);
+            var photo = photoRepo.Read(form.PhotoId,   userId);
 
             if (photo == null)
             {
@@ -152,15 +152,15 @@ namespace LHDTV.Service
                 Extra3 = form.Extra3,
             });
 
-            var ret = photoRepo.Update(photo);
+            var ret = photoRepo.Update(photo,   userId);
 
             return mapper.Map<PhotoView>(ret);
 
         }
 
-        public PhotoView UpdateTag(TagFormUpdate form)
+        public PhotoView UpdateTag(TagFormUpdate form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId);
+            var photo = photoRepo.Read(form.PhotoId,   userId);
 
             if (photo == null)
             {
@@ -181,15 +181,15 @@ namespace LHDTV.Service
             tag.Extra3 = form.Extra3;
             tag.Type = form.Type;
 
-            photoRepo.UpdateTag(tag);
+            photoRepo.UpdateTag(tag,   userId);
 
             return mapper.Map<PhotoView>(photo);
 
         }
 
-        public PhotoView RemoveTag(TagFormDelete form)
+        public PhotoView RemoveTag(TagFormDelete form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId);
+            var photo = photoRepo.Read(form.PhotoId,   userId);
 
             if (photo == null)
             {
@@ -203,7 +203,7 @@ namespace LHDTV.Service
                 throw new Exceptions.NotFoundException("El tag que desea eliminar no está asociado a la fotografía encontrada");
             }
 
-            photoRepo.RemoveTag(tag);
+            photoRepo.RemoveTag(tag,   userId);
             var ok = photo.Tag.Remove(tag);
 
             return mapper.Map<PhotoView>(photo);

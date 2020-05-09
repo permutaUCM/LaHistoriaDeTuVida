@@ -4,13 +4,13 @@ namespace LHDTV.Repo
 {
     public interface ICrudRepo<T, K>
     {
-        T Create(T entity);
-        T Read(K id);
-        T Update(T entity);
+        T Create(T entity, int userId);
+        T Read(K id, int userId);
+        T Update(T entity, int userId);
 
         //Borrado fisico 
-        T Delete(K entity);
+        T Delete(K entity, int userId);
 
-        List<T> GetAll(Pagination Pag, int user);
+        List<T> GetAll(Pagination Pag, int userId);
     }
 }

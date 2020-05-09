@@ -20,7 +20,7 @@ namespace LHDTV.Repo
 
         }
 
-        public FolderDb Create(FolderDb entity)
+        public FolderDb Create(FolderDb entity, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -32,7 +32,7 @@ namespace LHDTV.Repo
         }
 
 
-        public FolderDb Read(int id)
+        public FolderDb Read(int id, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -42,7 +42,7 @@ namespace LHDTV.Repo
 
         }
         // update (datos generales)
-        public FolderDb Update(FolderDb entity)
+        public FolderDb Update(FolderDb entity, int userId)
         {
 
             using (var ctx = new LHDTVContext())
@@ -56,7 +56,7 @@ namespace LHDTV.Repo
         }
 
 
-        public FolderDb Delete(int id)
+        public FolderDb Delete(int id, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -74,18 +74,27 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var res = ctx.Folder.Where(f => f.User.Id == userId)
-                    .Include(f => f.DefaultPhoto)
-                    .Skip((pagination.NumPag - 1) * pagination.TamPag)
-                    .Take(pagination.TamPag)
-                    .ToList();
-                return res;
+                try
+                {
+                    var res = ctx.Folder.Where(f => f.User.Id == userId)
+                                        .Include(f => f.DefaultPhoto)
+                                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
+                                        .Take(pagination.TamPag)
+                                        .ToList();
+                    return res;
+                }
+                catch (Exception e)
+                {
+                    return new List<FolderDb>();
+                }
+
+
             }
 
         }
         // recibe una lista de fotos la mete en la carpeta, funcion pendiente
 
-        public FolderDb AddPhotoToFolder(FolderDb EntFolder, PhotoDb photo)
+        public FolderDb AddPhotoToFolder(FolderDb EntFolder, PhotoDb photo, int userId)
         {
 
 
@@ -102,7 +111,7 @@ namespace LHDTV.Repo
 
         //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
 
-        public FolderDb deletePhotoToFolder(int Id, PhotoDb p)
+        public FolderDb deletePhotoToFolder(int Id, PhotoDb p, int userId)
         {
 
             using (var ctx = new LHDTVContext())
@@ -120,7 +129,7 @@ namespace LHDTV.Repo
 
         //Mirar el actualizar photo por defecto
 
-        public FolderDb updateDefaultPhotoToFolder(int Id, PhotoDb p)
+        public FolderDb updateDefaultPhotoToFolder(int Id, PhotoDb p, int userId)
         {
 
             using (var ctx = new LHDTVContext())
@@ -139,6 +148,17 @@ namespace LHDTV.Repo
 
 
         }
+
+        public List<LHDTV.Models.DbEntity.PhotoTransition> GetTransitionMetadata()
+        {
+            using (var ctx = new LHDTVContext())
+            { 
+                var transitions = ctx.PhotoTransition.ToList();
+
+                return transitions;
+            }
+        }
+
 
 
     }

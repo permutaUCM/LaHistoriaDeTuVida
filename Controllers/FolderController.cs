@@ -13,12 +13,14 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace LHDTV.Controllers
 {
     [ApiController]
     [Route("api/folder")]
-
+    [Authorize(Roles = "USER,ADMIN")]
     public class FolderController : ControllerBase
     {
 
@@ -50,7 +52,7 @@ namespace LHDTV.Controllers
 
             logger.LogInformation("getFolder: id: ", id);
 
-            var folder = folderService.GetFolder(id);
+            var folder = folderService.GetFolder(id, 1);
 
             var types = photoService.GetTagTypes();
             if (folder == null)
@@ -59,10 +61,11 @@ namespace LHDTV.Controllers
             }
             return Ok(new
             {
-                Metadata = new
-                {
-                    types = types
-                },
+                Metadata = folderService.GetMetadata(),
+                //  new
+                // {
+                //     types = types
+                // },
                 Data = folder
             });
 
@@ -72,7 +75,7 @@ namespace LHDTV.Controllers
         public ActionResult UpdateFolder([FromBody]UpdateFolderForm form)
         {
 
-            return Ok(folderService.Update(form));
+            return Ok(folderService.Update(form, 1));
 
         }
 
@@ -81,7 +84,7 @@ namespace LHDTV.Controllers
         public ActionResult addFolder([FromForm]AddFolderForm form)
         {
 
-            var ret = folderService.Create(form);
+            var ret = folderService.Create(form, 1);
             return Ok(ret);
 
         }
@@ -90,7 +93,7 @@ namespace LHDTV.Controllers
         [HttpGet("delete/{folderId}")]
         public ActionResult delete(int folderId)
         {
-            return Ok(folderService.Delete(folderId));
+            return Ok(folderService.Delete(folderId, 1));
         }
 
         //addPhotoToFolder
@@ -98,7 +101,7 @@ namespace LHDTV.Controllers
         public ActionResult addPhotoToFolder(int folderId, PhotoDb photo)
         {
 
-            return Ok(folderService.addPhotoToFolder(folderId, photo));
+            return Ok(folderService.addPhotoToFolder(folderId, photo, 1));
 
         }
 
@@ -107,7 +110,7 @@ namespace LHDTV.Controllers
         public ActionResult deletePhotoToFolder(int folderId, PhotoDb photo)
         {
 
-            return Ok(folderService.deletePhotoToFolder(folderId, photo));
+            return Ok(folderService.deletePhotoToFolder(folderId, photo, 1));
         }
 
         //updateDefaultPhotoToFolder
@@ -115,7 +118,7 @@ namespace LHDTV.Controllers
         public ActionResult updateDefaultPhotoToFolder(int folderId, PhotoDb photo)
         {
 
-            return Ok(folderService.updateDefaultPhotoToFolder(folderId, photo));
+            return Ok(folderService.updateDefaultPhotoToFolder(folderId, photo, 1));
         }
 
         [HttpGet("all")]
@@ -126,15 +129,19 @@ namespace LHDTV.Controllers
             {
                 var folders = folderService.GetAll(pag, 1);
 
-                return Ok(new {
-                    Metadata = new {
+                return Ok(new
+                {
+                    Metadata = new
+                    {
                         Pag = pag,
                         PagCount = 150,
                     },
                     Data = folders
                 });
 
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 logger.LogError("Unespected error: " + e.StackTrace);
                 return BadRequest(localizer["ERROR_DEFAULT"]);
             }

@@ -9,6 +9,5 @@ namespace LHDTV.Models.Forms
         [Required]
         //TODO: Create new validation with regExp for passwords
         public string Password { get; set; }
-  
     }
 }

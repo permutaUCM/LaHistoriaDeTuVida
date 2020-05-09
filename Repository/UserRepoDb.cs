@@ -11,16 +11,13 @@ namespace LHDTV.Repo
 
    public class UserRepoDb : IUserRepoDb
    {
-       private List<UserDb> fakerepo;
 
-       public UserRepoDb(Fakes.Fakes _fake)
+       public UserRepoDb()
        {
-            fakerepo=_fake.users;
-
 
        }
 
-       public UserDb Create (UserDb entity)
+       public UserDb Create (UserDb entity, int userId)
        {
             using(var ctx= new LHDTVContext())
             {
@@ -32,7 +29,7 @@ namespace LHDTV.Repo
        }
 
 
-       public UserDb Read (int id)
+       public UserDb Read (int id, int userId)
        {
            using (var ctx = new LHDTVContext())
            {
@@ -44,7 +41,7 @@ namespace LHDTV.Repo
        }
 
        // Check nickname
-       public UserDb ReadNick (string nick)       
+       public UserDb ReadNick (string nick, int userId)       
        {
            using (var ctx = new LHDTVContext())
            {
@@ -57,7 +54,7 @@ namespace LHDTV.Repo
        }
 
               // Check nickname
-       public UserDb ReadDni (string dni)       
+       public UserDb ReadDni (string dni, int userId)       
        {
            using (var ctx = new LHDTVContext())
            {
@@ -69,7 +66,7 @@ namespace LHDTV.Repo
 
        }
 
-       public UserDb Authenticate (string nick,string password)       
+       public UserDb Authenticate (string nick,string password, int userId)       
        {
            using (var ctx = new LHDTVContext())
            {
@@ -81,7 +78,7 @@ namespace LHDTV.Repo
 
        }
         // update (datos generales)
-       public UserDb Update(UserDb entity)
+       public UserDb Update(UserDb entity, int userId)
        {
 
            using(var ctx = new LHDTVContext())
@@ -95,7 +92,7 @@ namespace LHDTV.Repo
        }
 
        
-       public UserDb Delete(int id)
+       public UserDb Delete(int id, int userId)
        {
            using (var ctx = new LHDTVContext())
            {

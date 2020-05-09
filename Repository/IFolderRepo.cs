@@ -1,18 +1,16 @@
 using LHDTV.Models.DbEntity;
 
-using Microsoft.EntityFrameworkCore;
-
+using System.Collections.Generic;
 namespace LHDTV.Repo
 {
 
     public interface IFolderRepo : ICrudRepo<FolderDb, int>
     {
-        FolderDb AddPhotoToFolder(FolderDb f , PhotoDb p);
+        FolderDb AddPhotoToFolder(FolderDb f , PhotoDb p, int userId);
 
-        FolderDb deletePhotoToFolder(int folderId , PhotoDb p);
+        FolderDb deletePhotoToFolder(int folderId , PhotoDb p, int userId);
 
-        FolderDb updateDefaultPhotoToFolder(int folderId, PhotoDb p);
-
-
+        FolderDb updateDefaultPhotoToFolder(int folderId, PhotoDb p, int userId);
+        List<LHDTV.Models.DbEntity.PhotoTransition> GetTransitionMetadata();
     }
 }

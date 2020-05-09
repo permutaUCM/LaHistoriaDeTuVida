@@ -7,11 +7,11 @@ namespace LHDTV.Repo
     public interface IUserRepoDb : ICrudRepo<UserDb, int>
     {
 
-        UserDb ReadNick(string nick);
+        UserDb ReadNick(string nick, int userId);
        
-       UserDb ReadDni(string nick);
+       UserDb ReadDni(string nick, int userId);
 
-        UserDb Authenticate(string user,string password);
+        UserDb Authenticate(string user,string password, int userId);
 
     }
 }

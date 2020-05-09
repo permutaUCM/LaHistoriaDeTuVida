@@ -14,7 +14,7 @@ namespace LHDTV.Repo
             fakeRepo = _fake.photos;
         }
 
-        public PhotoDb Create(PhotoDb entity)
+        public PhotoDb Create(PhotoDb entity, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -25,7 +25,7 @@ namespace LHDTV.Repo
 
 
         }
-        public PhotoDb Read(int id)
+        public PhotoDb Read(int id, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -33,7 +33,7 @@ namespace LHDTV.Repo
                 return photo;
             }
         }
-        public PhotoDb Update(PhotoDb entity)
+        public PhotoDb Update(PhotoDb entity, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -44,7 +44,7 @@ namespace LHDTV.Repo
             }
         }
 
-        public void RemoveTag(TagDb tag)
+        public void RemoveTag(TagDb tag, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -54,7 +54,7 @@ namespace LHDTV.Repo
         }
 
         //Si borra correctamente devuelve un null
-        public PhotoDb Delete(int id)
+        public PhotoDb Delete(int id, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -97,7 +97,7 @@ namespace LHDTV.Repo
                 return ctx.TagTypeMaster.Include(t => t.Extra1).Include(t => t.Extra2).Include(t => t.Extra3).ToList();
             }
         }
-        public void UpdateTag(TagDb tag)
+        public void UpdateTag(TagDb tag, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
@@ -105,7 +105,5 @@ namespace LHDTV.Repo
                 ctx.SaveChanges();
             }
         }
-
-
     }
 }

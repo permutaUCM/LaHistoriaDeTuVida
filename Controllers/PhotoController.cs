@@ -15,6 +15,8 @@ namespace LHDTV.Controllers
 {
     [ApiController]
     [Route("api/photo")]
+    [Authorize(Roles = "USER,ADMIN")]
+
     public class PhotoController : ControllerBase
     {
 
@@ -46,7 +48,7 @@ namespace LHDTV.Controllers
 
             var id = form.id;
 
-            var photo = photoService.GetPhoto(id);
+            var photo = photoService.GetPhoto(id, 1);
 
             if (photo == null)
             {
@@ -84,7 +86,7 @@ namespace LHDTV.Controllers
         [HttpPost("updatePhoto")]
         public ActionResult UpdatePhoto([FromBody]UpdatePhotoForm form)
         {
-            return Ok(photoService.Update(form));
+            return Ok(photoService.Update(form, 1));
         }
 
         [HttpPost("addPhoto")]
@@ -98,7 +100,7 @@ namespace LHDTV.Controllers
                 }
             };
 
-            var ret = photoService.Create(form);
+            var ret = photoService.Create(form, 1);
             return Ok(ret);
         }
 
@@ -135,7 +137,7 @@ namespace LHDTV.Controllers
         [HttpGet("delete/{photoId}")]
         public ActionResult delete(int photoId)
         {
-            return Ok(photoService.Delete(photoId));
+            return Ok(photoService.Delete(photoId, 1));
         }
 
         [HttpPost("addTag")]
@@ -145,7 +147,7 @@ namespace LHDTV.Controllers
             {
                 var response = new {
                     Metadata = new {},
-                    Data = photoService.AddTag(tagForm)
+                    Data = photoService.AddTag(tagForm, 1)
                 };
                 return Ok(response);
             }
@@ -166,7 +168,7 @@ namespace LHDTV.Controllers
             {
                 var response = new {
                     Metadata = new {},
-                    Data = photoService.UpdateTag(tagForm)
+                    Data = photoService.UpdateTag(tagForm, 1)
                 };
                 return Ok(response);
             }
@@ -187,7 +189,7 @@ namespace LHDTV.Controllers
             {
                 var response = new {
                     Metadata = new {},
-                    Data = photoService.RemoveTag(tagForm)
+                    Data = photoService.RemoveTag(tagForm, 1)
                 };
                 return Ok(response);
             }

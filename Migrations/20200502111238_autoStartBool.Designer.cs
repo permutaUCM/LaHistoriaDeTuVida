@@ -4,14 +4,16 @@ using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    partial class LHDTVContextModelSnapshot : ModelSnapshot
+    [Migration("20200502111238_autoStartBool")]
+    partial class autoStartBool
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,9 +186,6 @@ namespace LHDTV.Migrations
                     b.Property<string>("TransitionName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TransitionUserName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("PhotoTransition");
@@ -259,9 +258,6 @@ namespace LHDTV.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecovertyToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -7,6 +7,8 @@ public class FolderProfile : Profile
     {
         CreateMap<LHDTV.Models.DbEntity.FolderDb, LHDTV.Models.ViewEntity.FolderView>()
             .ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.DefaultPhoto.Url));
+
+        CreateMap<LHDTV.Models.DbEntity.PhotoTransition, LHDTV.Models.ViewEntity.PhotoTransitionView>();
     }
 
 }
