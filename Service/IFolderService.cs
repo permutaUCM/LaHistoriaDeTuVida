@@ -22,7 +22,7 @@ namespace LHDTV.Service
 
         FolderView addPhotoToFolder(int folderId, int photo, int userId);
 
-        FolderView deletePhotoToFolder(int folderId, int photo, int userId);
+        FolderView deletePhotoToFolder(int folderId, List<int> photo, int userId);
 
         FolderView updateDefaultPhotoToFolder(int folderId, int p, int userId);
  

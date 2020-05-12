@@ -36,7 +36,7 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
+                var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
                 return folder;
             }
 
@@ -94,16 +94,23 @@ namespace LHDTV.Repo
         }
         // recibe una lista de fotos la mete en la carpeta, funcion pendiente
 
-        public FolderDb AddPhotoToFolder(FolderDb EntFolder, PhotoDb photo, int userId)
+        public FolderDb AddPhotoToFolder(FolderDb entFolder, PhotoDb photo, int userId)
         {
 
 
             using (var ctx = new LHDTVContext())
             {
-                EntFolder.Photos.Add(photo);
-                ctx.Folder.Update(EntFolder);
+
+                var newMap = ctx.PhotoFolderMap.Add(new PhotoFolderMap()
+                {
+                    PhotoId = photo.Id,
+                    FolderId = entFolder.Id,
+                });
                 ctx.SaveChanges();
-                return EntFolder;
+
+                var ret = ctx.Folder.FirstOrDefault(f => f.Id == entFolder.Id);
+
+                return ret;
             }
 
         }
@@ -111,38 +118,45 @@ namespace LHDTV.Repo
 
         //eliminar una foto de una carpeta (dado una id de carpeta y una id de photo)
 
-        public FolderDb deletePhotoToFolder(int Id, PhotoDb p, int userId)
+        public FolderDb deletePhotosToFolder(int id, List<PhotoDb> photos, int userId)
         {
+
 
             using (var ctx = new LHDTVContext())
             {
 
-                var photo = ctx.Folder.Include(f => f.Photos).FirstOrDefault(f => f.Id == Id);
-                ctx.Folder.Remove(photo);
+                ctx.PhotoFolderMap.RemoveRange(photos.Select(p => new PhotoFolderMap()
+                {
+                    FolderId = id,
+                    PhotoId = p.Id
+                }).ToList());
+
                 ctx.SaveChanges();
-                return null;
+
+                var ret = ctx.Folder.Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).FirstOrDefault(f => f.Id == id);
+
+                return ret;
             }
 
         }
 
 
 
+
+
         //Mirar el actualizar photo por defecto
 
-        public FolderDb updateDefaultPhotoToFolder(int Id, PhotoDb p, int userId)
+        public FolderDb updateDefaultPhotoToFolder(FolderDb folder, PhotoDb p, int userId)
         {
 
             using (var ctx = new LHDTVContext())
             {
-
-                var photo = ctx.Folder.Include(f => f.DefaultPhoto).FirstOrDefault(f => f.Id == Id);
-
-                photo.DefaultPhoto = p;
-                ctx.Folder.Update(photo);
+                
+                folder.DefaultPhoto = p;
+                ctx.Folder.Update(folder);
                 ctx.SaveChanges();
-                return null;
 
-
+                return folder;
             }
 
 
@@ -152,7 +166,7 @@ namespace LHDTV.Repo
         public List<LHDTV.Models.DbEntity.PhotoTransition> GetTransitionMetadata()
         {
             using (var ctx = new LHDTVContext())
-            { 
+            {
                 var transitions = ctx.PhotoTransition.ToList();
 
                 return transitions;
@@ -164,8 +178,8 @@ namespace LHDTV.Repo
 
             using (var ctx = new LHDTVContext())
             {
-
-                return ctx.Folder.Include(f => f.Photos).Where(f => f.Id == folderId).Where(f => f.Photos.Select(p => p.Id).ToList().Contains(photoId)).SingleOrDefault() == null;
+                var exists = ctx.PhotoFolderMap.Where(pf => pf.PhotoId == photoId && pf.FolderId == folderId).SingleOrDefault() != null;
+                return exists;
             }
 
         }

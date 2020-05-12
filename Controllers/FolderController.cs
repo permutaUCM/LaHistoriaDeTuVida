@@ -66,7 +66,7 @@ namespace LHDTV.Controllers
         }
 
         [HttpPost("update")]
-        public ActionResult UpdateFolder([FromBody]UpdateFolderForm form)
+        public ActionResult UpdateFolder([FromBody] UpdateFolderForm form)
         {
 
             return Ok(folderService.Update(form, 1));
@@ -75,7 +75,7 @@ namespace LHDTV.Controllers
 
 
         [HttpPost("add")]
-        public ActionResult addFolder([FromForm]AddFolderForm form)
+        public ActionResult addFolder([FromForm] AddFolderForm form)
         {
 
             var ret = folderService.Create(form, 1);
@@ -92,7 +92,7 @@ namespace LHDTV.Controllers
 
         //addPhotoToFolder
         [HttpPost("addPhoto")]
-        public ActionResult addPhotoToFolder(int folderId,  int photoId)
+        public ActionResult addPhotoToFolder(int folderId, int photoId)
         {
 
             return Ok(folderService.addPhotoToFolder(folderId, photoId, 1));
@@ -101,48 +101,56 @@ namespace LHDTV.Controllers
 
         //deletePhotoToFolder
         [HttpPost("deletePhoto")]
-        public ActionResult deletePhotoToFolder(int folderId, int photo)
+        public ActionResult deletePhotoToFolder([FromBody] RemoveFromFolder form)
         {
 
-            return Ok(folderService.deletePhotoToFolder(folderId, photo, 1));
-        }
-
-        //updateDefaultPhotoToFolder
-        [HttpPost("updateDefaultPhoto")]
-        public ActionResult updateDefaultPhotoToFolder(int folderId, int photo)
-        {
-
-            return Ok(folderService.updateDefaultPhotoToFolder(folderId, photo, 1));
-        }
-
-        [HttpGet("all")]
-        public ActionResult getAllFolders([FromQuery]Pagination pag)
-        {
-
-            try
+            return Ok(new
             {
-                var folders = folderService.GetAll(pag, 1);
-
-                return Ok(new
-                {
-                    Metadata = new
-                    {
-                        Pag = pag,
-                        PagCount = 150,
-                    },
-                    Data = folders
-                });
-
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Unespected error: " + e.StackTrace);
-                return BadRequest(localizer["ERROR_DEFAULT"]);
-            }
-        }
-
-
+                Metadata = new { },
+                Data = folderService.deletePhotoToFolder(form.FolderId, form.PhotosIds, 1)
+            });
     }
+
+    //updateDefaultPhotoToFolder
+    [HttpPost("updateDefaultPhoto")]
+    public ActionResult updateDefaultPhotoToFolder([FromBody] UpdateFolderPhotoForm form)
+    {
+
+        var newFolder = folderService.updateDefaultPhotoToFolder(form.FolderId, form.PhotoId, 1);
+        return Ok(new
+        {
+            metadata = new { },
+            data = newFolder
+        });
+    }
+
+    [HttpGet("all")]
+    public ActionResult getAllFolders([FromQuery] Pagination pag)
+    {
+
+        try
+        {
+            var folders = folderService.GetAll(pag, 1);
+
+            return Ok(new
+            {
+                Metadata = new
+                {
+                    Pag = pag,
+                    PagCount = 150,
+                },
+                Data = folders
+            });
+
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Unespected error: " + e.StackTrace);
+            return BadRequest(localizer["ERROR_DEFAULT"]);
+        }
+    }
+
+}
 
 
 

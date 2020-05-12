@@ -16,6 +16,7 @@ namespace LHDTV.Models.DbEntity
         public DbSet<PhotoTagsTypes> TagTypeMaster { get; set; }
 
         public DbSet<PhotoTransition> PhotoTransition { get; set; }
+        public DbSet<PhotoFolderMap> PhotoFolderMap { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,6 +28,7 @@ namespace LHDTV.Models.DbEntity
             modelBuilder.Entity<PhotoTagsTypes>().HasKey(t => t.Name);
             modelBuilder.Entity<Extra>().HasKey(t => t.Name);
 
+            modelBuilder.Entity<PhotoFolderMap>().HasKey(pf => new {pf.PhotoId, pf.FolderId} );
         }
 
 

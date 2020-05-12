@@ -96,7 +96,7 @@ namespace LHDTV.Service
             f.Transition = folder.Transition;
             f.AutoStart = folder.AutoStart;
             f.ShowTime = folder.TransitionTime;
-            
+
             var folderRet = folderRepo.Update(f, userId);
             var folderTemp = mapper.Map<FolderView>(folderRet);
 
@@ -125,11 +125,11 @@ namespace LHDTV.Service
 
 
                 // esto valdria para una foto ¿bucle para una lista de fotos?
-                f.Photos.Add(p);
+                folderRepo.AddPhotoToFolder(f, p, userId);
 
 
                 // intentamos conseguir una lista de tags de photos, que no estan en la lista de tags de la carpeta. 
-                var nocontainstags = p.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+                var nocontainstags = p.Tag.Where(t => f.PhotosFolder.Where(p => p.Photo.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
                 //var nocontainstags = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
                 foreach (var t in nocontainstags)
                     f.PhotosTags.Add(new FileTags()
@@ -158,7 +158,7 @@ namespace LHDTV.Service
         }
 
 
-        public FolderView deletePhotoToFolder(int folderId, int photoId, int userId)
+        public FolderView deletePhotoToFolder(int folderId, List<int> photosId, int userId)
         {
 
             var f = folderRepo.Read(folderId, userId);
@@ -168,56 +168,71 @@ namespace LHDTV.Service
 
             /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
                   folderRepo.Read(folderId).PhotosTags.Remove(p);*/
+            var photosToRemove = new List<PhotoDb>();
+            foreach (var photoId in photosId)
+            {
+                var photo = f.PhotosFolder.Where(p => p.PhotoId == photoId).SingleOrDefault().Photo;
+                if (photo == null) return null;
 
-            if (f.Photos.Where(p => p.Id == photoId).SingleOrDefault() == null) return null;
+                photosToRemove.Add(photo);
 
-            var photo = f.Photos.Where(p => p.Id == photoId).SingleOrDefault();
-            f.Photos.Remove(photo);
+                var tagsaeliminar = photo.Tag.Where(t => f.PhotosFolder.Where(p => p.Photo.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
+                foreach (var t in tagsaeliminar)
+                    f.PhotosTags.Remove(new FileTags()
+                    {
+
+                        Title = t,
+
+                    });
+            }
+
             // Obtener el listado de tags a eliminar
-            var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt.Title).Contains(t.Title)).FirstOrDefault() == null).Select(t => t.Title).ToList();
             //var tagsaeliminar = photo.Tag.Where(t => f.Photos.Where(p => p.Tag.Select(pt => pt).Contains(t)).FirstOrDefault() == null).ToList();
+            
+            //Si se ha eliminado la foto por defecto, establecer como foto por defecto a la 1º foto no eliminada
+            if(photosToRemove.Contains(f.DefaultPhoto)){
 
-            foreach (var t in tagsaeliminar)
-                f.PhotosTags.Remove(new FileTags()
-                {
+                var firstNonDeletedPhoto = f.PhotosFolder.FirstOrDefault(pf => !photosToRemove.Contains(pf.Photo));
 
-                    Title = t,
-
-                });
-
+                if(firstNonDeletedPhoto != null)
+                    f.DefaultPhoto = firstNonDeletedPhoto.Photo;
+                else
+                    f.DefaultPhoto = null;
+            }
+            folderRepo.deletePhotosToFolder(folderId, photosToRemove, userId);
             var folderRet = folderRepo.Update(f, userId);
 
             var folderTemp = mapper.Map<FolderView>(folderRet);
 
 
             return folderTemp;
-
-
-
         }
 
         // actualizar photo por defecto
 
         public FolderView updateDefaultPhotoToFolder(int folderId, int photoId, int userId)
-        {
+        { 
 
 
             var f = folderRepo.Read(folderId, userId);
 
             if (f == null) return null;
 
-            var p = f.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (f.DefaultPhoto.Id == photoId)
+            {
+                return mapper.Map<FolderView>(f);
+            }
+
+            var p = f.PhotosFolder.FirstOrDefault(pf => pf.PhotoId == photoId);
             /*  if(folderRepo.Read(folderId).PhotosTags.ContainsKey(p))
                   folderRepo.Read(folderId).PhotosTags.Remove(p);*/
 
             //     if(!folderRepo.Read(folderId).PhotosTags.ContainsKey(p))return null;
 
-            f.DefaultPhoto = p;
-
             // comprobar que la photo existe en la carpeta, comprobar si la foto esta eliminada,foto no es nula
             // lanzar excepciones en vez de nulos.
 
-            var folderRet = folderRepo.updateDefaultPhotoToFolder(folderId, p, userId);
+            var folderRet = folderRepo.updateDefaultPhotoToFolder(f, p.Photo, userId);
             var folderTemp = mapper.Map<FolderView>(folderRet);
 
 

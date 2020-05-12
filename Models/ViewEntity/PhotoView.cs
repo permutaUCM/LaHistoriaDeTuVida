@@ -14,5 +14,7 @@ namespace LHDTV.Models.ViewEntity
         public string City { get; set; }
         public decimal Size { get; set; }
         public string Url { get; set; }
+
+        public ICollection<FolderView> Folders { get; set; }
     }
 }

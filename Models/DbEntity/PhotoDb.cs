@@ -23,6 +23,7 @@ namespace LHDTV.Models.DbEntity
         public decimal Size { get; set; }
         public bool Deleted { get; set; }
         public string Url { get; set; }
+        public ICollection<PhotoFolderMap> PhotosFolder { get; set; }
 
     }
 }
