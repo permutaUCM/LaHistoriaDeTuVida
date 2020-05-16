@@ -10,7 +10,9 @@ using LHDTV.Models.Forms;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
+using Microsoft.Extensions.Logging;
 
 
 namespace LHDTV.Service
@@ -23,13 +25,27 @@ namespace LHDTV.Service
         private readonly IMapper mapper;
         private readonly string basePath;
         private const string BASEPATHCONF = "photoRoutes:uploadRoute";
+        private readonly IAutoTagService autoTagService;
 
-        public PhotoService(IPhotoRepo _photoRepo, IMapper _mapper, IConfiguration _configuration)
+        private readonly IFolderService folderService;
+        private readonly ILogger<PhotoService> logger;
+
+
+        private const int NO_FOLDER = -2;
+
+        public PhotoService(IPhotoRepo _photoRepo,
+        IMapper _mapper,
+        IConfiguration _configuration,
+        IAutoTagService _autoTagService,
+        IFolderService _folderService,
+        ILogger<PhotoService> _logger)
         {
             photoRepo = _photoRepo;
             mapper = _mapper;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
-
+            autoTagService = _autoTagService;
+            folderService = _folderService;
+            logger = _logger;
         }
 
         public PhotoView GetPhoto(int id, int userId)
@@ -41,8 +57,7 @@ namespace LHDTV.Service
 
 
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ClientGuid { get; set; }
+
 
         //creamos una nueva foto y la devolvemos?¿ para tratarla?¿
         public PhotoView Create(AddPhotoForm photo, int userId)
@@ -51,6 +66,19 @@ namespace LHDTV.Service
             var file = photo.File;
             string path;
 
+            if(photo.Tags == null)
+                photo.Tags = new List<TagForm>();
+            FolderView folder = null;
+            if (photo.FolderId != NO_FOLDER)
+            {
+                folder = folderService.GetFolder(photo.FolderId, userId);
+                if (folder == null)
+                {
+                    throw new LHDTV.Exceptions.NotFoundException("No se ha encontrado la carpeta " + photo.FolderId);
+                }
+            }
+
+
             if (!uploadFile(photo.File, out path))
             {
                 return null;
@@ -58,9 +86,35 @@ namespace LHDTV.Service
 
 
 
+            var gps = MetadataExtractor.ImageMetadataReader.ReadMetadata(photo.File.OpenReadStream())
+                                         .OfType<GpsDirectory>()
+                                         .FirstOrDefault();
+
+            ICollection<string> locationTags;
+            if (gps != null)
+            {
+                try
+                {
+                    var location = gps.GetGeoLocation();
+                    locationTags = autoTagService.GetLocationData(location.Latitude, location.Longitude);
+                    foreach (var t in locationTags)
+                    {
+                        photo.Tags.Add(new TagForm()
+                        {
+                            Title = t,
+                            Type = "type"
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.LogError("Error obteniendo localización de GPS: " + e.Message);
+                }
+            }
 
             PhotoDb photoPOJO = new PhotoDb()
             {
+                UserId = userId,
                 Url = path.Trim(),
                 UploadDate = DateTime.UtcNow,
                 Deleted = false,
@@ -78,13 +132,16 @@ namespace LHDTV.Service
             var photoRet = photoRepo.Create(photoPOJO, userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
+            folderService.addPhotoToFolder(folder.Id, photoRet.Id, userId);
+
             return photoTemp;
         }
+
         public PhotoView Update(UpdatePhotoForm photo, int userId)
         {
 
 
-            var c = photoRepo.Read(photo.PhotoId,   userId);
+            var c = photoRepo.Read(photo.PhotoId, userId);
             if (c == null)
             {
                 return null;
@@ -93,7 +150,7 @@ namespace LHDTV.Service
             c.Title = photo.Title.Trim();
             c.Caption = photo.Caption.Trim();
 
-            var photoRet = photoRepo.Update(c,   userId);
+            var photoRet = photoRepo.Update(c, userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
             return photoTemp;
@@ -103,7 +160,7 @@ namespace LHDTV.Service
         //Borrado lógico
         public PhotoView Delete(int photoId, int userId)
         {
-            var photo = photoRepo.Read(photoId,   userId);
+            var photo = photoRepo.Read(photoId, userId);
 
             if (photo == null)
             {
@@ -112,7 +169,7 @@ namespace LHDTV.Service
 
             photo.Deleted = true;
 
-            var photoRet = photoRepo.Update(photo,   userId);
+            var photoRet = photoRepo.Update(photo, userId);
             var photoMap = mapper.Map<PhotoView>(photoRet);
 
             return photoMap;
@@ -135,9 +192,11 @@ namespace LHDTV.Service
         //     return listPhotosView;
         // }
 
-        public List<PhotoView> GetAll(Pagination pagination,int userId){
-            var photos = photoRepo.GetAll(pagination, userId); 
-            if(photos == null){
+        public List<PhotoView> GetAll(Pagination pagination, int userId)
+        {
+            var photos = photoRepo.GetAll(pagination, userId);
+            if (photos == null)
+            {
                 return new List<PhotoView>();
             }
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
@@ -147,7 +206,7 @@ namespace LHDTV.Service
 
         public PhotoView AddTag(TagForm form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId,   userId);
+            var photo = photoRepo.Read(form.PhotoId, userId);
 
             if (photo == null)
             {
@@ -163,7 +222,7 @@ namespace LHDTV.Service
                 Extra3 = form.Extra3,
             });
 
-            var ret = photoRepo.Update(photo,   userId);
+            var ret = photoRepo.Update(photo, userId);
 
             return mapper.Map<PhotoView>(ret);
 
@@ -171,7 +230,7 @@ namespace LHDTV.Service
 
         public PhotoView UpdateTag(TagFormUpdate form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId,   userId);
+            var photo = photoRepo.Read(form.PhotoId, userId);
 
 
             if (photo == null)
@@ -193,7 +252,7 @@ namespace LHDTV.Service
             tag.Extra3 = form.Extra3;
             tag.Type = form.Type;
 
-            photoRepo.UpdateTag(tag,   userId);
+            photoRepo.UpdateTag(tag, userId);
 
             return mapper.Map<PhotoView>(photo);
 
@@ -201,7 +260,7 @@ namespace LHDTV.Service
 
         public PhotoView RemoveTag(TagFormDelete form, int userId)
         {
-            var photo = photoRepo.Read(form.PhotoId,   userId);
+            var photo = photoRepo.Read(form.PhotoId, userId);
 
             if (photo == null)
             {
@@ -215,7 +274,7 @@ namespace LHDTV.Service
                 throw new Exceptions.NotFoundException("El tag que desea eliminar no está asociado a la fotografía encontrada");
             }
 
-            photoRepo.RemoveTag(tag,   userId);
+            photoRepo.RemoveTag(tag, userId);
             var ok = photo.Tag.Remove(tag);
 
             return mapper.Map<PhotoView>(photo);
@@ -238,11 +297,11 @@ namespace LHDTV.Service
 
             var extension = file.FileName.Split(".");
 
-            var fileName = Path.Combine(guid + "." + extension);
+            var fileName = Path.Combine(guid + "." + extension[extension.Length - 1]);
 
             var filePath = Path.Combine(basePath, fileName);
 
-            if (!Directory.Exists(basePath))
+            if (!System.IO.Directory.Exists(basePath))
             {
                 route = "";
                 return false;

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 namespace LHDTV.Models.DbEntity
 {
     public class LHDTVContext : DbContext
@@ -29,6 +30,8 @@ namespace LHDTV.Models.DbEntity
             modelBuilder.Entity<Extra>().HasKey(t => t.Name);
 
             modelBuilder.Entity<PhotoFolderMap>().HasKey(pf => new {pf.PhotoId, pf.FolderId} );
+            modelBuilder.Entity<UserDb>().HasOne(u => u.ProfilePhoto).WithOne(p => p.ProfileUser).HasForeignKey<UserDb>(u => u.ProfilePhotoId);
+            
         }
 
 

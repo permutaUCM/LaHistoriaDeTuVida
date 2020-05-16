@@ -14,7 +14,8 @@ namespace LHDTV.Models.ViewEntity
         public string Email { get; set; }
         public string Dni { get; set; }
         public string Token { get; set; }
-        public string Role{get; set;}
+        public int ProfilePhotoId { get; set; }
+        public string Role { get; set; }
 
 
     }

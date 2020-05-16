@@ -15,6 +15,8 @@ namespace LHDTV.Models.Forms
 
         public List<TagForm> Tags { get; set; }
 
+        public int FolderId { get; set; }
+
         [Required(ErrorMessage = "El campo File es obligatorio.")]
         public IFormFile File { get; set; }
     }

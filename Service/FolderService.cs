@@ -39,6 +39,7 @@ namespace LHDTV.Service
         public FolderView GetFolder(int id, int userId)
         {
 
+
             var folder = folderRepo.Read(id, userId);
             var folderRet = mapper.Map<FolderView>(folder);
 
@@ -121,7 +122,7 @@ namespace LHDTV.Service
                 var p = photoRepo.Read(photoId, userId);
 
                 //var aux = folderRepo.Read(f.Id).Photos;
-                if (!folderRepo.ExistsPhoto(folderId, photoId)) return null;
+                if (folderRepo.ExistsPhoto(folderId, photoId)) return null;
 
 
                 // esto valdria para una foto ¿bucle para una lista de fotos?
@@ -134,10 +135,7 @@ namespace LHDTV.Service
                 foreach (var t in nocontainstags)
                     f.PhotosTags.Add(new FileTags()
                     {
-
                         Title = t,
-
-
                     });
 
 
@@ -243,7 +241,9 @@ namespace LHDTV.Service
         public List<FolderView> GetAll(Pagination pagination, int userId)
         {
             var folders = folderRepo.GetAll(pagination, userId);
-            return folders.Select(f => this.mapper.Map<FolderView>(f)).ToList();
+            var allFolders = folders.Select(f => this.mapper.Map<FolderView>(f)).ToList();
+        
+            return allFolders;    
         }
 
 

@@ -13,7 +13,6 @@ namespace LHDTV.Models.DbEntity
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Dni { get; set; }
-
         public string Role { get; set; }
         //public string Token { get; set; }
         public bool Deleted { get; set; }
@@ -22,6 +21,9 @@ namespace LHDTV.Models.DbEntity
         public string RecovertyToken { get; set; }
         //This field mark the expiration date for the RecoveryToken
         public DateTime ExpirationTokenDate { get; set; }
+
+        public int ProfilePhotoId { get; set; }
+        public PhotoDb ProfilePhoto { get; set; }
 
     }
 }

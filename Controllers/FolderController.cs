@@ -138,6 +138,33 @@ namespace LHDTV.Controllers
                 {
                     Pag = pag,
                     PagCount = 150,
+                    FolderMetadata = folderService.GetMetadata(),
+
+                },
+                Data = folders
+            });
+
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Unespected error: " + e.StackTrace);
+            return BadRequest(localizer["ERROR_DEFAULT"]);
+        }
+    }
+
+    [HttpGet("folderMetadata")]
+    public ActionResult getMetadata([FromQuery] Pagination pag)
+    {
+        try
+        {
+            var folders = folderService.GetAll(pag, 1);
+
+            return Ok(new
+            {
+                Metadata = new
+                {
+                    Pag = pag,
+                    PagCount = 150,
                 },
                 Data = folders
             });

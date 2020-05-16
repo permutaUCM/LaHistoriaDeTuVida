@@ -58,12 +58,12 @@ namespace LHDTV
             services.AddDbContext<LHDTV.Models.DbEntity.LHDTVContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddTransient<IAutoTagService, AutoTagService>();
 
             //modulo photos
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoRepo, PhotoRepoDb>();
-            services.AddSingleton<Fakes.Fakes>(new Fakes.Fakes());
 
 
             //modulo folders

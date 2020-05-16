@@ -9,10 +9,8 @@ namespace LHDTV.Repo
     public class PhotoRepoDb : IPhotoRepo
     {
 
-        private List<PhotoDb> fakeRepo;
-        public PhotoRepoDb(Fakes.Fakes _fake)
+        public PhotoRepoDb()
         {
-            fakeRepo = _fake.photos;
         }
 
         public PhotoDb Create(PhotoDb entity, int userId)

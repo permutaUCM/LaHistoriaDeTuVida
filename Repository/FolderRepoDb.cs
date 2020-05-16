@@ -11,11 +11,9 @@ namespace LHDTV.Repo
 
     public class FolderRepoDb : IFolderRepo
     {
-        private List<FolderDb> fakerepo;
 
-        public FolderRepoDb(Fakes.Fakes _fake)
+        public FolderRepoDb()
         {
-            fakerepo = _fake.folders;
 
 
         }
@@ -83,7 +81,7 @@ namespace LHDTV.Repo
                                         .ToList();
                     return res;
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
                     return new List<FolderDb>();
                 }

@@ -4,14 +4,19 @@ using System.Collections.Generic;
 using LHDTV.Service;
 using LHDTV.Models.Forms;
 using LHDTV.Models.DbEntity;
+using LHDTV.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
 using Microsoft.AspNetCore.Authorization;
-
-
+using Microsoft.Extensions.Options;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
+using MetadataExtractor.IO;
+using MetadataExtractor.Util;
+using System.Linq;
 namespace LHDTV.Controllers
 {
     [ApiController]
@@ -30,19 +35,24 @@ namespace LHDTV.Controllers
         private readonly string basePath;
 
         private const string BASEPATHCONF = "photoRoutes:uploadRoute";
+        private readonly AppSettings appSettings;
 
         public PhotoController(IPhotoService _photoService, IStringLocalizer<PhotoController> _localizer,
-                          ILogger<PhotoController> _logger, IConfiguration _configuration)
+                          ILogger<PhotoController> _logger, IConfiguration _configuration,
+                          IOptions<AppSettings> _appSettings
+            )
         {
             photoService = _photoService;
             localizer = _localizer;
             logger = _logger;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
 
+            appSettings = _appSettings.Value;
+
         }
 
         [HttpPost]
-        public ActionResult getPhoto([FromBody]PhotoForm form)
+        public ActionResult getPhoto([FromBody] PhotoForm form)
         {
 
             logger.LogInformation("getphoto {@form}", form);
@@ -85,29 +95,21 @@ namespace LHDTV.Controllers
         }*/
 
         [HttpPost("updatePhoto")]
-        public ActionResult UpdatePhoto([FromBody]UpdatePhotoForm form)
+        public ActionResult UpdatePhoto([FromBody] UpdatePhotoForm form)
         {
             return Ok(photoService.Update(form, 1));
         }
 
         [HttpPost("addPhoto")]
-        public ActionResult addPhoto([FromForm]AddPhotoForm form)
+        public ActionResult addPhoto([FromForm] AddPhotoForm form)
         {
-
-            form.Tags = new List<TagForm>(){
-                new TagForm() {
-                    Title = "T123",
-                    Type = "RESTAURANT",
-                }
-            };
-
             var ret = photoService.Create(form, 1);
             return Ok(ret);
         }
 
 
         [HttpGet("all")]
-        public ActionResult getAll([FromQuery]Pagination pag, int userId)
+        public ActionResult getAll([FromQuery] Pagination pag, int userId)
         {
 
             try
@@ -150,8 +152,9 @@ namespace LHDTV.Controllers
         {
             try
             {
-                var response = new {
-                    Metadata = new {},
+                var response = new
+                {
+                    Metadata = new { },
                     Data = photoService.AddTag(tagForm, 1)
                 };
                 return Ok(response);
@@ -173,8 +176,9 @@ namespace LHDTV.Controllers
         {
             try
             {
-                var response = new {
-                    Metadata = new {},
+                var response = new
+                {
+                    Metadata = new { },
                     Data = photoService.UpdateTag(tagForm, 1)
                 };
                 return Ok(response);
@@ -196,8 +200,9 @@ namespace LHDTV.Controllers
         {
             try
             {
-                var response = new {
-                    Metadata = new {},
+                var response = new
+                {
+                    Metadata = new { },
                     Data = photoService.RemoveTag(tagForm, 1)
                 };
                 return Ok(response);
@@ -212,6 +217,31 @@ namespace LHDTV.Controllers
                 logger.LogError("EXCEPCION NO CONTROLADA: " + e.StackTrace);
                 return BadRequest("Ha ocurrido un error no esperado.");
             }
+        }
+
+        [HttpGet("imageFile/{fileId}")]
+        public IActionResult BannerImage(int fileId)
+        {
+
+            try
+            {
+                var photo = photoService.GetPhoto(fileId, 1);
+
+                if (photo == null)
+                {
+                    return BadRequest("No se ha encontrado el documento solicitado");
+                }
+
+                var file = System.IO.Path.Combine(appSettings.BasePathFolder, photo.Url);
+
+                return PhysicalFile(file, "image/jpeg");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+
         }
 
 
