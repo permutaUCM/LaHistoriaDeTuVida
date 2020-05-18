@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200510123602_photoFolders")]
-    partial class photoFolders
+    [Migration("20200516113415_profilePhoto")]
+    partial class profilePhoto
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -130,12 +130,10 @@ namespace LHDTV.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Photo");
                 });
@@ -270,6 +268,9 @@ namespace LHDTV.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProfilePhotoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RecovertyToken")
                         .HasColumnType("nvarchar(max)");
 
@@ -277,6 +278,9 @@ namespace LHDTV.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfilePhotoId")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });
@@ -294,13 +298,6 @@ namespace LHDTV.Migrations
                         .WithMany()
                         .HasForeignKey("DefaultPhotoId");
 
-                    b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
-                {
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -341,6 +338,15 @@ namespace LHDTV.Migrations
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", null)
                         .WithMany("Tag")
                         .HasForeignKey("PhotoDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "ProfilePhoto")
+                        .WithOne("User")
+                        .HasForeignKey("LHDTV.Models.DbEntity.UserDb", "ProfilePhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -36,10 +36,11 @@ namespace LHDTV.Controllers
 
         private const string BASEPATHCONF = "photoRoutes:uploadRoute";
         private readonly AppSettings appSettings;
+        private readonly ITokenRecoveryService tokenRecovery;
 
         public PhotoController(IPhotoService _photoService, IStringLocalizer<PhotoController> _localizer,
                           ILogger<PhotoController> _logger, IConfiguration _configuration,
-                          IOptions<AppSettings> _appSettings
+                          IOptions<AppSettings> _appSettings, ITokenRecoveryService tokenRecovery
             )
         {
             photoService = _photoService;
@@ -48,7 +49,7 @@ namespace LHDTV.Controllers
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
 
             appSettings = _appSettings.Value;
-
+            this.tokenRecovery = tokenRecovery;
         }
 
         [HttpPost]
@@ -59,7 +60,8 @@ namespace LHDTV.Controllers
 
             var id = form.id;
 
-            var photo = photoService.GetPhoto(id, 1);
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var photo = photoService.GetPhoto(id, userId);
 
             if (photo == null)
             {
@@ -77,7 +79,8 @@ namespace LHDTV.Controllers
 
             if (size > 0)
             {
-                double dobletemp = new Random().Next(1, 1000000);
+                                    var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+                double dobletemp = new Random().Next(1form, userId000000);
                 var extension = file.FileName.Split(".");
                 var filePath = Path.Combine(basePath , DateTime.UtcNow.Ticks +"_"+ Math.Round(dobletemp) +"."+ extension[extension.Length - 1]);
 
@@ -97,24 +100,26 @@ namespace LHDTV.Controllers
         [HttpPost("updatePhoto")]
         public ActionResult UpdatePhoto([FromBody] UpdatePhotoForm form)
         {
-            return Ok(photoService.Update(form, 1));
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            return Ok(photoService.Update(form, userId));
         }
 
         [HttpPost("addPhoto")]
         public ActionResult addPhoto([FromForm] AddPhotoForm form)
         {
-            var ret = photoService.Create(form, 1);
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var ret = photoService.Create(form, userId);
             return Ok(ret);
         }
 
 
         [HttpGet("all")]
-        public ActionResult getAll([FromQuery] Pagination pag, int userId)
+        public ActionResult getAll([FromQuery] Pagination pag)
         {
 
             try
             {
-
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
                 var photos = photoService.GetAll(pag, userId);
 
 
@@ -141,10 +146,44 @@ namespace LHDTV.Controllers
             }
         }
 
+        //Returns all files but the ones in the folder
+        [HttpGet("all/{folderId}")]
+        public ActionResult getAllNotInFolder([FromQuery] Pagination pag, int folderId)
+        {
+
+            try
+            {
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+                var photos = photoService.GetAll(pag, userId, folderId);
+
+
+                return Ok(new
+                {
+
+                    Metadata = new
+                    {
+                        Page = pag,
+                        PagCount = 150,
+                    },
+                    Data = photos
+
+                });
+
+
+            }
+            catch (Exception e)
+            {
+
+                logger.LogError("Unexpected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+
+            }
+        }
         [HttpGet("delete/{photoId}")]
         public ActionResult delete(int photoId)
         {
-            return Ok(photoService.Delete(photoId, 1));
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            return Ok(photoService.Delete(photoId, userId));
         }
 
         [HttpPost("addTag")]
@@ -152,10 +191,12 @@ namespace LHDTV.Controllers
         {
             try
             {
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+
                 var response = new
                 {
                     Metadata = new { },
-                    Data = photoService.AddTag(tagForm, 1)
+                    Data = photoService.AddTag(tagForm, userId)
                 };
                 return Ok(response);
             }
@@ -176,10 +217,12 @@ namespace LHDTV.Controllers
         {
             try
             {
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+
                 var response = new
                 {
                     Metadata = new { },
-                    Data = photoService.UpdateTag(tagForm, 1)
+                    Data = photoService.UpdateTag(tagForm, userId)
                 };
                 return Ok(response);
             }
@@ -200,10 +243,12 @@ namespace LHDTV.Controllers
         {
             try
             {
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+
                 var response = new
                 {
                     Metadata = new { },
-                    Data = photoService.RemoveTag(tagForm, 1)
+                    Data = photoService.RemoveTag(tagForm, userId)
                 };
                 return Ok(response);
             }
@@ -223,9 +268,17 @@ namespace LHDTV.Controllers
         public IActionResult BannerImage(int fileId)
         {
 
+            if (fileId == 0)
+            {
+                var file = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
+
+                return PhysicalFile(file, "image/jpeg");
+            }
+
             try
             {
-                var photo = photoService.GetPhoto(fileId, 1);
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+                var photo = photoService.GetPhoto(fileId, userId);
 
                 if (photo == null)
                 {
@@ -238,7 +291,9 @@ namespace LHDTV.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                var file = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
+
+                return PhysicalFile(file, "image/jpeg");
             }
 
 

@@ -32,6 +32,8 @@ namespace LHDTV.Repo
 
         public FolderDb Read(int id, int userId)
         {
+
+            //TODO No debe devolver todas las fotos de la carpeta, si no no se puede filtrar ni paginar.
             using (var ctx = new LHDTVContext())
             {
                 var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
@@ -39,6 +41,7 @@ namespace LHDTV.Repo
             }
 
         }
+        
         // update (datos generales)
         public FolderDb Update(FolderDb entity, int userId)
         {

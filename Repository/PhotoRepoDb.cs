@@ -69,7 +69,8 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.User).Where(p => p.User.Id == userId);
+                var query = ctx.Photo.Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
                 if (pagination.FilterField != null)
                 {
@@ -83,8 +84,37 @@ namespace LHDTV.Repo
                 }
 
 
-                return query.Skip((pagination.NumPag - 1) * pagination.TamPag)
+                return query;
+            }
+        }
+
+        public List<PhotoDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId, int folderId)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+
+                var query = ctx.Photo.Include(p => p.PhotosFolder)
+                        .Where(p => p.UserId == userId && 
+                            !p.PhotosFolder
+                                .Where(pf => pf.FolderId == folderId)
+                                .Select(pf => pf.PhotoId)
+                                .Contains(p.Id))
+                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
+                // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
+                if (pagination.FilterField != null)
+                {
+                    // for (int i = 0; i < pagination.FilterField.Count; i++)
+                    // {
+
+                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
+                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
+                    // }
+
+                }
+
+
+                return query;
             }
         }
 

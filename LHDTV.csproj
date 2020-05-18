@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="ExifLib" Version="1.7.0" />
     <PackageReference Include="MailKit" Version="2.6.0" />
     <PackageReference Include="MetadataExtractor" Version="2.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />

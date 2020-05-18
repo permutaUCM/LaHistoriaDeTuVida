@@ -27,17 +27,20 @@ namespace LHDTV.Controllers
         private readonly string basePath;
 
         private const string BASEPATHCONF = "folderRoutes:uploadRoute";
+        private readonly ITokenRecoveryService tokenRecovery;
+
 
 
         public FolderController(IFolderService _folderService, IStringLocalizer<FolderController> _localizer,
                           ILogger<FolderController> _logger, IConfiguration _configuration,
-                          IPhotoService _photoService)
+                          IPhotoService _photoService, ITokenRecoveryService tokenRecovery)
         {
             folderService = _folderService;
             localizer = _localizer;
             logger = _logger;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
             photoService = _photoService;
+            this.tokenRecovery = tokenRecovery;
         }
 
         [HttpGet("{id}")]
@@ -46,7 +49,8 @@ namespace LHDTV.Controllers
 
             logger.LogInformation("getFolder: id: ", id);
 
-            var folder = folderService.GetFolder(id, 1);
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var folder = folderService.GetFolder(id, userId);
 
             var types = photoService.GetTagTypes();
             if (folder == null)
@@ -69,17 +73,22 @@ namespace LHDTV.Controllers
         public ActionResult UpdateFolder([FromBody] UpdateFolderForm form)
         {
 
-            return Ok(folderService.Update(form, 1));
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            return Ok(folderService.Update(form, userId));
 
         }
 
 
         [HttpPost("add")]
-        public ActionResult addFolder([FromForm] AddFolderForm form)
+        public ActionResult addFolder([FromBody] AddFolderForm form)
         {
-
-            var ret = folderService.Create(form, 1);
-            return Ok(ret);
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var ret = folderService.Create(form, userId);
+            return Ok(new
+            {
+                Metadata = new { },
+                Data = ret
+            });
 
         }
 
@@ -87,15 +96,22 @@ namespace LHDTV.Controllers
         [HttpGet("delete/{folderId}")]
         public ActionResult delete(int folderId)
         {
-            return Ok(folderService.Delete(folderId, 1));
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            return Ok(folderService.Delete(folderId, userId));
         }
 
         //addPhotoToFolder
         [HttpPost("addPhoto")]
-        public ActionResult addPhotoToFolder(int folderId, int photoId)
+        public ActionResult addPhotoToFolder([FromBody] AddPhotoToFolderForm form)
         {
 
-            return Ok(folderService.addPhotoToFolder(folderId, photoId, 1));
+           var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+
+            return Ok(new
+            {
+                Metadata = new { },
+                Data = folderService.addPhotoToFolder(form.FolderId, form.PhotosIds, userId)
+            });
 
         }
 
@@ -103,81 +119,85 @@ namespace LHDTV.Controllers
         [HttpPost("deletePhoto")]
         public ActionResult deletePhotoToFolder([FromBody] RemoveFromFolder form)
         {
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
 
             return Ok(new
             {
                 Metadata = new { },
-                Data = folderService.deletePhotoToFolder(form.FolderId, form.PhotosIds, 1)
+                Data = folderService.deletePhotoToFolder(form.FolderId, form.PhotosIds, userId)
             });
-    }
+        }
 
-    //updateDefaultPhotoToFolder
-    [HttpPost("updateDefaultPhoto")]
-    public ActionResult updateDefaultPhotoToFolder([FromBody] UpdateFolderPhotoForm form)
-    {
-
-        var newFolder = folderService.updateDefaultPhotoToFolder(form.FolderId, form.PhotoId, 1);
-        return Ok(new
+        //updateDefaultPhotoToFolder
+        [HttpPost("updateDefaultPhoto")]
+        public ActionResult updateDefaultPhotoToFolder([FromBody] UpdateFolderPhotoForm form)
         {
-            metadata = new { },
-            data = newFolder
-        });
-    }
 
-    [HttpGet("all")]
-    public ActionResult getAllFolders([FromQuery] Pagination pag)
-    {
-
-        try
-        {
-            var folders = folderService.GetAll(pag, 1);
-
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var newFolder = folderService.updateDefaultPhotoToFolder(form.FolderId, form.PhotoId, userId);
             return Ok(new
             {
-                Metadata = new
-                {
-                    Pag = pag,
-                    PagCount = 150,
-                    FolderMetadata = folderService.GetMetadata(),
-
-                },
-                Data = folders
+                metadata = new { },
+                data = newFolder
             });
-
         }
-        catch (Exception e)
-        {
-            logger.LogError("Unespected error: " + e.StackTrace);
-            return BadRequest(localizer["ERROR_DEFAULT"]);
-        }
-    }
 
-    [HttpGet("folderMetadata")]
-    public ActionResult getMetadata([FromQuery] Pagination pag)
-    {
-        try
+        [HttpGet("all")]
+        public ActionResult getAllFolders([FromQuery] Pagination pag)
         {
-            var folders = folderService.GetAll(pag, 1);
 
-            return Ok(new
+            try
             {
-                Metadata = new
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+                var folders = folderService.GetAll(pag, userId);
+
+                return Ok(new
                 {
-                    Pag = pag,
-                    PagCount = 150,
-                },
-                Data = folders
-            });
+                    Metadata = new
+                    {
+                        Pag = pag,
+                        PagCount = 150,
+                        FolderMetadata = folderService.GetMetadata(),
 
+                    },
+                    Data = folders
+                });
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Unespected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+            }
         }
-        catch (Exception e)
+
+        [HttpGet("folderMetadata")]
+        public ActionResult getMetadata([FromQuery] Pagination pag)
         {
-            logger.LogError("Unespected error: " + e.StackTrace);
-            return BadRequest(localizer["ERROR_DEFAULT"]);
-        }
-    }
+            try
+            {
+                var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+                var folders = folderService.GetAll(pag, userId);
 
-}
+                return Ok(new
+                {
+                    Metadata = new
+                    {
+                        Pag = pag,
+                        PagCount = 150,
+                    },
+                    Data = folders
+                });
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Unespected error: " + e.StackTrace);
+                return BadRequest(localizer["ERROR_DEFAULT"]);
+            }
+        }
+
+    }
 
 
 

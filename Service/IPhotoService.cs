@@ -28,6 +28,7 @@ namespace LHDTV.Service
 
         List<PhotoView> GetAll(Pagination pagination, int userId);
 
+        List<PhotoView> GetAll(Pagination pagination, int userId, int folderId);
 
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200515195503_profilePhoto2")]
-    partial class profilePhoto2
+    [Migration("20200516113955_expirationDateNull")]
+    partial class expirationDateNull
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,8 +135,6 @@ namespace LHDTV.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Photo");
                 });
 
@@ -252,7 +250,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpirationTokenDate")
+                    b.Property<DateTime?>("ExpirationTokenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName1")
@@ -270,7 +268,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfilePhotoId")
+                    b.Property<int?>("ProfilePhotoId")
                         .HasColumnType("int");
 
                     b.Property<string>("RecovertyToken")
@@ -282,7 +280,8 @@ namespace LHDTV.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProfilePhotoId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ProfilePhotoId] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -303,15 +302,6 @@ namespace LHDTV.Migrations
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
-                {
-                    b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoFolderMap", b =>
@@ -354,10 +344,8 @@ namespace LHDTV.Migrations
             modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
                 {
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "ProfilePhoto")
-                        .WithOne("ProfileUser")
-                        .HasForeignKey("LHDTV.Models.DbEntity.UserDb", "ProfilePhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("User")
+                        .HasForeignKey("LHDTV.Models.DbEntity.UserDb", "ProfilePhotoId");
                 });
 #pragma warning restore 612, 618
         }

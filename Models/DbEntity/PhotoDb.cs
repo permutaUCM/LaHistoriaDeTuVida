@@ -28,7 +28,6 @@ namespace LHDTV.Models.DbEntity
         public bool Deleted { get; set; }
         public string Url { get; set; }
         public ICollection<PhotoFolderMap> PhotosFolder { get; set; }
-        public UserDb ProfileUser { get; set; }
 
     }
 }

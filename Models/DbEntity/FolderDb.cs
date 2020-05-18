@@ -12,7 +12,7 @@ namespace LHDTV.Models.DbEntity
         public int Id { get; set; }
 
         public PhotoDb DefaultPhoto { get; set; }
-
+        public int UserId { get; set; }
         public UserDb User { get; set; }
 
         public string Title { get; set; }

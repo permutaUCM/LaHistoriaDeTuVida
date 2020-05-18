@@ -66,7 +66,7 @@ namespace LHDTV.Service
             var file = photo.File;
             string path;
 
-            if(photo.Tags == null)
+            if (photo.Tags == null)
                 photo.Tags = new List<TagForm>();
             FolderView folder = null;
             if (photo.FolderId != NO_FOLDER)
@@ -121,7 +121,7 @@ namespace LHDTV.Service
                 Title = photo.Title.Trim(),
                 Size = file.Length,
 
-                Caption = photo.Caption.Trim(),
+                Caption = (photo.Caption != null) ? photo.Caption.Trim() : "",
                 Tag = photo.Tags.Select(tg => new TagDb()
                 {
                     Type = tg.Type,
@@ -132,7 +132,9 @@ namespace LHDTV.Service
             var photoRet = photoRepo.Create(photoPOJO, userId);
             var photoTemp = mapper.Map<PhotoView>(photoRet);
 
-            folderService.addPhotoToFolder(folder.Id, photoRet.Id, userId);
+
+            if (folder != null)
+                folderService.addPhotoToFolder(folder.Id, new List<int>(){photoRet.Id}, userId);
 
             return photoTemp;
         }
@@ -202,7 +204,15 @@ namespace LHDTV.Service
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
 
-
+        public List<PhotoView> GetAll(Pagination pagination, int userId, int folderId)
+        {
+            var photos = photoRepo.GetAll(pagination, userId, folderId);
+            if (photos == null)
+            {
+                return new List<PhotoView>();
+            }
+            return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
+        }
 
         public PhotoView AddTag(TagForm form, int userId)
         {

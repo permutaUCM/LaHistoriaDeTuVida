@@ -20,9 +20,11 @@ namespace LHDTV.Models.DbEntity
         //This token is used to recover the user password when he forgets it
         public string RecovertyToken { get; set; }
         //This field mark the expiration date for the RecoveryToken
-        public DateTime ExpirationTokenDate { get; set; }
+        public DateTime? ExpirationTokenDate { get; set; }
 
-        public int ProfilePhotoId { get; set; }
+        public int? ProfilePhotoId { get; set; }
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("ProfilePhotoId")]
+        
         public PhotoDb ProfilePhoto { get; set; }
 
     }

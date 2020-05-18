@@ -7,8 +7,9 @@ namespace LHDTV.Models.Forms
         [MaxLength(25, ErrorMessage = "El campo Title no puede tener más de 25 caracteres.")]
         public string Title { get; set; }
 
-        [MaxLength(50, ErrorMessage = "El campo Title no puede tener más de 50 caracteres.")]
-        public string Caption { get; set; }
+        public string Transition { get; set; }
+        public bool AutoStart { get; set; }
+        public int TransitionTime { get; set; }
 
     }
 
