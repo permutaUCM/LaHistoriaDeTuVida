@@ -27,7 +27,7 @@ namespace LHDTV.Models.Forms
         public string Nickname { get; set; }
         
         [MaxLength(50, ErrorMessage = "El campo Email no puede tener más de 50 caracteres.")]
-        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter Valid Email ID")]
+        [EmailAddress(ErrorMessage = "Please enter Valid Email ID")]
         public string Email { get; set; }
 
 
