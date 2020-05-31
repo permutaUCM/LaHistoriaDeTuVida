@@ -50,7 +50,7 @@ namespace LHDTV.Repo
             {
 
                 var photos = ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).
-                            Skip((p.Page - 1) * p.TamPag).Take(p.TamPag).ToList();
+                            Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList();
                 var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
                 folder.Photos=photos;
                 return folder;
