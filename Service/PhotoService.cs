@@ -134,7 +134,7 @@ namespace LHDTV.Service
 
 
             if (folder != null)
-                folderService.addPhotoToFolder(folder.Id, new List<int>(){photoRet.Id}, userId);
+                folderService.addPhotoToFolder(folder.Id, new List<int>() { photoRet.Id }, userId);
 
             return photoTemp;
         }
@@ -203,6 +203,11 @@ namespace LHDTV.Service
             }
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
+
+        public List<TagDb> GetAllTags( int userId, int folderId ){
+            return photoRepo.getAllTags(userId, folderId);
+        }
+
 
         public List<PhotoView> GetAll(Pagination pagination, int userId, int folderId)
         {

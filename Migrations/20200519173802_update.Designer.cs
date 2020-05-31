@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200516113835_profilePhotoNull")]
-    partial class profilePhotoNull
+    [Migration("20200519173802_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,7 +82,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Transition")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -250,7 +250,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpirationTokenDate")
+                    b.Property<DateTime?>("ExpirationTokenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName1")
@@ -301,7 +301,9 @@ namespace LHDTV.Migrations
 
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoFolderMap", b =>

@@ -122,7 +122,6 @@ namespace LHDTV.Controllers
                 var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
                 var photos = photoService.GetAll(pag, userId);
 
-
                 return Ok(new
                 {
 
@@ -144,6 +143,19 @@ namespace LHDTV.Controllers
                 return BadRequest(localizer["ERROR_DEFAULT"]);
 
             }
+        }
+
+        [HttpGet("allTags/{folderId}")]
+        public ActionResult getAllTagsNotInFolder(int folderId)
+        {
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+
+            var ret = this.photoService.GetAllTags(userId, folderId);
+
+            return Ok(new
+            {
+                data = ret
+            });
         }
 
         //Returns all files but the ones in the folder

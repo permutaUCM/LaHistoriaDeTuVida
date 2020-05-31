@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LHDTV.Migrations
 {
-    public partial class profilePhoto : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -130,8 +130,8 @@ namespace LHDTV.Migrations
                     Role = table.Column<string>(nullable: true),
                     Deleted = table.Column<bool>(nullable: false),
                     RecovertyToken = table.Column<string>(nullable: true),
-                    ExpirationTokenDate = table.Column<DateTime>(nullable: false),
-                    ProfilePhotoId = table.Column<int>(nullable: false)
+                    ExpirationTokenDate = table.Column<DateTime>(nullable: true),
+                    ProfilePhotoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,7 +141,7 @@ namespace LHDTV.Migrations
                         column: x => x.ProfilePhotoId,
                         principalTable: "Photo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,7 +151,7 @@ namespace LHDTV.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DefaultPhotoId = table.Column<int>(nullable: true),
-                    UserId = table.Column<int>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Transition = table.Column<string>(nullable: true),
                     ShowTime = table.Column<int>(nullable: false),
@@ -172,7 +172,7 @@ namespace LHDTV.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,7 +263,8 @@ namespace LHDTV.Migrations
                 name: "IX_User_ProfilePhotoId",
                 table: "User",
                 column: "ProfilePhotoId",
-                unique: true);
+                unique: true,
+                filter: "[ProfilePhotoId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

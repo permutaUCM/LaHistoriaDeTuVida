@@ -12,6 +12,6 @@ namespace LHDTV.Repo
 
         List<PhotoDb> GetAll(LHDTV.Models.Forms.Pagination Pag, int userId, int folderId);
 
-
+        List<TagDb> getAllTags(int userId, int folderId);
     }
 }

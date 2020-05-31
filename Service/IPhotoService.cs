@@ -27,6 +27,8 @@ namespace LHDTV.Service
         PhotoView UpdateTag(TagFormUpdate form, int userId);
 
         List<PhotoView> GetAll(Pagination pagination, int userId);
+        List<LHDTV.Models.DbEntity.TagDb> GetAllTags(int userId, int folderId);
+
 
         List<PhotoView> GetAll(Pagination pagination, int userId, int folderId);
 

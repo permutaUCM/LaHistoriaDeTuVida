@@ -69,7 +69,7 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
+                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
                 if (pagination.FilterField != null)
@@ -93,8 +93,8 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.PhotosFolder)
-                        .Where(p => p.UserId == userId && 
+                var query = ctx.Photo.Include(p => p.Tag).Include(p => p.PhotosFolder)
+                        .Where(p => p.UserId == userId &&
                             !p.PhotosFolder
                                 .Where(pf => pf.FolderId == folderId)
                                 .Select(pf => pf.PhotoId)
@@ -118,6 +118,30 @@ namespace LHDTV.Repo
             }
         }
 
+        public List<TagDb> getAllTags(int userId, int folderId)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                // var retTemp = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag).Where(pf => pf.Photo.UserId == userId && pf.FolderId != folderId).ToList();
+                var ret = ctx.Photo.Include(p => p.Tag).Include(p => p.PhotosFolder)
+                        .Where(p => p.UserId == userId &&
+                            !p.PhotosFolder
+                                .Where(pf => pf.FolderId == folderId)
+                                .Select(pf => pf.PhotoId)
+                                .Contains(p.Id)).Select(p => p.Tag.Select(t => t)).ToList();
+                IEnumerable<TagDb> listTag = new List<TagDb>();
+
+                foreach(var tags in ret){
+                    listTag = listTag.Concat(tags);
+                }
+
+                var r = listTag.OrderBy(t => t.Title).Distinct().ToList();
+
+                return r;
+                
+
+            }
+        }
 
         public ICollection<PhotoTagsTypes> getTagTypes()
         {
