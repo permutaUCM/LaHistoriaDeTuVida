@@ -95,10 +95,10 @@ namespace LHDTV.Service
 
             };
 
+
+
             var userRet = userRepo.Create(userPOJO, 0);
             var usertemp = mapper.Map<UserView>(userRet);
-
-
 
             return usertemp;
 
