@@ -41,7 +41,7 @@ namespace LHDTV.Service
             try
             {
 
-                return int.Parse(GetClaim(token, ClaimTypes.Name));
+                return int.Parse(GetClaim(token, "unique_name"));
 
             }
             catch (FormatException)

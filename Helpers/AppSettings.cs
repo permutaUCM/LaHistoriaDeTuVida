@@ -14,5 +14,7 @@ namespace LHDTV.Helpers
         public string EmailPassw { get; set; }
         public string SmtpClient { get; set; }
         public int SmtpPort { get; set; }
+
+        public string BasePathFolder { get; set; }
     }
 }

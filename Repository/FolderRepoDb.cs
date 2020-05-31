@@ -13,11 +13,9 @@ namespace LHDTV.Repo
 
     public class FolderRepoDb : IFolderRepo
     {
-        private List<FolderDb> fakerepo;
 
-        public FolderRepoDb(Fakes.Fakes _fake)
+        public FolderRepoDb()
         {
-            fakerepo = _fake.folders;
 
 
         }
@@ -36,6 +34,8 @@ namespace LHDTV.Repo
 
         public FolderDb Read(int id, int userId)
         {
+
+            //TODO No debe devolver todas las fotos de la carpeta, si no no se puede filtrar ni paginar.
             using (var ctx = new LHDTVContext())
             {
                 var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
@@ -44,15 +44,18 @@ namespace LHDTV.Repo
 
         }
 
-        public FolderDb Read(int id,Pagination p)
+        public FolderDb Read(int id, Pagination p, int userId)
         {
             using (var ctx = new LHDTVContext())
             {
+                var folder = ctx.Folder.Include(f => f.PhotosTags)
+                    .FirstOrDefault(f => f.Id == id && f.UserId == userId);
 
-                var photos = ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).
-                            Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList();
-                var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
-                folder.Photos=photos;
+                var photoFolderList = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag)
+                    .Where(pf => pf.FolderId == folder.Id)
+                    .Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList(); 
+
+                folder.PhotosFolder = photoFolderList;
                 return folder;
             }
 
@@ -99,7 +102,7 @@ namespace LHDTV.Repo
                                         .ToList();
                     return res;
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
                     return new List<FolderDb>();
                 }
@@ -167,7 +170,7 @@ namespace LHDTV.Repo
 
             using (var ctx = new LHDTVContext())
             {
-                
+
                 folder.DefaultPhoto = p;
                 ctx.Folder.Update(folder);
                 ctx.SaveChanges();

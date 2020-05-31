@@ -6,7 +6,7 @@ namespace LHDTV.Models.Forms
 {
     public class AddUserForm
     {
-        [MaxLength(25, ErrorMessage = "El campo Title no puede tener más de 25 caracteres.")]
+        [MaxLength(25, ErrorMessage = "El campo Title no puede tener más de 25 caracteres")]
         public string FirstName { get; set; }
 
         [MaxLength(50, ErrorMessage = "El campo LastName1 no puede tener más de 50 caracteres.")]

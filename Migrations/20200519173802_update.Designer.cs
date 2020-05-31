@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200502104803_photoTransitions")]
-    partial class photoTransitions
+    [Migration("20200519173802_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,7 +82,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Transition")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -114,9 +114,6 @@ namespace LHDTV.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FolderDbId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RealDate")
                         .HasColumnType("datetime2");
 
@@ -133,16 +130,27 @@ namespace LHDTV.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FolderDbId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoFolderMap", b =>
+                {
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FolderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PhotoId", "FolderId");
+
+                    b.HasIndex("FolderId");
+
+                    b.ToTable("PhotoFolderMap");
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoTagsTypes", b =>
@@ -177,13 +185,16 @@ namespace LHDTV.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DefaultTransitionAutoStart")
-                        .HasColumnType("int");
+                    b.Property<bool>("DefaultTransitionAutoStart")
+                        .HasColumnType("bit");
 
                     b.Property<int>("DefaultTransitionTime")
                         .HasColumnType("int");
 
                     b.Property<string>("TransitionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransitionUserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -239,7 +250,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpirationTokenDate")
+                    b.Property<DateTime?>("ExpirationTokenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName1")
@@ -257,10 +268,20 @@ namespace LHDTV.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProfilePhotoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RecovertyToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfilePhotoId")
+                        .IsUnique()
+                        .HasFilter("[ProfilePhotoId] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -280,18 +301,24 @@ namespace LHDTV.Migrations
 
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
+            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoFolderMap", b =>
                 {
-                    b.HasOne("LHDTV.Models.DbEntity.FolderDb", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("FolderDbId");
+                    b.HasOne("LHDTV.Models.DbEntity.FolderDb", "Folder")
+                        .WithMany("PhotosFolder")
+                        .HasForeignKey("FolderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "Photo")
+                        .WithMany("PhotosFolder")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoTagsTypes", b =>
@@ -314,6 +341,13 @@ namespace LHDTV.Migrations
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", null)
                         .WithMany("Tag")
                         .HasForeignKey("PhotoDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "ProfilePhoto")
+                        .WithOne("User")
+                        .HasForeignKey("LHDTV.Models.DbEntity.UserDb", "ProfilePhotoId");
                 });
 #pragma warning restore 612, 618
         }

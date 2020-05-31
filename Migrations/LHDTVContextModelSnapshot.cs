@@ -80,7 +80,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Transition")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -128,12 +128,10 @@ namespace LHDTV.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Photo");
                 });
@@ -250,7 +248,7 @@ namespace LHDTV.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpirationTokenDate")
+                    b.Property<DateTime?>("ExpirationTokenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName1")
@@ -268,6 +266,9 @@ namespace LHDTV.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProfilePhotoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RecovertyToken")
                         .HasColumnType("nvarchar(max)");
 
@@ -275,6 +276,10 @@ namespace LHDTV.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfilePhotoId")
+                        .IsUnique()
+                        .HasFilter("[ProfilePhotoId] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -294,14 +299,9 @@ namespace LHDTV.Migrations
 
                     b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoDb", b =>
-                {
-                    b.HasOne("LHDTV.Models.DbEntity.UserDb", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LHDTV.Models.DbEntity.PhotoFolderMap", b =>
@@ -339,6 +339,13 @@ namespace LHDTV.Migrations
                     b.HasOne("LHDTV.Models.DbEntity.PhotoDb", null)
                         .WithMany("Tag")
                         .HasForeignKey("PhotoDbId");
+                });
+
+            modelBuilder.Entity("LHDTV.Models.DbEntity.UserDb", b =>
+                {
+                    b.HasOne("LHDTV.Models.DbEntity.PhotoDb", "ProfilePhoto")
+                        .WithOne("User")
+                        .HasForeignKey("LHDTV.Models.DbEntity.UserDb", "ProfilePhotoId");
                 });
 #pragma warning restore 612, 618
         }

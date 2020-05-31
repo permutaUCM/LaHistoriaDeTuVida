@@ -1,6 +1,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 using System.Collections.Generic;
 
 namespace LHDTV.Models.DbEntity
@@ -10,6 +12,8 @@ namespace LHDTV.Models.DbEntity
 
 
         public int Id { get; set; }
+
+        public int UserId { get; set; }
         public UserDb User { get; set; }
         public ICollection<TagDb> Tag { get; set; }
         [MaxLength(25)]

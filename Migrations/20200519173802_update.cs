@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LHDTV.Migrations
 {
-    public partial class UserTokenAdded : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,25 +21,41 @@ namespace LHDTV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Photo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    LastName1 = table.Column<string>(nullable: true),
-                    LastName2 = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Nickname = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Dni = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(maxLength: 25, nullable: true),
+                    Caption = table.Column<string>(maxLength: 50, nullable: true),
+                    UploadDate = table.Column<DateTime>(nullable: false),
+                    RealDate = table.Column<DateTime>(nullable: false),
+                    Country = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Size = table.Column<decimal>(nullable: false),
                     Deleted = table.Column<bool>(nullable: false),
-                    RecovertyToken = table.Column<string>(nullable: true),
-                    ExpirationTokenDate = table.Column<DateTime>(nullable: false)
+                    Url = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Photo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoTransition",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransitionName = table.Column<string>(nullable: true),
+                    TransitionUserName = table.Column<string>(nullable: true),
+                    DefaultTransitionTime = table.Column<int>(nullable: false),
+                    DefaultTransitionAutoStart = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoTransition", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,77 +91,6 @@ namespace LHDTV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileTags",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(nullable: true),
-                    FolderDbId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileTags", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Photo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(maxLength: 25, nullable: true),
-                    Caption = table.Column<string>(maxLength: 50, nullable: true),
-                    UploadDate = table.Column<DateTime>(nullable: false),
-                    RealDate = table.Column<DateTime>(nullable: false),
-                    Country = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Size = table.Column<decimal>(nullable: false),
-                    Deleted = table.Column<bool>(nullable: false),
-                    Url = table.Column<string>(nullable: true),
-                    FolderDbId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Photo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Photo_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Folder",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DefaultPhotoId = table.Column<int>(nullable: true),
-                    UserId = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    Deleted = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Folder", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Folder_Photo_DefaultPhotoId",
-                        column: x => x.DefaultPhotoId,
-                        principalTable: "Photo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Folder_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TagDb",
                 columns: table => new
                 {
@@ -169,6 +114,111 @@ namespace LHDTV.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    LastName1 = table.Column<string>(nullable: true),
+                    LastName2 = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    Nickname = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Dni = table.Column<string>(nullable: true),
+                    Role = table.Column<string>(nullable: true),
+                    Deleted = table.Column<bool>(nullable: false),
+                    RecovertyToken = table.Column<string>(nullable: true),
+                    ExpirationTokenDate = table.Column<DateTime>(nullable: true),
+                    ProfilePhotoId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Photo_ProfilePhotoId",
+                        column: x => x.ProfilePhotoId,
+                        principalTable: "Photo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Folder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DefaultPhotoId = table.Column<int>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Transition = table.Column<string>(nullable: true),
+                    ShowTime = table.Column<int>(nullable: false),
+                    AutoStart = table.Column<bool>(nullable: false),
+                    Deleted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Folder", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Folder_Photo_DefaultPhotoId",
+                        column: x => x.DefaultPhotoId,
+                        principalTable: "Photo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Folder_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileTags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: true),
+                    FolderDbId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileTags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileTags_Folder_FolderDbId",
+                        column: x => x.FolderDbId,
+                        principalTable: "Folder",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoFolderMap",
+                columns: table => new
+                {
+                    PhotoId = table.Column<int>(nullable: false),
+                    FolderId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoFolderMap", x => new { x.PhotoId, x.FolderId });
+                    table.ForeignKey(
+                        name: "FK_PhotoFolderMap_Folder_FolderId",
+                        column: x => x.FolderId,
+                        principalTable: "Folder",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PhotoFolderMap_Photo_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_FileTags_FolderDbId",
                 table: "FileTags",
@@ -185,14 +235,9 @@ namespace LHDTV.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_FolderDbId",
-                table: "Photo",
-                column: "FolderDbId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Photo_UserId",
-                table: "Photo",
-                column: "UserId");
+                name: "IX_PhotoFolderMap_FolderId",
+                table: "PhotoFolderMap",
+                column: "FolderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TagDb_PhotoDbId",
@@ -214,31 +259,24 @@ namespace LHDTV.Migrations
                 table: "TagTypeMaster",
                 column: "Extra3Name");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_FileTags_Folder_FolderDbId",
-                table: "FileTags",
-                column: "FolderDbId",
-                principalTable: "Folder",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Photo_Folder_FolderDbId",
-                table: "Photo",
-                column: "FolderDbId",
-                principalTable: "Folder",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            migrationBuilder.CreateIndex(
+                name: "IX_User_ProfilePhotoId",
+                table: "User",
+                column: "ProfilePhotoId",
+                unique: true,
+                filter: "[ProfilePhotoId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Photo_Folder_FolderDbId",
-                table: "Photo");
-
             migrationBuilder.DropTable(
                 name: "FileTags");
+
+            migrationBuilder.DropTable(
+                name: "PhotoFolderMap");
+
+            migrationBuilder.DropTable(
+                name: "PhotoTransition");
 
             migrationBuilder.DropTable(
                 name: "TagDb");
@@ -247,16 +285,16 @@ namespace LHDTV.Migrations
                 name: "TagTypeMaster");
 
             migrationBuilder.DropTable(
-                name: "Extra");
-
-            migrationBuilder.DropTable(
                 name: "Folder");
 
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Extra");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Photo");
         }
     }
 }

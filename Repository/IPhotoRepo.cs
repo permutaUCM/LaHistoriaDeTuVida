@@ -10,5 +10,8 @@ namespace LHDTV.Repo
         void RemoveTag(TagDb tag, int userId);
         void UpdateTag(TagDb tag, int userId);
 
+        List<PhotoDb> GetAll(LHDTV.Models.Forms.Pagination Pag, int userId, int folderId);
+
+        List<TagDb> getAllTags(int userId, int folderId);
     }
 }

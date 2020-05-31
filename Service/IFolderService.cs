@@ -20,7 +20,7 @@ namespace LHDTV.Service
 
         List<FolderView> GetAll(Pagination pagination, int userId);
 
-        FolderView addPhotoToFolder(int folderId, int photo, int userId);
+        FolderView addPhotoToFolder(int folderId, List<int> photosId, int userId);
 
         FolderView deletePhotoToFolder(int folderId, List<int> photo, int userId);
 

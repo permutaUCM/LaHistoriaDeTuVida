@@ -9,10 +9,8 @@ namespace LHDTV.Repo
     public class PhotoRepoDb : IPhotoRepo
     {
 
-        private List<PhotoDb> fakeRepo;
-        public PhotoRepoDb(Fakes.Fakes _fake)
+        public PhotoRepoDb()
         {
-            fakeRepo = _fake.photos;
         }
 
         public PhotoDb Create(PhotoDb entity, int userId)
@@ -71,7 +69,8 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.User).Where(p => p.User.Id == userId);
+                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
                 if (pagination.FilterField != null)
                 {
@@ -85,11 +84,64 @@ namespace LHDTV.Repo
                 }
 
 
-                return query.Skip((pagination.NumPag - 1) * pagination.TamPag)
-                        .Take(pagination.TamPag).ToList();
+                return query;
             }
         }
 
+        public List<PhotoDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId, int folderId)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+
+                var query = ctx.Photo.Include(p => p.Tag).Include(p => p.PhotosFolder)
+                        .Where(p => p.UserId == userId &&
+                            !p.PhotosFolder
+                                .Where(pf => pf.FolderId == folderId)
+                                .Select(pf => pf.PhotoId)
+                                .Contains(p.Id))
+                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
+                // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
+                if (pagination.FilterField != null)
+                {
+                    // for (int i = 0; i < pagination.FilterField.Count; i++)
+                    // {
+
+                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
+                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
+                    // }
+
+                }
+
+
+                return query;
+            }
+        }
+
+        public List<TagDb> getAllTags(int userId, int folderId)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+                // var retTemp = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag).Where(pf => pf.Photo.UserId == userId && pf.FolderId != folderId).ToList();
+                var ret = ctx.Photo.Include(p => p.Tag).Include(p => p.PhotosFolder)
+                        .Where(p => p.UserId == userId &&
+                            !p.PhotosFolder
+                                .Where(pf => pf.FolderId == folderId)
+                                .Select(pf => pf.PhotoId)
+                                .Contains(p.Id)).Select(p => p.Tag.Select(t => t)).ToList();
+                IEnumerable<TagDb> listTag = new List<TagDb>();
+
+                foreach(var tags in ret){
+                    listTag = listTag.Concat(tags);
+                }
+
+                var r = listTag.OrderBy(t => t.Title).Distinct().ToList();
+
+                return r;
+                
+
+            }
+        }
 
         public ICollection<PhotoTagsTypes> getTagTypes()
         {
