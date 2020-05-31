@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
+using LHDTV.Models.Forms;
 using Microsoft.EntityFrameworkCore;
 
 
 
 namespace LHDTV.Repo
 {
+
 
     public class FolderRepoDb : IFolderRepo
     {
@@ -37,6 +39,20 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
                 var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
+                return folder;
+            }
+
+        }
+
+        public FolderDb Read(int id,Pagination p)
+        {
+            using (var ctx = new LHDTVContext())
+            {
+
+                var photos = ctx.Photo.Include(p => p.Tag).Where(photo => !photo.Deleted).
+                            Skip((p.Page - 1) * p.TamPag).Take(p.TamPag).ToList();
+                var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.Photos).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
+                folder.Photos=photos;
                 return folder;
             }
 
