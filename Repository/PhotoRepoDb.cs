@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
 using Microsoft.EntityFrameworkCore;
+using System;
+
 
 namespace LHDTV.Repo
 {
@@ -72,7 +74,7 @@ namespace LHDTV.Repo
                 var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-                if (pagination.FilterField != null)
+                if (pagination.Filter.Count != 0)
                 {
                     // for (int i = 0; i < pagination.FilterField.Count; i++)
                     // {
@@ -98,26 +100,73 @@ namespace LHDTV.Repo
                             !p.PhotosFolder
                                 .Where(pf => pf.FolderId == folderId)
                                 .Select(pf => pf.PhotoId)
-                                .Contains(p.Id))
-                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
-                        .Take(pagination.TamPag).ToList();
-                // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-                if (pagination.FilterField != null)
+                                .Contains(p.Id));
+
+                foreach (var filter in pagination.Filter)
                 {
-                    // for (int i = 0; i < pagination.FilterField.Count; i++)
-                    // {
+                    if (filter.Key == "dateIni")
+                    {
+                        DateTime dateIni;
+                        if (!DateTime.TryParse(filter.Value, out dateIni))
+                            continue;
+                        query = query.Where(p => p.RealDate >= dateIni);
+                    }
+                    else if (filter.Key == "dateEnd")
+                    {
+                        DateTime dateEnd;
+                        if (!DateTime.TryParse(filter.Value, out dateEnd))
+                            continue;
+                        query = query.Where(p => p.RealDate <= dateEnd);
+                    }
+                    else if (filter.Key == "tags")
+                    {
+                        if (filter.Value.Length == 0)
+                            continue;
+                        var tagList = filter.Value.Split(";");
+                        query = query.Where(p => p.Tag.Where(t => tagList.ToList().Contains(t.Title)).Any());
 
-                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
-                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
-                    // }
-
+                    }
                 }
 
+                var content = query.Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
+                // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
 
-                return query;
+
+
+                return content;
             }
         }
 
+
+        private class TagDbComparer : IEqualityComparer<TagDb>
+        {
+            public bool Equals(TagDb tag1, TagDb tag2)
+            {
+                //
+                // See the full list of guidelines at
+                //   http://go.microsoft.com/fwlink/?LinkID=85237
+                // and also the guidance for operator== at
+                //   http://go.microsoft.com/fwlink/?LinkId=85238
+                //
+
+                //Check whether the compared objects reference the same data.
+                if (Object.ReferenceEquals(tag1, tag2)) return true;
+
+                //Check whether any of the compared objects is null.
+                if (Object.ReferenceEquals(tag1, null) || Object.ReferenceEquals(tag2, null))
+                    return false;
+
+                return tag1 == tag2;
+            }
+
+            // override object.GetHashCode
+            public int GetHashCode(TagDb tag)
+            {
+                // TODO: write your implementation of GetHashCode() here
+                return tag.Title.GetHashCode();
+            }
+        }
         public List<TagDb> getAllTags(int userId, int folderId)
         {
             using (var ctx = new LHDTVContext())
@@ -131,14 +180,17 @@ namespace LHDTV.Repo
                                 .Contains(p.Id)).Select(p => p.Tag.Select(t => t)).ToList();
                 IEnumerable<TagDb> listTag = new List<TagDb>();
 
-                foreach(var tags in ret){
+                foreach (var tags in ret)
+                {
                     listTag = listTag.Concat(tags);
                 }
 
-                var r = listTag.OrderBy(t => t.Title).Distinct().ToList();
+
+
+                var r = listTag.OrderBy(t => t.Title).Distinct(new TagDbComparer()).ToList();
 
                 return r;
-                
+
 
             }
         }

@@ -18,6 +18,7 @@ namespace LHDTV.Profiles
                 Title = pf.Folder.Title,
                 Transition = pf.Folder.Transition,
                 User = pf.Folder.User,
+
             })));
             CreateMap<LHDTV.Models.DbEntity.TagDb, LHDTV.Models.ViewEntity.TagView>();
             CreateMap<LHDTV.Models.DbEntity.PhotoTagsTypes, LHDTV.Models.ViewEntity.PhotoTagsTypesView>();

@@ -69,6 +69,32 @@ namespace LHDTV.Controllers
 
         }
 
+        [HttpPost("filtered/{folderId}")]
+        public ActionResult getFolder([FromBody] Pagination pag, int folderId)
+        {
+
+            logger.LogInformation("getFolder: id: ", folderId);
+
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var folder = folderService.GetFolder(folderId, pag, userId);
+
+            var types = photoService.GetTagTypes();
+            if (folder == null)
+            {
+                return BadRequest(localizer["folderNotFound"].Value);
+            }
+            return Ok(new
+            {
+                Metadata = folderService.GetMetadata(),
+                //  new
+                // {
+                //     types = types
+                // },
+                Data = folder
+            });
+
+        }
+
         [HttpPost("update")]
         public ActionResult UpdateFolder([FromBody] UpdateFolderForm form)
         {
@@ -105,7 +131,7 @@ namespace LHDTV.Controllers
         public ActionResult addPhotoToFolder([FromBody] AddPhotoToFolderForm form)
         {
 
-           var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
+            var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
 
             return Ok(new
             {
@@ -143,9 +169,8 @@ namespace LHDTV.Controllers
         }
 
         [HttpGet("all")]
-        public ActionResult getAllFolders([FromQuery] Pagination pag)
+        public ActionResult getAllFolders([FromBody] Pagination pag)
         {
-
             try
             {
                 var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));

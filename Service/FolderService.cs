@@ -46,6 +46,16 @@ namespace LHDTV.Service
             return folderRet;
         }
 
+
+        public FolderView GetFolder(int id, Pagination pag, int userId)
+        {
+            var folder = folderRepo.Read(id, pag, userId);
+            var folderRet = mapper.Map<FolderView>(folder);
+
+            return folderRet;
+        }
+
+
         // crea un carpeta vacia
         public FolderView Create(AddFolderForm folder, int userId)
         {

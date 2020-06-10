@@ -11,9 +11,12 @@ namespace LHDTV.Service
 
         FolderView GetFolder(int Id, int userId);
 
-        FolderView Create (AddFolderForm folder, int userId);
+        FolderView GetFolder(int Id, Pagination pag, int userId);
 
-        FolderView Delete (int FolderId, int userId);
+
+        FolderView Create(AddFolderForm folder, int userId);
+
+        FolderView Delete(int FolderId, int userId);
 
         FolderView Update(UpdateFolderForm form, int userId);
 
@@ -25,7 +28,7 @@ namespace LHDTV.Service
         FolderView deletePhotoToFolder(int folderId, List<int> photo, int userId);
 
         FolderView updateDefaultPhotoToFolder(int folderId, int p, int userId);
- 
+
         LHDTV.Models.FolderMetadata GetMetadata();
     }
 

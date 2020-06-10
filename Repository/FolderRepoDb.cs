@@ -1,4 +1,6 @@
 
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
@@ -51,10 +53,38 @@ namespace LHDTV.Repo
                 var folder = ctx.Folder.Include(f => f.PhotosTags)
                     .FirstOrDefault(f => f.Id == id && f.UserId == userId);
 
-                var photoFolderList = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag)
-                    .Where(pf => pf.FolderId == folder.Id)
-                    .Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList(); 
+                var photoFolderListQuery = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag)
+                    .Where(pf => pf.FolderId == folder.Id);
 
+
+                foreach (var filter in p.Filter)
+                {
+                    if (filter.Key == "dateIni")
+                    {
+                        DateTime dateIni;
+                        if (!DateTime.TryParse(filter.Value, out dateIni))
+                            continue;
+                        photoFolderListQuery = photoFolderListQuery.Where(p => p.Photo.RealDate >= dateIni);
+                    }
+                    else if (filter.Key == "dateEnd")
+                    {
+                        DateTime dateEnd;
+                        if (!DateTime.TryParse(filter.Value, out dateEnd))
+                            continue;
+                        photoFolderListQuery = photoFolderListQuery.Where(p => p.Photo.RealDate <= dateEnd);
+                    }
+                    else if (filter.Key == "tags")
+                    {
+                        if (filter.Value.Length == 0)
+                            continue;
+                        var tagList = filter.Value.Split(";");
+                        photoFolderListQuery = photoFolderListQuery.Where(p => p.Photo.Tag.Where(t => tagList.ToList().Contains(t.Title)).Any());
+
+                    }
+                }
+
+                var tmp = photoFolderListQuery.ToList();
+                var photoFolderList = photoFolderListQuery.Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList();
                 folder.PhotosFolder = photoFolderList;
                 return folder;
             }

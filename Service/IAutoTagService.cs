@@ -1,5 +1,9 @@
 
 using System.Collections.Generic;
+using System;
+using System.IO;
+using Amazon.Rekognition.Model;
+
 
 namespace LHDTV.Service
 {
@@ -7,7 +11,7 @@ namespace LHDTV.Service
     public interface IAutoTagService
     {
 
-        void autoTagPhotos(string photo);
+        List<Label> autoTagPhotos(Stream fileStream);
 
         ICollection<string> GetLocationData(double lon, double lat);
     }

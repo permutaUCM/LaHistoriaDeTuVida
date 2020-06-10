@@ -113,8 +113,8 @@ namespace LHDTV.Controllers
         }
 
 
-        [HttpGet("all")]
-        public ActionResult getAll([FromQuery] Pagination pag)
+        [HttpPost("all")]
+        public ActionResult getAll([FromBody] Pagination pag)
         {
 
             try
@@ -159,8 +159,8 @@ namespace LHDTV.Controllers
         }
 
         //Returns all files but the ones in the folder
-        [HttpGet("all/{folderId}")]
-        public ActionResult getAllNotInFolder([FromQuery] Pagination pag, int folderId)
+        [HttpPost("all/{folderId}")]
+        public ActionResult getAllNotInFolder([FromBody] Pagination pag, int folderId)
         {
 
             try

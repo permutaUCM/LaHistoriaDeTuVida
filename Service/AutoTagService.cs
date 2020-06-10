@@ -40,45 +40,43 @@ namespace LHDTV.Service
             return list;
         }
 
-        public void autoTagPhotos(string photo)
+        public List<Label> autoTagPhotos(Stream photoStream)
         {
 
             Amazon.Rekognition.Model.Image image = new Amazon.Rekognition.Model.Image();
 
             try
             {
-                using (FileStream fs = new FileStream(photo, FileMode.Open, FileAccess.Read))
-                {
+                
                     byte[] data = null;
-                    data = new byte[fs.Length];
-                    fs.Read(data, 0, (int)fs.Length);
+                    data = new byte[photoStream.Length];
+                    photoStream.Read(data, 0, (int)photoStream.Length);
                     image.Bytes = new MemoryStream(data);
-                }
+                
             }
             catch (Exception)
             {
-                Console.WriteLine("Failed to load file " + photo);
-                return;
+                Console.WriteLine("Failed to load file");
+                return new List<Label>();
             }
 
             AmazonRekognitionClient rekognitionClient = new AmazonRekognitionClient();
             DetectLabelsRequest detectLabelsRequest = new DetectLabelsRequest()
             {
                 Image = image,
-                MaxLabels = 30,
-                MinConfidence = 30F
+                MaxLabels = 20,
+                MinConfidence = 50F
             };
 
             try
             {
                 DetectLabelsResponse detectLabelsResponse = rekognitionClient.DetectLabelsAsync(detectLabelsRequest).Result;
-                Console.WriteLine("Detected labels for " + photo);
-                foreach (Label label in detectLabelsResponse.Labels)
-                    Console.WriteLine("{0}: {1}", label.Name, label.Confidence);
+                return detectLabelsResponse.Labels;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return new List<Label>();
             }
         }
     }

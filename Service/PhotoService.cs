@@ -14,7 +14,7 @@ using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using Microsoft.Extensions.Logging;
 
-
+// https://www.nuget.org/packages/MetadataExtractor/
 namespace LHDTV.Service
 {
 
@@ -91,11 +91,19 @@ namespace LHDTV.Service
                                          .FirstOrDefault();
 
             ICollection<string> locationTags;
+            DateTime d2 = DateTime.Now;
+            List<Amazon.Rekognition.Model.Label> labels = new List<Amazon.Rekognition.Model.Label>();
             if (gps != null)
             {
                 try
                 {
                     var location = gps.GetGeoLocation();
+
+                    if (!gps.TryGetGpsDate(out d2))
+                    {
+                        d2 = DateTime.Now;
+                    }
+
                     locationTags = autoTagService.GetLocationData(location.Latitude, location.Longitude);
                     foreach (var t in locationTags)
                     {
@@ -110,6 +118,19 @@ namespace LHDTV.Service
                 {
                     logger.LogError("Error obteniendo localización de GPS: " + e.Message);
                 }
+            }
+            using (var fs = file.OpenReadStream())
+            {
+                labels = this.autoTagService.autoTagPhotos(fs);
+            }
+
+            foreach (var t in labels)
+            {
+                photo.Tags.Add(new TagForm()
+                {
+                    Title = t.Name,
+                    Type = "type"
+                });
             }
 
             PhotoDb photoPOJO = new PhotoDb()
@@ -126,7 +147,8 @@ namespace LHDTV.Service
                 {
                     Type = tg.Type,
                     Title = tg.Title
-                }).ToList()
+                }).ToList(),
+                RealDate = d2,
             };
 
             var photoRet = photoRepo.Create(photoPOJO, userId);
@@ -204,11 +226,6 @@ namespace LHDTV.Service
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
 
-        public List<TagDb> GetAllTags( int userId, int folderId ){
-            return photoRepo.getAllTags(userId, folderId);
-        }
-
-
         public List<PhotoView> GetAll(Pagination pagination, int userId, int folderId)
         {
             var photos = photoRepo.GetAll(pagination, userId, folderId);
@@ -218,6 +235,14 @@ namespace LHDTV.Service
             }
             return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
         }
+
+        public List<TagDb> GetAllTags(int userId, int folderId)
+        {
+            return photoRepo.getAllTags(userId, folderId);
+        }
+
+
+
 
         public PhotoView AddTag(TagForm form, int userId)
         {
