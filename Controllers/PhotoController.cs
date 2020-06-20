@@ -268,7 +268,7 @@ namespace LHDTV.Controllers
         public IActionResult BannerImage(int fileId)
         {
 
-            if (fileId == 0)
+            if (fileId <= 0)
             {
                 var file = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
 
@@ -282,7 +282,10 @@ namespace LHDTV.Controllers
 
                 if (photo == null)
                 {
-                    return BadRequest("No se ha encontrado el documento solicitado");
+                    var file_ = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
+
+                    return PhysicalFile(file_, "image/jpeg");
+                    
                 }
 
                 var file = System.IO.Path.Combine(appSettings.BasePathFolder, photo.Url);
