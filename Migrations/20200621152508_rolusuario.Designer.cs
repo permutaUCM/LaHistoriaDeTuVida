@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-    [Migration("20200615192926_newRestore")]
-    partial class newRestore
+    [Migration("20200621152508_rolusuario")]
+    partial class rolusuario
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

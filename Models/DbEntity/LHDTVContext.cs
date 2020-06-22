@@ -21,7 +21,7 @@ namespace LHDTV.Models.DbEntity
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=LHDTV;Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+            optionsBuilder.UseSqlServer("Server=localhost;Database=LHDTV2;Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

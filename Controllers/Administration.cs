@@ -24,135 +24,324 @@ namespace LHDTV.Controllers
             return Ok(
                 new
                 {
-                    Metadata = new { },
+                    Metadata = new
+                    {
+                        Extras = new List<Extra>(){
+                            new Extra()
+                            {
+                                Name = "Ex1",
+                                type = "ratio",
+                                extras = "5"
+
+                            },
+
+                            new Extra()
+                            {
+                                Name = "Ex2",
+                                type = "ratio",
+                                extras = "5"
+
+                            }
+
+                        }
+                    },
                     Data = new List<LHDTV.Models.DbEntity.PhotoTagsTypes>(){
-                    new PhotoTagsTypes(){
-                        Name= "name1",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    new PhotoTagsTypes()
+        {
+            Name = "name1",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name2",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name2",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name3",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name3",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name4",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name4",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name5",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name5",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name6",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name6",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name7",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name7",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name8",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name8",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name9",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name9",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name10",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name10",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name11",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name11",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name12",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name12",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
-                    },new PhotoTagsTypes(){
-                        Name= "name13",
-                        Extra1 = new Extra(){
-                            Name= "nameExtra1",
-                            type= "ratio",
-                            extras= ""
+                    },new PhotoTagsTypes()
+        {
+            Name = "name13",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
                         },
                         Extra2 = null,
                         Extra3 = null
                     }
-            }
+    }
                 }
 
             );
         }
-    
-        [HttpDelete("tagMaster/{id}")]
-        public IActionResult removeTagMaster(string id){
-            return Ok();
+
+
+
+        [HttpGet("tagMaster/delete/{id}")]
+        public IActionResult removeTagMaster(string id)
+        {
+            return Ok(
+                new
+                {
+                    Metadata = new
+                    {
+                        Extras = new List<Extra>(){
+                            new Extra()
+                            {
+                                Name = "Ex1",
+                                type = "ratio",
+                                extras = "5"
+
+                            },
+
+                            new Extra()
+                            {
+                                Name = "Ex2",
+                                type = "ratio",
+                                extras = "5"
+
+                            }
+
+                        }
+                    },
+                    Data = new List<LHDTV.Models.DbEntity.PhotoTagsTypes>(){
+                    new PhotoTagsTypes()
+        {
+            Name = "name1",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name2",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name4",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name5",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name8",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name9",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name10",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name11",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name12",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    },new PhotoTagsTypes()
+        {
+            Name = "name13",
+                        Extra1 = new Extra()
+                        {
+                            Name = "nameExtra1",
+                            type = "ratio",
+                            extras = ""
+                        },
+                        Extra2 = null,
+                        Extra3 = null
+                    }
+    }
+                }
+
+            );
+
         }
     }
 }
