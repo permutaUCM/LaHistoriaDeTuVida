@@ -8,11 +8,14 @@ namespace LHDTV.Service
     public interface ITagMasterService
     {
 
-        PhotoTagsTypesView Create(AddPhotoTagForm form);
-        bool Remove(string id);
-        PhotoTagsTypesView Update(AddPhotoTagForm form);
-        PhotoTagsTypesView Read(string id);
+        PhotoTagsTypesView Create(AddPhotoTagForm tag,int userId);
+        // bool Remove(string id);
+        PhotoTagsTypesView Delete(int tagId, int userId);
+        PhotoTagsTypesView Update(AddPhotoTagForm tag,int userId);
 
-        List<PhotoTagsTypesView> ReadAll(); 
+        // PhotoTagsTypesView Read(string id);
+         PhotoTagsTypesView Read(int id,int userId);
+
+        List<PhotoTagsTypesView> ReadAll(Pagination pagination, int userId); 
     }
 }

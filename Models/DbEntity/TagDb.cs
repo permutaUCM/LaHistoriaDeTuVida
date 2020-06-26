@@ -10,5 +10,7 @@ namespace LHDTV.Models.DbEntity
         public string Extra1{get; set;}
         public string Extra2{get; set;}
         public string Extra3{get; set;}
+
+        public bool Deleted { get; set; }
     }
 }
