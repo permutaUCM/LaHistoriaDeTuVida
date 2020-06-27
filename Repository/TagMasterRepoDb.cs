@@ -50,13 +50,13 @@ namespace LHDTV.Repo
             
         }
 
-        public PhotoTagsTypes Create(PhotoTagsTypes entity,int userId)
+        public PhotoTagsTypes Create(PhotoTagsTypes tg,int userId)
         {
             using (var ctx = new LHDTVContext())
             {
-                ctx.TagTypeMaster.Add(entity);
+                ctx.TagTypeMaster.Add(tg);
                 ctx.SaveChanges();
-                return entity;
+                return tg;
             }
 
         }
@@ -73,15 +73,15 @@ namespace LHDTV.Repo
             }
 
         }
-        public PhotoTagsTypes Update(PhotoTagsTypes entity, int userId)
+        public PhotoTagsTypes Update(PhotoTagsTypes tg, int userId)
         {
 
             using (var ctx = new LHDTVContext())
             {
-                ctx.TagTypeMaster.Update(entity);
+                ctx.TagTypeMaster.Update(tg);
                 ctx.SaveChanges();
 
-                return entity;
+                return tg;
             }
 
         }

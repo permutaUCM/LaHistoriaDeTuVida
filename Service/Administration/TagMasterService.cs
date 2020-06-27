@@ -41,9 +41,12 @@ namespace LHDTV.Service
             {
                 
               Name = form.Title,
-              Extra1 = form.Extra1,
-              Extra2 = form.Extra2,
-              Extra3 = form.Extra3                
+            //   Extra1 = form.Extra1,
+            //   Extra2 = form.Extra2,
+            //   Extra3 = form.Extra3
+            Extra1 = null,
+            Extra2 = null,
+            Extra3 = null           
               
             };
 
@@ -87,9 +90,13 @@ namespace LHDTV.Service
             }
 
             t.Name = tag.Title.Trim();
-            t.Extra1 = tag.Extra1.Trim();
-            t.Extra2 = tag.Extra2.Trim();
-            t.Extra3 = tag.Extra3.Trim();
+            // t.Extra1 = tag.Extra1.Trim();
+            // t.Extra2 = tag.Extra2.Trim();
+            // t.Extra3 = tag.Extra3.Trim();
+            t.Extra1 = null;
+            t.Extra2 = null;
+            t.Extra3 = null;
+
 
             var tagRet = adminRepo.Update(t, userId);
             var tagTemp = mapper.Map<PhotoTagsTypesView>(tagRet);

@@ -74,6 +74,11 @@ namespace LHDTV
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepoDb, UserRepoDb>();
 
+            //modulo tagadmin
+
+            services.AddTransient<ITagMasterService,TagMasterService>();
+            services.AddTransient<ITagMasterRepoDb,TagMasterRepoDb>();
+
             services.AddTransient<IMailService, MailService>();
             services.AddSingleton<ITokenRecoveryService, TokenRecoveryService>();
 
