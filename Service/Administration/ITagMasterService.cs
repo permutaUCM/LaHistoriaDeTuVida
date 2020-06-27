@@ -14,7 +14,7 @@ namespace LHDTV.Service
         PhotoTagsTypesView Update(AddPhotoTagForm tag,int userId);
 
         // PhotoTagsTypesView Read(string id);
-         PhotoTagsTypesView Read(int id,int userId);
+        PhotoTagsTypesView Read(string id,int userId);
 
         List<PhotoTagsTypesView> ReadAll(Pagination pagination, int userId); 
     }

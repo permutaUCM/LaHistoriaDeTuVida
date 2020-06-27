@@ -4,7 +4,7 @@ using AutoMapper;
     {
         public TagProfile()
         {
-            CreateMap<LHDTV.Models.DbEntity.TagDb, LHDTV.Models.ViewEntity.PhotoTagsTypesView>();
+            CreateMap<LHDTV.Models.DbEntity.PhotoTagsTypes, LHDTV.Models.ViewEntity.PhotoTagsTypesView>();
         }
 
     }

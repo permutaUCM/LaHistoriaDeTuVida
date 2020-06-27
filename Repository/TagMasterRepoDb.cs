@@ -1,7 +1,7 @@
-
+using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
-
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -17,24 +17,24 @@ namespace LHDTV.Repo
 
         }
 
-        public TagDb Read(int id , int userId){
+        public PhotoTagsTypes Read(string title , int userId){
             
             using(var ctx = new LHDTVContext()){
 
-                var tag = ctx.TagDb.Include(p => p).ThenInclude(t => t).Include(p => p.Tag).FirstOrDefault(p => p.Id == id);
+                var tag = ctx.TagTypeMaster.Include(p => p).ThenInclude(t => t).Include(p => p.Name).FirstOrDefault(p => p.Name == title);
                 return tag;
 
             }
                       
         }
-        public List<TagDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId){
+        public List<PhotoTagsTypes> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId){
             
     
             using (var ctx = new LHDTVContext())
             {
                 try
                 {
-                    var res = ctx.TagDb.Include(f => f.Tag)
+                    var res = ctx.TagTypeMaster.Include(f => f.Name)
                                         .Skip((pagination.NumPag - 1) * pagination.TamPag)
                                         .Take(pagination.TamPag)
                                         .ToList();
@@ -42,7 +42,7 @@ namespace LHDTV.Repo
                 }
                 catch (System.Exception e)
                 {
-                    return new List<TagDb>();
+                    return new List<PhotoTagsTypes>();
                 }
 
 
@@ -50,35 +50,35 @@ namespace LHDTV.Repo
             
         }
 
-        public TagDb Create(TagDb entity,int userId)
+        public PhotoTagsTypes Create(PhotoTagsTypes entity,int userId)
         {
             using (var ctx = new LHDTVContext())
             {
-                ctx.TagDb.Add(entity);
+                ctx.TagTypeMaster.Add(entity);
                 ctx.SaveChanges();
                 return entity;
             }
 
         }
 
-        public TagDb Delete(int id,int userId)
+        public PhotoTagsTypes Delete(string tg,int userId)
         {
 
             using (var ctx = new LHDTVContext())
             {
-                var Tag = ctx.Remove(id);
+                var Tag = ctx.Remove(tg);
                 ctx.SaveChanges();
 
                 return null;
             }
 
         }
-        public TagDb Update(TagDb entity, int userId)
+        public PhotoTagsTypes Update(PhotoTagsTypes entity, int userId)
         {
 
             using (var ctx = new LHDTVContext())
             {
-                ctx.TagDb.Update(entity);
+                ctx.TagTypeMaster.Update(entity);
                 ctx.SaveChanges();
 
                 return entity;

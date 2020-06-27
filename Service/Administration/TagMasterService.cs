@@ -1,4 +1,4 @@
-using System;
+
 using System.Linq;
 using LHDTV.Models.ViewEntity;
 using LHDTV.Models.DbEntity;
@@ -37,11 +37,10 @@ namespace LHDTV.Service
         
         public PhotoTagsTypesView Create (AddPhotoTagForm form,int userId){
 
-            TagDb tagPOJO = new TagDb()
+            PhotoTagsTypes tagPOJO = new PhotoTagsTypes()
             {
                 
-              Title = form.Title,
-              Type =form.Type,
+              Name = form.Title,
               Extra1 = form.Extra1,
               Extra2 = form.Extra2,
               Extra3 = form.Extra3                
@@ -64,17 +63,16 @@ namespace LHDTV.Service
 
         // }
 
-        public PhotoTagsTypesView Delete(int tagId, int userId){
+        public PhotoTagsTypesView Delete(string tagName, int userId){
 
-            var tag = adminRepo.Read(tagId,userId);
+            var tag = adminRepo.Read(tagName,userId);
 
             if(tag == null){
                 return null;
             }
 
-            tag.Deleted = true;
 
-            var tagRet = adminRepo.Update(tag,userId);
+            var tagRet = adminRepo.Delete(tag.Name,userId);
             var tagMap = mapper.Map<PhotoTagsTypesView>(tagRet);
 
             return tagMap;
@@ -83,13 +81,15 @@ namespace LHDTV.Service
 
         public PhotoTagsTypesView Update(AddPhotoTagForm tag,int userId){
 
-            var t = adminRepo.Read(tag.Id,userId);
+            var t = adminRepo.Read(tag.Title,userId);
             if(t == null){
                 return null;
             }
 
-            t.Title = tag.Title.Trim();
-            t.Type = tag.Type.Trim();
+            t.Name = tag.Title.Trim();
+            t.Extra1 = tag.Extra1.Trim();
+            t.Extra2 = tag.Extra2.Trim();
+            t.Extra3 = tag.Extra3.Trim();
 
             var tagRet = adminRepo.Update(t, userId);
             var tagTemp = mapper.Map<PhotoTagsTypesView>(tagRet);
@@ -97,9 +97,9 @@ namespace LHDTV.Service
             return tagTemp;
 
         }
-        public PhotoTagsTypesView Read(int id,int userId){
+        public PhotoTagsTypesView Read(string title,int userId){
 
-            var tag = adminRepo.Read(id,userId);
+            var tag = adminRepo.Read(title,userId);
             var tagRet = mapper.Map<PhotoTagsTypesView>(tag);
             return tagRet;
 
