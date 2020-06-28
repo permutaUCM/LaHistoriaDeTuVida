@@ -22,7 +22,7 @@ namespace LHDTV.Service
 
         private readonly string basePath;
 
-        private const string BASEPATHCONF = "folderRoutes:uploadRoute";
+        // private const string BASEPATHCONF = "folderRoutes:uploadRoute";
 
         public TagMasterService(TagMasterRepoDb _adminRepo,
                             IMapper _mapper,
@@ -31,7 +31,7 @@ namespace LHDTV.Service
         {
             adminRepo = _adminRepo;
             mapper = _mapper;
-            basePath = _configuration.GetValue<string>(BASEPATHCONF);
+            // basePath = _configuration.GetValue<string>(BASEPATHCONF);
         }
 
         
