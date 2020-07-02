@@ -33,7 +33,8 @@ namespace LHDTV.Controllers
             
         }
 
-        [HttpPost("createTag")]        
+        // [HttpPost("createTag")]   
+        [HttpGet("tagMaster/create")]
         public IActionResult createTag([FromBody] AddPhotoTagForm form){
             try{
                 var tag = tagMasterService.Create(form,0);
@@ -49,7 +50,8 @@ namespace LHDTV.Controllers
             }
             
         }
-        [HttpPost("updateTag")]
+        // [HttpPost("updateTag")]
+        [HttpGet("tagMaster/update")]
         public IActionResult updateTag([FromBody] AddPhotoTagForm form){
 
             try{
@@ -65,7 +67,7 @@ namespace LHDTV.Controllers
 
             }
         }
-        [HttpPost("removeTag")]
+        [HttpGet("tagMaster/delete/{id}")]
         public IActionResult removeTag(string t){
 
             try{

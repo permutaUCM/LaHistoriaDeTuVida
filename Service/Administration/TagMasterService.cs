@@ -22,33 +22,57 @@ namespace LHDTV.Service
 
         private readonly string basePath;
 
-        // private const string BASEPATHCONF = "folderRoutes:uploadRoute";
+        private const string BASEPATHCONF = "tagRoutes:uploadRoute";
 
-        public TagMasterService(TagMasterRepoDb _adminRepo,
+        public TagMasterService(ITagMasterRepoDb _adminRepo,
                             IMapper _mapper,
                             IConfiguration _configuration
                             )
         {
             adminRepo = _adminRepo;
             mapper = _mapper;
-            // basePath = _configuration.GetValue<string>(BASEPATHCONF);
+            basePath = _configuration.GetValue<string>(BASEPATHCONF);
         }
 
         
         public PhotoTagsTypesView Create (AddPhotoTagForm form,int userId){
+            
+            Extra ext1_Temp = new Extra(){
+
+                Name = form.Extra1,
+                type = form.Type,
+                extras = null
+
+            };
+            Extra ext2_Temp = new Extra(){
+
+                Name = form.Extra2,
+                type = form.Type,
+                extras = null
+
+            };
+            Extra ext3_Temp = new Extra(){
+
+                Name = form.Extra3,
+                type = form.Type,
+                extras = null
+
+            };
 
             PhotoTagsTypes tagPOJO = new PhotoTagsTypes()
             {
                 
-              Name = form.Title,
+            Name = form.Title,
+            
             //   Extra1 = form.Extra1,
             //   Extra2 = form.Extra2,
             //   Extra3 = form.Extra3
-            Extra1 = null,
-            Extra2 = null,
-            Extra3 = null           
+            Extra1 = ext1_Temp,
+            Extra2 = ext2_Temp,
+            Extra3 = ext3_Temp           
               
             };
+            
 
             var TagRet = adminRepo.Create(tagPOJO, 0);
             var tagTemp = mapper.Map<PhotoTagsTypesView>(TagRet);
