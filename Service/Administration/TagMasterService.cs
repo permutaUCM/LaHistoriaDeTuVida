@@ -17,6 +17,8 @@ namespace LHDTV.Service
     {
         
         private readonly ITagMasterRepoDb adminRepo;
+
+        private readonly IPhotoRepo photoRepo;
     
         private readonly IMapper mapper;
 
@@ -26,50 +28,34 @@ namespace LHDTV.Service
 
         public TagMasterService(ITagMasterRepoDb _adminRepo,
                             IMapper _mapper,
-                            IConfiguration _configuration
+                            IConfiguration _configuration,
+                            IPhotoRepo _photoRepo
                             )
         {
             adminRepo = _adminRepo;
             mapper = _mapper;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
+            photoRepo = _photoRepo;
         }
 
         
         public PhotoTagsTypesView Create (AddPhotoTagForm form,int userId){
             
-            Extra ext1_Temp = new Extra(){
+            var types = photoRepo.getTagTypes();
+            var myTagType = types.First(t => t.Name == form.Extra1);
 
-                Name = form.Extra1,
-                type = form.Type,
-                extras = null
+            if (myTagType == null) return null;// exception not found o parecido 400 
 
-            };
-            Extra ext2_Temp = new Extra(){
-
-                Name = form.Extra2,
-                type = form.Type,
-                extras = null
-
-            };
-            Extra ext3_Temp = new Extra(){
-
-                Name = form.Extra3,
-                type = form.Type,
-                extras = null
-
-            };
-
+            
             PhotoTagsTypes tagPOJO = new PhotoTagsTypes()
             {
                 
             Name = form.Title,
             
-            //   Extra1 = form.Extra1,
-            //   Extra2 = form.Extra2,
-            //   Extra3 = form.Extra3
-            Extra1 = ext1_Temp,
-            Extra2 = ext2_Temp,
-            Extra3 = ext3_Temp           
+  
+            Extra1 = myTagType.Extra1,
+            Extra2 = myTagType.Extra2,
+            Extra3 = myTagType.Extra3           
               
             };
             
