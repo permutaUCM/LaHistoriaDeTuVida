@@ -37,17 +37,17 @@ namespace LHDTV.Controllers
         private const string BASEPATHCONF = "photoRoutes:uploadRoute";
         private readonly AppSettings appSettings;
         private readonly ITokenRecoveryService tokenRecovery;
-
+        private readonly IFolderService folderService;
         public PhotoController(IPhotoService _photoService, IStringLocalizer<PhotoController> _localizer,
                           ILogger<PhotoController> _logger, IConfiguration _configuration,
-                          IOptions<AppSettings> _appSettings, ITokenRecoveryService tokenRecovery
+                          IOptions<AppSettings> _appSettings, ITokenRecoveryService tokenRecovery, IFolderService _folderService
             )
         {
             photoService = _photoService;
             localizer = _localizer;
             logger = _logger;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
-
+            folderService = _folderService;
             appSettings = _appSettings.Value;
             this.tokenRecovery = tokenRecovery;
         }
@@ -113,8 +113,8 @@ namespace LHDTV.Controllers
         }
 
 
-        [HttpGet("all")]
-        public ActionResult getAll([FromQuery] Pagination pag)
+        [HttpPost("all")]
+        public ActionResult getAll([FromBody] Pagination pag)
         {
 
             try
@@ -130,6 +130,7 @@ namespace LHDTV.Controllers
                     {
                         Page = pag,
                         PagCount = 150,
+                        Types = folderService.GetMetadata().Types
                     },
                     Data = photos
 
@@ -147,8 +148,8 @@ namespace LHDTV.Controllers
         }
 
         //Returns all files but the ones in the folder
-        [HttpGet("all/{folderId}")]
-        public ActionResult getAllNotInFolder([FromQuery] Pagination pag, int folderId)
+        [HttpPost("all/{folderId}")]
+        public ActionResult getAllNotInFolder([FromBody] Pagination pag, int folderId)
         {
 
             try
@@ -285,7 +286,7 @@ namespace LHDTV.Controllers
                     var file_ = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
 
                     return PhysicalFile(file_, "image/jpeg");
-                    
+
                 }
 
                 var file = System.IO.Path.Combine(appSettings.BasePathFolder, photo.Url);
