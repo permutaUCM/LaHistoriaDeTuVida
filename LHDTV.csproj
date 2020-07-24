@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="awssdk" Version="2.3.55.2" />
+    <PackageReference Include="awssdk.rekognition" Version="3.3.106.12" />
     <PackageReference Include="MailKit" Version="2.6.0" />
     <PackageReference Include="MetadataExtractor" Version="2.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />

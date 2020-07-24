@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using LHDTV.Models.DbEntity;
@@ -69,22 +70,41 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
+                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId);
+                if (pagination.Filter != null)
+                    foreach (var pair in pagination.Filter)
+                    {
+                        var filterKey = pair.Key;
+                        var filterVal = pair.Value;
+                        switch (filterKey)
+                        {
+                            case "title":
+                                query = query.Where(p => p.Title.Contains(filterKey));
+                                break;
+                            case "dateIni":
+                                query = query.Where(p => p.RealDate > DateTime.Parse(filterVal));
+                                break;
+                            case "dateEnd":
+                                query = query.Where(p => p.RealDate < DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateStart":
+                                query = query.Where(p => p.UploadDate > DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateEnd":
+                                query = query.Where(p => p.UploadDate < DateTime.Parse(filterVal));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                var queryRes = query.Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-                if (pagination.FilterField != null)
-                {
-                    // for (int i = 0; i < pagination.FilterField.Count; i++)
-                    // {
-
-                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
-                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
-                    // }
-
-                }
 
 
-                return query;
+
+                return queryRes;
             }
         }
 
@@ -93,8 +113,8 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.PhotosFolder)
-                        .Where(p => p.UserId == userId && 
+                var query = ctx.Photo.Include(p => p.PhotosFolder).Include(p => p.Tag)
+                        .Where(p => p.UserId == userId &&
                             !p.PhotosFolder
                                 .Where(pf => pf.FolderId == folderId)
                                 .Select(pf => pf.PhotoId)
@@ -102,18 +122,6 @@ namespace LHDTV.Repo
                         .Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-                if (pagination.FilterField != null)
-                {
-                    // for (int i = 0; i < pagination.FilterField.Count; i++)
-                    // {
-
-                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
-                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
-                    // }
-
-                }
-
-
                 return query;
             }
         }

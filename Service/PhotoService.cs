@@ -30,7 +30,7 @@ namespace LHDTV.Service
         private readonly IFolderService folderService;
         private readonly ILogger<PhotoService> logger;
 
-
+        private readonly IUserRepoDb userRepo;
         private const int NO_FOLDER = -2;
 
         public PhotoService(IPhotoRepo _photoRepo,
@@ -38,7 +38,8 @@ namespace LHDTV.Service
         IConfiguration _configuration,
         IAutoTagService _autoTagService,
         IFolderService _folderService,
-        ILogger<PhotoService> _logger)
+        ILogger<PhotoService> _logger,
+        IUserRepoDb _userRepo)
         {
             photoRepo = _photoRepo;
             mapper = _mapper;
@@ -46,6 +47,7 @@ namespace LHDTV.Service
             autoTagService = _autoTagService;
             folderService = _folderService;
             logger = _logger;
+            userRepo = _userRepo;
         }
 
         public PhotoView GetPhoto(int id, int userId)
@@ -112,6 +114,17 @@ namespace LHDTV.Service
                 }
             }
 
+            var autoTags = this.autoTagService.autoTagPhotos(basePath + "/" + path);
+
+            foreach (var t in autoTags)
+            {
+                photo.Tags.Add(new TagForm()
+                {
+                    Title = t.Name,
+                    Type = "type"
+                });
+            }
+
             PhotoDb photoPOJO = new PhotoDb()
             {
                 UserId = userId,
@@ -134,7 +147,7 @@ namespace LHDTV.Service
 
 
             if (folder != null)
-                folderService.addPhotoToFolder(folder.Id, new List<int>(){photoRet.Id}, userId);
+                folderService.addPhotoToFolder(folder.Id, new List<int>() { photoRet.Id }, userId);
 
             return photoTemp;
         }
@@ -211,7 +224,10 @@ namespace LHDTV.Service
             {
                 return new List<PhotoView>();
             }
-            return photos.Select(p => this.mapper.Map<PhotoView>(p)).ToList();
+
+
+
+            return photos.Select(p => mapper.Map<PhotoView>(p)).ToList();
         }
 
         public PhotoView AddTag(TagForm form, int userId)
