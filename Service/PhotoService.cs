@@ -238,7 +238,7 @@ namespace LHDTV.Service
 
         public List<TagDb> GetAllTags(int userId, int folderId)
         {
-            return photoRepo.getAllTags(userId, folderId);
+            return photoRepo.getAllTags(userId, folderId).OrderBy(tag => tag.Title).ToList();
         }
 
 

@@ -171,14 +171,12 @@ namespace LHDTV.Controllers
 
                 return Ok(new
                 {
-
                     Metadata = new
                     {
                         Page = pag,
                         PagCount = 150,
                     },
                     Data = photos
-
                 });
 
 

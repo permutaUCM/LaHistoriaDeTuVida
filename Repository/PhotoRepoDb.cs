@@ -71,22 +71,45 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId).Skip((pagination.NumPag - 1) * pagination.TamPag)
-                        .Take(pagination.TamPag).ToList();
+                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId);
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-                if (pagination.Filter.Count != 0)
-                {
-                    // for (int i = 0; i < pagination.FilterField.Count; i++)
-                    // {
+                if (pagination.Filter != null)
+                    foreach (var pair in pagination.Filter)
+                    {
+                        var filterKey = pair.Key;
+                        var filterVal = pair.Value;
+                        switch (filterKey)
+                        {
+                            case "title":
+                                query = query.Where(p => p.Title.Contains(filterKey));
+                                break;
+                            case "dateStart":
+                                query = query.Where(p => p.RealDate > DateTime.Parse(filterVal));
+                                break;
+                            case "dateEnd":
+                                query = query.Where(p => p.RealDate < DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateStart":
+                                query = query.Where(p => p.UploadDate > DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateEnd":
+                                query = query.Where(p => p.UploadDate < DateTime.Parse(filterVal));
+                                break;
+                            case "tags":
+                                if (filterVal.Length == 0)
+                                    continue;
+                                var tagList = filterVal.Split(";");
+                                query = query.Where(p => p.Tag.Where(t => tagList.ToList().Contains(t.Title)).Any());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
 
-                    //     query = query.Where(f => f.GetType().GetProperty(pagination.FilterField[i])
-                    //         .GetValue(f, null).ToString() == pagination.FilterValue[i]);
-                    // }
+                var content = query.Skip((pagination.NumPag - 1) * pagination.TamPag)
+                        .Take(pagination.TamPag).ToList();
 
-                }
-
-
-                return query;
+                return content;
             }
         }
 
@@ -102,37 +125,42 @@ namespace LHDTV.Repo
                                 .Select(pf => pf.PhotoId)
                                 .Contains(p.Id));
 
-                foreach (var filter in pagination.Filter)
-                {
-                    if (filter.Key == "dateIni")
+                if (pagination.Filter != null)
+                    foreach (var pair in pagination.Filter)
                     {
-                        DateTime dateIni;
-                        if (!DateTime.TryParse(filter.Value, out dateIni))
-                            continue;
-                        query = query.Where(p => p.RealDate >= dateIni);
+                        var filterKey = pair.Key;
+                        var filterVal = pair.Value;
+                        switch (filterKey)
+                        {
+                            case "title":
+                                query = query.Where(p => p.Title.Contains(filterKey));
+                                break;
+                            case "dateStart":
+                                query = query.Where(p => p.RealDate > DateTime.Parse(filterVal));
+                                break;
+                            case "dateEnd":
+                                query = query.Where(p => p.RealDate < DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateStart":
+                                query = query.Where(p => p.UploadDate > DateTime.Parse(filterVal));
+                                break;
+                            case "uploadDateEnd":
+                                query = query.Where(p => p.UploadDate < DateTime.Parse(filterVal));
+                                break;
+                            case "tags":
+                                if (filterVal.Length == 0)
+                                    continue;
+                                var tagList = filterVal.Split(";");
+                                query = query.Where(p => p.Tag.Where(t => tagList.ToList().Contains(t.Title)).Any());
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                    else if (filter.Key == "dateEnd")
-                    {
-                        DateTime dateEnd;
-                        if (!DateTime.TryParse(filter.Value, out dateEnd))
-                            continue;
-                        query = query.Where(p => p.RealDate <= dateEnd);
-                    }
-                    else if (filter.Key == "tags")
-                    {
-                        if (filter.Value.Length == 0)
-                            continue;
-                        var tagList = filter.Value.Split(";");
-                        query = query.Where(p => p.Tag.Where(t => tagList.ToList().Contains(t.Title)).Any());
-
-                    }
-                }
 
                 var content = query.Skip((pagination.NumPag - 1) * pagination.TamPag)
                         .Take(pagination.TamPag).ToList();
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
-
-
 
                 return content;
             }
@@ -187,7 +215,7 @@ namespace LHDTV.Repo
 
 
 
-                var r = listTag.OrderBy(t => t.Title).Distinct(new TagDbComparer()).ToList();
+                var r = listTag.GroupBy(x => x.Title).Select(x => x.First()).ToList();
 
                 return r;
 

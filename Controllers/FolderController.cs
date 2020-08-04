@@ -168,7 +168,7 @@ namespace LHDTV.Controllers
             });
         }
 
-        [HttpGet("all")]
+        [HttpPost("all")]
         public ActionResult getAllFolders([FromBody] Pagination pag)
         {
             try
