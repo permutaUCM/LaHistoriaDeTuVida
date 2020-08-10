@@ -125,11 +125,28 @@ namespace LHDTV.Repo
             {
                 try
                 {
-                    var res = ctx.Folder.Where(f => f.User.Id == userId)
-                                        .Include(f => f.DefaultPhoto)
-                                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
-                                        .Take(pagination.TamPag)
-                                        .ToList();
+                    var query = ctx.Folder.Where(f => f.User.Id == userId);
+                    var filt = pagination.Filter;
+                    if(filt != null){
+                        foreach(var pair in filt){
+                            var key = pair.Key;
+                            var val = pair.Value;
+
+                            switch (key.ToLower())
+                            {
+                                case "title":
+                                    query = query.Where(f => f.Title.Contains(val));
+                                    break;
+                                
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    var res = query.Include(f => f.DefaultPhoto).Skip((pagination.NumPag - 1) * pagination.TamPag)
+                                .Take(pagination.TamPag)
+                                .ToList();
                     return res;
                 }
                 catch (System.Exception e)

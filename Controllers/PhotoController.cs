@@ -22,7 +22,6 @@ namespace LHDTV.Controllers
     [ApiController]
     [Route("api/photo")]
     [Authorize(Roles = "USER,ADMIN")]
-
     public class PhotoController : ControllerBase
     {
 
