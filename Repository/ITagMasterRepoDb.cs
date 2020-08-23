@@ -15,6 +15,11 @@ namespace LHDTV.Repo
 
         //  TagDb Update(TagDb entity, int userId);
         //  List<TagDb> GetAll(LHDTV.Models.Forms.Pagination pagination, int userId);
+
+        List<Extra> GetAllExtras();
+
+        
+
      
     }
 }

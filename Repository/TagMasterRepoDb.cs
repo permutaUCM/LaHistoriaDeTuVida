@@ -21,7 +21,7 @@ namespace LHDTV.Repo
             
             using(var ctx = new LHDTVContext()){
 
-                var tag = ctx.TagTypeMaster.Include(p => p).ThenInclude(t => t).Include(p => p.Name).FirstOrDefault(p => p.Name == title);
+                var tag = ctx.TagTypeMaster.Include(t => t.Extra1).Include(t => t.Extra2).Include(t => t.Extra3).FirstOrDefault(p => p.Name == title);
                 return tag;
 
             }
@@ -34,10 +34,7 @@ namespace LHDTV.Repo
             {
                 try
                 {
-                    var res = ctx.TagTypeMaster.Include(f => f.Name)
-                                        .Skip((pagination.NumPag - 1) * pagination.TamPag)
-                                        .Take(pagination.TamPag)
-                                        .ToList();
+                    var res = ctx.TagTypeMaster.Include(tag => tag.Extra1).Include(tag => tag.Extra2).Include(tag => tag.Extra3).ToList();
                     return res;
                 }
                 catch (System.Exception e)
@@ -54,9 +51,9 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                ctx.TagTypeMaster.Add(tg);
+                var result = ctx.TagTypeMaster.Add(tg);
                 ctx.SaveChanges();
-                return tg;
+                return result.Entity;
             }
 
         }
@@ -66,7 +63,8 @@ namespace LHDTV.Repo
 
             using (var ctx = new LHDTVContext())
             {
-                var Tag = ctx.Remove(tg);
+                
+                var tag = ctx.TagTypeMaster.Remove(ctx.TagTypeMaster.FirstOrDefault(t => t.Name == tg));
                 ctx.SaveChanges();
 
                 return null;
@@ -78,13 +76,33 @@ namespace LHDTV.Repo
 
             using (var ctx = new LHDTVContext())
             {
+                if(tg.Extra1 == null){
+                    tg.Extra1Name = null;
+                }
+                if(tg.Extra2 == null){
+                    tg.Extra2Name = null;
+                }
+                if(tg.Extra3 == null){
+                    tg.Extra3Name = null;
+                }
                 ctx.TagTypeMaster.Update(tg);
+
                 ctx.SaveChanges();
 
                 return tg;
             }
 
         }
+
+        public List<Extra> GetAllExtras(){
+            using (var ctx = new LHDTVContext())
+            {
+                var extras = ctx.Extra.ToList();
+
+                return extras;
+            }
+        }
+
     }
 
 }

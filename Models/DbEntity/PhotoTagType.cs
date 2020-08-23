@@ -8,8 +8,11 @@ namespace LHDTV.Models.DbEntity
         //Tag name ("Restaurant", "Museum", etc..)
         public string Name { get; set; }
         //Extra info for a tag
+        public string Extra1Name { get; set; }
         public Extra Extra1 { get; set; }
+        public string Extra2Name { get; set; }
         public Extra Extra2 { get; set; }
+        public string Extra3Name { get; set; }
         public Extra Extra3 { get; set; }
 
     }

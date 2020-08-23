@@ -82,9 +82,8 @@ namespace LHDTV.Repo
 
                     }
                 }
-
-                var tmp = photoFolderListQuery.ToList();
-                var photoFolderList = photoFolderListQuery.Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList();
+                
+                var photoFolderList = photoFolderListQuery.ToList().Skip((p.NumPag - 1) * p.TamPag).Take(p.TamPag).ToList();
                 folder.PhotosFolder = photoFolderList;
                 return folder;
             }
