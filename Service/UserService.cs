@@ -25,6 +25,8 @@ namespace LHDTV.Service
 
         private readonly IMapper mapper;
 
+        private readonly IMailService mailService;
+
         private readonly string basePath;
 
         private const string BASEPATHCONF = "userRoutes:uploadRoute";
@@ -40,11 +42,12 @@ namespace LHDTV.Service
         private readonly AppSettings appSettings;
 
         public UserService(IOptions<AppSettings> _appSettings, IUserRepoDb _userRepo,
-                             IMapper _mapper, IConfiguration _configuration)
+                             IMapper _mapper, IConfiguration _configuration, IMailService _mailService)
         {
             appSettings = _appSettings.Value;
             userRepo = _userRepo;
             mapper = _mapper;
+            mailService = _mailService;
             basePath = _configuration.GetValue<string>(BASEPATHCONF);
 
         }
@@ -61,14 +64,15 @@ namespace LHDTV.Service
 
             // si existe un usuario con el nick, hay error.
             //var user_aux =  userRepoDb.ReadNick(user.Nickname);
-            /*   var user_aux =  userRepoDb.ReadNick(user.Nickname);
+            var user_aux = userRepo.ReadNick(user.Nickname, -1);
 
-              if(user_aux.Nickname == user.Nickname){
+            if (user_aux.Nickname == user.Nickname)
+            {
 
-                  return null;
+                return null;
 
-               }
-               */
+            }
+
 
 
             // cifrar la contraseña
@@ -80,7 +84,6 @@ namespace LHDTV.Service
 
             UserDb userPOJO = new UserDb()
             {
-
                 Name = user.FirstName.Trim(),
                 LastName1 = user.LastName1.Trim(),
                 LastName2 = user.LastName2.Trim(),
@@ -89,20 +92,14 @@ namespace LHDTV.Service
                 Email = user.Email.Trim(),
                 Dni = user.Dni.Trim(),
                 // Token = salt,
-                Deleted = false
-
-
-
+                Deleted = false,
+                Role = "USER"
             };
-
-
 
             var userRet = userRepo.Create(userPOJO, 0);
             var usertemp = mapper.Map<UserView>(userRet);
 
             return usertemp;
-
-
         }
 
 
@@ -248,11 +245,16 @@ namespace LHDTV.Service
             user.RecovertyToken = newToken;
             user.ExpirationTokenDate = expDate;
 
-            userRepo.Update(user, 0);
+            user = userRepo.Update(user, 0);
 
             //TODO: Send email
 
-            sendMessage(createMessage());
+            mailService.SendEmail("Auryn", "Auryn.noreply@gmail.com",
+                                user.Nickname, user.Email,
+                                "Recuperación de contraseña",
+                                "Un saludo.\nDesde el equipo de Auryn nos ponemos en contacto contigo para gestionar el cambio de contraseña solicitado.\nPara poder recuperarla sigue este link y rellena los formularios correspondientes.\n\n<a href=\"http://localhost:4200/recoverMyPassword?token=" + user.RecovertyToken + "\">RECUPERA TU CONTRASEÑA</a>");
+
+
 
             return true;
         }
@@ -260,8 +262,8 @@ namespace LHDTV.Service
         public bool PasswordRecovery(PasswordRecoveryForm passwordRecovery)
         {
 
-            var user = userRepo.ReadNick(passwordRecovery.Nick, 0);
-            if (user == null || user.Email != passwordRecovery.Email || user.RecovertyToken != passwordRecovery.Token ||
+            var user = userRepo.ReadToken(passwordRecovery.Token, 0);
+            if (user == null || user.RecovertyToken != passwordRecovery.Token ||
             user.ExpirationTokenDate < DateTime.UtcNow)
             {
                 return false;

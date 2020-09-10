@@ -15,9 +15,8 @@ namespace LHDTV.Models.Forms
         [MaxLength(50, ErrorMessage = "El campo LastName2 no puede tener más de 50 caracteres.")]
         public string LastName2 { get; set; }
 
-        [MaxLength(50, ErrorMessage = "El campo Dni no puede tener más de 50 caracteres.")]
-        [StringLength(8, MinimumLength = 1, ErrorMessage = "Debe tener  8 numeros y una letra.")]
-        [RegularExpression("^(([A-Z])|\\d)?\\d{8}(\\d|[A-Z])?$")]
+        
+        [RegularExpression("^\\d{8}[A-Z|a-z]$")]
         public string Dni { get; set; }
 
         [MaxLength(50, ErrorMessage = "El campo Password no puede tener más de 50 caracteres.")]

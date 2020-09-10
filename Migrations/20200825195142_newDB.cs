@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LHDTV.Migrations
 {
-<<<<<<< HEAD:Migrations/20200519173802_update.cs
-    public partial class update : Migration
-=======
-    public partial class rolusuario : Migration
->>>>>>> 6b30f2a641ad1391ee41312d00f55d223d1d46f1:Migrations/20200621152508_rolusuario.cs
+    public partial class newDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -40,7 +40,9 @@ namespace LHDTV.Repo
             //TODO No debe devolver todas las fotos de la carpeta, si no no se puede filtrar ni paginar.
             using (var ctx = new LHDTVContext())
             {
-                var folder = ctx.Folder.Include(f => f.PhotosTags).Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).ThenInclude(p => p.Tag).FirstOrDefault(f => f.Id == id);
+                var folder = ctx.Folder.Include(f => f.PhotosTags)
+                .Include(f => f.PhotosFolder).ThenInclude(pf => pf.Photo).ThenInclude(p => p.Tag)
+                .Where(f => f.Deleted == false).FirstOrDefault(f => f.Id == id);
                 return folder;
             }
 
@@ -50,7 +52,7 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var folder = ctx.Folder.Include(f => f.PhotosTags)
+                var folder = ctx.Folder.Include(f => f.PhotosTags).Where(f => f.Deleted == false)
                     .FirstOrDefault(f => f.Id == id && f.UserId == userId);
 
                 var photoFolderListQuery = ctx.PhotoFolderMap.Include(pf => pf.Photo).ThenInclude(p => p.Tag)
@@ -124,7 +126,7 @@ namespace LHDTV.Repo
             {
                 try
                 {
-                    var query = ctx.Folder.Where(f => f.User.Id == userId);
+                    var query = ctx.Folder.Where(f => f.User.Id == userId).Where(f => f.Deleted == false);
                     var filt = pagination.Filter;
                     if(filt != null){
                         foreach(var pair in filt){

@@ -194,6 +194,7 @@ namespace LHDTV.Service
             photo.Deleted = true;
 
             var photoRet = photoRepo.Update(photo, userId);
+            photoRepo.RemovePhotoFromFolders(photo, userId);
             var photoMap = mapper.Map<PhotoView>(photoRet);
 
             return photoMap;

@@ -165,6 +165,9 @@ namespace LHDTV.Migrations
                     b.Property<string>("Extra3Name")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Name");
 
                     b.HasIndex("Extra1Name");

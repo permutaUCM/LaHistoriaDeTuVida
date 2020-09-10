@@ -100,7 +100,11 @@ namespace LHDTV.Controllers
         public ActionResult UpdatePhoto([FromBody] UpdatePhotoForm form)
         {
             var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
-            return Ok(photoService.Update(form, userId));
+            return Ok(new
+            {
+                metadata = new { },
+                data = photoService.Update(form, userId)
+            });
         }
 
         [HttpPost("addPhoto")]
@@ -120,7 +124,7 @@ namespace LHDTV.Controllers
             {
                 var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
                 var photos = photoService.GetAll(pag, userId);
-
+                var tagTypes = photoService.GetTagTypes();
                 return Ok(new
                 {
 
@@ -128,6 +132,7 @@ namespace LHDTV.Controllers
                     {
                         Page = pag,
                         PagCount = 150,
+                        TagTypes = tagTypes,
                     },
                     Data = photos
 
@@ -150,10 +155,16 @@ namespace LHDTV.Controllers
             var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
 
             var ret = this.photoService.GetAllTags(userId, folderId);
+            var tagTypes = photoService.GetTagTypes();
+
 
             return Ok(new
             {
-                data = ret
+                data = ret,
+                Metadata = new
+                {
+                    TagTypes = tagTypes
+                }
             });
         }
 
@@ -166,6 +177,7 @@ namespace LHDTV.Controllers
             {
                 var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
                 var photos = photoService.GetAll(pag, userId, folderId);
+                var tagTypes = photoService.GetTagTypes();
 
 
                 return Ok(new
@@ -174,6 +186,8 @@ namespace LHDTV.Controllers
                     {
                         Page = pag,
                         PagCount = 150,
+                        TagTypes = tagTypes
+
                     },
                     Data = photos
                 });
@@ -188,11 +202,15 @@ namespace LHDTV.Controllers
 
             }
         }
-        [HttpGet("delete/{photoId}")]
+        [HttpDelete("{photoId}")]
         public ActionResult delete(int photoId)
         {
             var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
-            return Ok(photoService.Delete(photoId, userId));
+            return Ok(new
+            {
+                data = photoService.Delete(photoId, userId),
+                metadata = new { }
+            });
         }
 
         [HttpPost("addTag")]
@@ -294,7 +312,7 @@ namespace LHDTV.Controllers
                     var file_ = System.IO.Path.Combine(appSettings.BasePathFolder, "defaultPhoto.jpg");
 
                     return PhysicalFile(file_, "image/jpeg");
-                    
+
                 }
 
                 var file = System.IO.Path.Combine(appSettings.BasePathFolder, photo.Url);

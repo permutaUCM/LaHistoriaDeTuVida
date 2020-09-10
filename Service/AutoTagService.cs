@@ -5,7 +5,7 @@ using Amazon.Rekognition;
 using Amazon.Rekognition.Model;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-
+using Newtonsoft.Json;
 
 
 namespace LHDTV.Service
@@ -64,13 +64,16 @@ namespace LHDTV.Service
             DetectLabelsRequest detectLabelsRequest = new DetectLabelsRequest()
             {
                 Image = image,
-                MaxLabels = 20,
-                MinConfidence = 50F
+                MaxLabels = 40,
+                MinConfidence = 30F
             };
 
             try
             {
                 DetectLabelsResponse detectLabelsResponse = rekognitionClient.DetectLabelsAsync(detectLabelsRequest).Result;
+                
+                
+            var res = JsonConvert.SerializeObject(detectLabelsResponse.Labels);
                 return detectLabelsResponse.Labels;
             }
             catch (Exception e)

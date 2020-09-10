@@ -30,7 +30,7 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
-                var photo = ctx.Photo.Include(p => p).ThenInclude(t => t).Include(p => p.Tag).FirstOrDefault(p => p.Id == id);
+                var photo = ctx.Photo.Include(p => p).ThenInclude(t => t).Include(p => p.Tag).FirstOrDefault(p => p.Id == id && !p.Deleted);
                 return photo;
             }
         }
@@ -60,6 +60,7 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
                 var photo = ctx.Remove(id);
+
                 ctx.SaveChanges();
 
                 return null;
@@ -71,7 +72,7 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
 
-                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId);
+                var query = ctx.Photo.Include(p => p.Tag).Where(p => p.UserId == userId && !p.Deleted);
                 // var f = query.Select(p => p.GetType().GetProperty(pagination.FilterField[0]).GetValue(p, null).ToString()).ToList();
                 if (pagination.Filter != null)
                     foreach (var pair in pagination.Filter)
@@ -119,7 +120,7 @@ namespace LHDTV.Repo
             {
 
                 var query = ctx.Photo.Include(p => p.Tag).Include(p => p.PhotosFolder)
-                        .Where(p => p.UserId == userId &&
+                        .Where(p => p.UserId == userId && !p.Deleted &&
                             !p.PhotosFolder
                                 .Where(pf => pf.FolderId == folderId)
                                 .Select(pf => pf.PhotoId)
@@ -235,6 +236,15 @@ namespace LHDTV.Repo
             using (var ctx = new LHDTVContext())
             {
                 ctx.TagDb.Update(tag);
+                ctx.SaveChanges();
+            }
+        }
+
+        public void RemovePhotoFromFolders(PhotoDb photo, int UserId){
+            using (var ctx = new LHDTVContext())
+            {
+                List<PhotoFolderMap> temp = ctx.PhotoFolderMap.Where(pf => pf.PhotoId == photo.Id).ToList();
+                ctx.PhotoFolderMap.RemoveRange(temp);
                 ctx.SaveChanges();
             }
         }

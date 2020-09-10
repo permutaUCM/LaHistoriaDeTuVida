@@ -58,6 +58,8 @@ namespace LHDTV.Controllers
             }
             return Ok(user);
         }
+        
+        [AllowAnonymous]
         [HttpPost("addUser")]
         public ActionResult addUser([FromBody] AddUserForm form)
         {
@@ -156,7 +158,7 @@ namespace LHDTV.Controllers
         [HttpPost("passwordRecovery")]
         public IActionResult passwordRecovery([FromBody] PasswordRecoveryForm passwordRecoveryForm)
         {
-
+            passwordRecoveryForm.Token = passwordRecoveryForm.Token.Replace(" ", "+");
             var ok = userService.PasswordRecovery(passwordRecoveryForm);
             if (ok)
             {

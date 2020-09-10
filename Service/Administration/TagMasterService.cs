@@ -50,14 +50,17 @@ namespace LHDTV.Service
             var ex1 = extras.Where(ext => form.Extra1 == ext.Name).FirstOrDefault();
             var ex2 = extras.Where(ext => form.Extra2 == ext.Name).FirstOrDefault();
             var ex3 = extras.Where(ext => form.Extra3 == ext.Name).FirstOrDefault();
-            if (form.Extra1 != null && form.Extra1 != "" && ex1 == null){
-                return null;
+            if (ex1 == null && form.Extra1 != null && form.Extra1 != "")
+            {
+                ex1 = adminRepo.CreateExtra(form.Extra1);
             }
-            if (form.Extra2 != null && form.Extra2 != "" && ex2 == null){
-                return null;
+            if (ex2 == null && form.Extra2 != null && form.Extra2 != "")
+            {
+                ex2 = adminRepo.CreateExtra(form.Extra2);
             }
-            if (form.Extra3 != null && form.Extra3 != "" && ex3 == null){
-                return null;
+            if (ex3 == null && form.Extra3 != null && form.Extra3 != "")
+            {
+                ex3 = adminRepo.CreateExtra(form.Extra3);
             }
 
 
@@ -68,11 +71,18 @@ namespace LHDTV.Service
 
                 Extra1Name = (ex1 == null) ? null : ex1.Name,
                 Extra2Name = (ex2 == null) ? null : ex2.Name,
-                Extra3Name = (ex3 == null) ? null : ex3.Name
+                Extra3Name = (ex3 == null) ? null : ex3.Name,
+                Icon = form.Icon
 
             };
-            
+
             var TagRet = adminRepo.Create(tagPOJO, 0);
+            TagRet.Extra1 = ex1;
+            TagRet.Extra1Name = (ex1 != null) ? ex1.Name : null;
+            TagRet.Extra2 = ex2;
+            TagRet.Extra2Name = (ex2 != null) ? ex2.Name : null;
+            TagRet.Extra3 = ex3;
+            TagRet.Extra3Name = (ex3 != null) ? ex3.Name : null;
             var tagTemp = mapper.Map<PhotoTagsTypesView>(TagRet);
 
             return tagTemp;
@@ -120,10 +130,29 @@ namespace LHDTV.Service
             t.Extra2 = extras.FirstOrDefault(ext => ext.Name == tag.Extra2.Trim());
             t.Extra3 = extras.FirstOrDefault(ext => ext.Name == tag.Extra3.Trim());
 
-            
+            if (t.Extra1 == null && tag.Extra1 != null && tag.Extra1 != "")
+            {
+                t.Extra1 = adminRepo.CreateExtra(tag.Extra1);
+            }
+            if (t.Extra2 == null && tag.Extra2 != null && tag.Extra2 != "")
+            {
+                t.Extra2 = adminRepo.CreateExtra(tag.Extra2);
+            }
+            if (t.Extra3 == null && tag.Extra3 != null && tag.Extra3 != "")
+            {
+                t.Extra3 = adminRepo.CreateExtra(tag.Extra3);
+            }
+
+            t.Icon = tag.Icon;
             t.Name = tag.Title.Trim();
 
             var tagRet = adminRepo.Update(t, userId);
+            tagRet.Extra1 = t.Extra1;
+            tagRet.Extra1Name = (t.Extra1 != null) ? t.Extra1.Name : null;
+            tagRet.Extra2 = t.Extra2;
+            tagRet.Extra2Name = (t.Extra2 != null) ? t.Extra2.Name : null;
+            tagRet.Extra3 = t.Extra3;
+            tagRet.Extra3Name = (t.Extra3 != null) ? t.Extra3.Name : null;
             var tagTemp = mapper.Map<PhotoTagsTypesView>(tagRet);
 
             return tagTemp;

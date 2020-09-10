@@ -9,6 +9,7 @@ namespace LHDTV.Models.Forms
 
         public string Transition { get; set; }
         public bool AutoStart { get; set; }
+        [Range(0, double.PositiveInfinity)]
         public int TransitionTime { get; set; }
 
     }

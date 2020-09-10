@@ -21,11 +21,10 @@ namespace LHDTV.Repo
        {
             using(var ctx= new LHDTVContext())
             {
-                ctx.User.Add(entity);
+                entity = ctx.User.Add(entity).Entity;
                 ctx.SaveChanges();
                 return entity;
             }
-
         }
 
 
@@ -59,6 +58,18 @@ namespace LHDTV.Repo
            using (var ctx = new LHDTVContext())
            {
                var n = ctx.User.Where(u => u.Dni == dni).SingleOrDefault();
+               //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
+
+                return n;
+            }
+
+        }
+
+        public UserDb ReadToken (string token, int userId)       
+       {
+           using (var ctx = new LHDTVContext())
+           {
+               var n = ctx.User.Where(u => u.RecovertyToken == token).SingleOrDefault();
                //var n = ctx.User.Include(u => u).ThenInclude(v => v).FirstOrDefault(u => u.Id == id);
 
                 return n;

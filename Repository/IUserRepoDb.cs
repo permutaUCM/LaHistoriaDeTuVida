@@ -10,6 +10,7 @@ namespace LHDTV.Repo
         UserDb ReadNick(string nick, int userId);
        
         UserDb ReadDni(string nick, int userId);
+        UserDb ReadToken (string token, int userId);
 
         UserDb Authenticate(string user,string password, int userId);
 

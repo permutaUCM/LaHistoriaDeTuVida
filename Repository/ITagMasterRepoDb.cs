@@ -18,6 +18,8 @@ namespace LHDTV.Repo
 
         List<Extra> GetAllExtras();
 
+        Extra CreateExtra(string extraName);
+
         
 
      

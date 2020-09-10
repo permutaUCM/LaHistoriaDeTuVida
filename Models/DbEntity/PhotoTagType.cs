@@ -14,6 +14,8 @@ namespace LHDTV.Models.DbEntity
         public Extra Extra2 { get; set; }
         public string Extra3Name { get; set; }
         public Extra Extra3 { get; set; }
+        //Icono de font awesome para mostrar como resumen del tag
+        public string Icon { get; set; }
 
     }
 

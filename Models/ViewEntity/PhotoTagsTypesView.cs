@@ -11,7 +11,7 @@ namespace LHDTV.Models.ViewEntity
         public ExtraView Extra1 { get; set; }
         public ExtraView Extra2 { get; set; }
         public ExtraView Extra3 { get; set; }
-
+        public string Icon { get; set; }
     }
 
     public class ExtraView

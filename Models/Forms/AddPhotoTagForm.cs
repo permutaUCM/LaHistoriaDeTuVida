@@ -7,11 +7,18 @@ namespace LHDTV.Models.Forms
 {
     public class AddPhotoTagForm
     {
-        public int Id { get; set; }
+        [Required]
+        [MaxLength(15)]
         public string Title { get; set; }
-        public string Type { get; set; }
+        [MaxLength(15)]
         public string Extra1 { get; set; }
+
+        [MaxLength(15)]
         public string Extra2 { get; set; }
+        
+        [MaxLength(15)]
         public string Extra3 { get; set; }
+        
+        public string Icon { get; set; }
     }
 }

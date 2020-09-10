@@ -10,13 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LHDTV.Migrations
 {
     [DbContext(typeof(LHDTVContext))]
-<<<<<<< HEAD:Migrations/20200519173802_update.Designer.cs
-    [Migration("20200519173802_update")]
-    partial class update
-=======
-    [Migration("20200621152508_rolusuario")]
-    partial class rolusuario
->>>>>>> 6b30f2a641ad1391ee41312d00f55d223d1d46f1:Migrations/20200621152508_rolusuario.Designer.cs
+    [Migration("20200904223418_iconos tagTypeMaster")]
+    partial class iconostagTypeMaster
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,6 +166,9 @@ namespace LHDTV.Migrations
 
                     b.Property<string>("Extra3Name")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Name");
 

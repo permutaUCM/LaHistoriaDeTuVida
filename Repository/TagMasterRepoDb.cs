@@ -51,7 +51,9 @@ namespace LHDTV.Repo
         {
             using (var ctx = new LHDTVContext())
             {
+                
                 var result = ctx.TagTypeMaster.Add(tg);
+                
                 ctx.SaveChanges();
                 return result.Entity;
             }
@@ -85,11 +87,11 @@ namespace LHDTV.Repo
                 if(tg.Extra3 == null){
                     tg.Extra3Name = null;
                 }
-                ctx.TagTypeMaster.Update(tg);
+                var ret = ctx.TagTypeMaster.Update(tg);
 
                 ctx.SaveChanges();
 
-                return tg;
+                return ret.Entity;
             }
 
         }
@@ -100,6 +102,21 @@ namespace LHDTV.Repo
                 var extras = ctx.Extra.ToList();
 
                 return extras;
+            }
+        }
+
+        public Extra CreateExtra(string extraName){
+            using (var ctx = new LHDTVContext())
+            {
+                Extra ext = new Extra(){
+                    Name = extraName,
+                    type = "string",
+                    extras = ""
+                };
+                var ret = ctx.Extra.Add(ext);
+
+                ctx.SaveChanges();
+                return ret.Entity;
             }
         }
 

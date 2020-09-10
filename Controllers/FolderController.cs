@@ -119,7 +119,7 @@ namespace LHDTV.Controllers
         }
 
 
-        [HttpGet("delete/{folderId}")]
+        [HttpDelete("delete/{folderId}")]
         public ActionResult delete(int folderId)
         {
             var userId = this.tokenRecovery.RecoveryId(this.tokenRecovery.RecoveryToken(HttpContext));
